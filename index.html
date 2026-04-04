@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="be">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>Дрэва сцэнарыяў транзіту ўлады v4</title>
+<style>
+:root{--bg:#0b0e18;--card:#151a2e;--border:#252a40;--text:#dfe3ed;--dim:#6b7394;--accent:#5b8def;--green:#34d399;--red:#ef4444;--orange:#f59e0b;--purple:#a78bfa;--cyan:#22d3ee;--pink:#f472b6}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+.header{text-align:center;padding:1.5rem 1rem 0.3rem}
+.header h1{font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header p{color:var(--dim);font-size:0.78rem;margin-top:0.2rem}
+
+/* Legend */
+.legend{display:flex;justify-content:center;gap:1rem;padding:0.4rem;flex-wrap:wrap;font-size:0.72rem;color:var(--dim)}
+.legend span{display:flex;align-items:center;gap:3px}
+.legend span::before{content:'';width:10px;height:10px;border-radius:2px;display:inline-block}
+.lc1::before{background:#7c3aed}.lc2::before{background:#f59e0b}.lc3::before{background:#6366f1}
+.lc4::before{background:#f472b6}.lc5::before{background:#06b6d4}.lc6::before{background:var(--green)}
+.lc7::before{background:var(--red)}.lc8::before{background:var(--orange)}.lc9::before{background:#6b7280}
+
+/* Controls */
+.controls-wrap{max-width:1400px;margin:0.5rem auto;padding:0 1rem}
+.ctrl-row{display:flex;gap:0.4rem;flex-wrap:wrap;justify-content:center;margin-bottom:0.4rem}
+.ctrl{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:0.35rem 0.6rem;display:flex;align-items:center;gap:0.4rem;font-size:0.73rem}
+.ctrl label{color:var(--dim);white-space:nowrap}
+.ctrl .v{color:var(--accent);font-weight:700;min-width:28px;text-align:right;font-size:0.8rem}
+.ctrl.locked .v{color:var(--dim)}
+input[type=range]{-webkit-appearance:none;height:4px;border-radius:2px;background:#1e2235;outline:none;width:80px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid #fff}
+.preset-row{display:flex;gap:3px;justify-content:center;margin:0.4rem 0}
+.pbtn{padding:0.25rem 0.6rem;border-radius:4px;border:1px solid var(--border);background:var(--card);color:var(--dim);cursor:pointer;font-size:0.7rem;transition:all 0.15s}
+.pbtn:hover,.pbtn.on{border-color:var(--accent);color:var(--accent);background:rgba(91,141,239,0.1)}
+
+/* Canvas area */
+.canvas-wrap{overflow-x:auto;padding:0 0.5rem 1rem;position:relative}
+canvas{display:block;margin:0 auto;cursor:default}
+
+/* Summary */
+.summary{max-width:1100px;margin:0 auto;padding:0 1rem 0.5rem;display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center}
+.scard{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.5rem 1rem;text-align:center;min-width:100px;flex:1;max-width:180px}
+.scard .pct{font-size:1.5rem;font-weight:700}
+.scard .lbl{font-size:0.7rem;color:var(--dim);margin-top:0.1rem}
+
+.note{max-width:1000px;margin:0 auto 0.5rem;background:rgba(91,141,239,0.06);border:1px solid rgba(91,141,239,0.12);border-radius:7px;padding:0.6rem 0.8rem;font-size:0.76rem;color:var(--dim);line-height:1.5}
+.note strong{color:var(--accent)}
+.footer{text-align:center;padding:1rem;font-size:0.7rem;color:var(--dim);border-top:1px solid var(--border)}
+
+/* Tooltip */
+#tip{position:fixed;background:#1a2040;border:1px solid var(--accent);border-radius:8px;padding:0.5rem 0.7rem;font-size:0.78rem;color:var(--text);pointer-events:none;opacity:0;transition:opacity 0.15s;max-width:280px;z-index:999;line-height:1.4;box-shadow:0 8px 30px rgba(0,0,0,0.5)}
+#tip b{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>ДРЭВА СЦЭНАРЫЯЎ ТРАНЗІТУ ЎЛАДЫ Ў БЕЛАРУСІ</h1>
+  <p>Маніторынг беларускага транзіту · Цэнтр новых ідэй · 2026 · Інтэрактыўная мадэль (n=23)</p>
+</div>
+<div class="legend">
+  <span class="lc1">Кантэкст Расіі</span>
+  <span class="lc2">Трыгер</span>
+  <span class="lc3">Тып транзіту</span>
+  <span class="lc4">Сілавікі</span>
+  <span class="lc5">Знешнія гульцы</span>
+  <span class="lc6">Дэмакратызацыя</span>
+  <span class="lc7">Аўтарытарная сукцэсія</span>
+  <span class="lc8">Гібрыдны рэжым</span>
+  <span class="lc9">Замарожаны</span>
+</div>
+
+<div class="preset-row">
+  <button class="pbtn on" onclick="preset('expert')">Медыяна экспертаў</button>
+  <button class="pbtn" onclick="preset('optimist')">Аптыміст</button>
+  <button class="pbtn" onclick="preset('pessimist')">Песіміст</button>
+  <button class="pbtn" onclick="preset('geoshock')">Геашок</button>
+</div>
+<div class="controls-wrap">
+  <div class="ctrl-row" id="cr1"></div>
+  <div class="ctrl-row" id="cr2"></div>
+</div>
+
+<div class="canvas-wrap"><canvas id="cv"></canvas></div>
+<div class="summary" id="sum"></div>
+<div class="note">
+  <strong>Як чытаць:</strong> Таўшчыня лініі = верагоднасць шляху. Лічба ў вузле = умоўная верагоднасць галіны. <strong>[лічба]</strong> на лістах = кумулятыўная верагоднасць сцэнарыя (здабытак верагоднасцяў ад кораня). Клікніце на вузел, каб разгарнуць/згарнуць галіну. Навядзіце курсор для падрабязнасцей.
+</div>
+<div class="footer">Маніторынг беларускага транзіту · Цэнтр новых ідэй · 2026 · Заснавана на апытанні 23 экспертаў і кампаратыўным аналізе (Хантынгтан, O'Доннел/Шміттэр, V-Dem)</div>
+<div id="tip"></div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════
+const F = [
+  {id:'rw',label:'Расія аслаблена',v:35,min:5,max:75,row:1,c:'#7c3aed',desc:'Расія занятая вайной або ўнутранымі крызісамі'},
+  {id:'rp',label:'Расія прагматычная',v:45,min:10,max:75,row:1,c:'#7c3aed',desc:'Падтрымае любога геапалітычна лаяльнага'},
+  {id:'ra',label:'Расія агрэсіўная',v:20,min:0,max:0,row:1,c:'#7c3aed',locked:true,desc:'= 100% − астатнія (аўта)'},
+  {id:'ht',label:'Здароўе трыгер',v:60,min:20,max:90,row:2,c:'#f59e0b',desc:'Здароўе Лукашэнкі як асноўны трыгер (83%)'},
+  {id:'mt',label:'Кіраваная перадача',v:65,min:20,max:90,row:2,c:'#6366f1',desc:'Рэжым кантралюе працэс (74%)'},
+  {id:'sl',label:'Сілавікі лаяльныя',v:55,min:10,max:85,row:2,c:'#f472b6',desc:'Сілавікі падтрымліваюць пераемніка'},
+  {id:'di',label:'Дэмсілы ўключаны',v:30,min:5,max:70,row:2,c:'#06b6d4',desc:'Дэмакратычныя сілы ўдзельнічаюць у працэсе'},
+  {id:'wa',label:'Захад актыўны',v:35,min:10,max:75,row:2,c:'#06b6d4',desc:'ЕС/ЗША актыўна ўключаюцца'},
+];
+const P = {
+  expert:{rw:35,rp:45,ht:60,mt:65,sl:55,di:30,wa:35},
+  optimist:{rw:55,rp:35,ht:65,mt:45,sl:35,di:55,wa:65},
+  pessimist:{rw:12,rp:43,ht:50,mt:75,sl:75,di:10,wa:15},
+  geoshock:{rw:65,rp:25,ht:40,mt:25,sl:25,di:45,wa:65},
+};
+let collapsed = {};
+
+function val(id){return F.find(f=>f.id===id).v/100}
+function syncRa(){F.find(f=>f.id==='ra').v=Math.max(0,100-F.find(f=>f.id==='rw').v-F.find(f=>f.id==='rp').v)}
+
+// ══════════════════════════════════════════════════════════
+// SLIDERS
+// ══════════════════════════════════════════════════════════
+function buildCtrls(){
+  const r1=document.getElementById('cr1'),r2=document.getElementById('cr2');
+  r1.innerHTML='';r2.innerHTML='';
+  F.forEach(f=>{
+    const row=f.row===1?r1:r2;
+    let h=`<div class="ctrl${f.locked?' locked':''}" style="border-color:${f.c}"><label>${f.label}</label>`;
+    if(!f.locked) h+=`<input type="range" id="sl-${f.id}" min="${f.min}" max="${f.max}" value="${f.v}" oninput="onSl('${f.id}',this.value)">`;
+    h+=`<span class="v" id="v-${f.id}">${f.v}%</span></div>`;
+    row.innerHTML+=h;
+  });
+}
+function onSl(id,v){
+  v=+v; F.find(f=>f.id===id).v=v;
+  if(id==='rw'||id==='rp'){
+    const rw=F.find(f=>f.id==='rw').v, rp=F.find(f=>f.id==='rp').v;
+    if(rw+rp>95){F.find(f=>f.id==='rp').v=95-rw;document.getElementById('sl-rp').value=F.find(f=>f.id==='rp').v}
+    syncRa();
+    F.filter(f=>f.row===1).forEach(f=>document.getElementById('v-'+f.id).textContent=f.v+'%');
+  }
+  document.getElementById('v-'+id).textContent=F.find(f=>f.id===id).v+'%';
+  document.querySelectorAll('.pbtn').forEach(b=>b.classList.remove('on'));
+  render();
+}
+function preset(n){
+  const p=P[n];if(!p)return;
+  Object.entries(p).forEach(([k,v])=>{F.find(f=>f.id===k).v=v;const s=document.getElementById('sl-'+k);if(s)s.value=v});
+  syncRa();F.forEach(f=>document.getElementById('v-'+f.id).textContent=f.v+'%');
+  document.querySelectorAll('.pbtn').forEach(b=>b.classList.remove('on'));
+  document.querySelector(`[onclick="preset('${n}')"]`).classList.add('on');
+  render();
+}
+
+// ══════════════════════════════════════════════════════════
+// TREE MODEL
+// 6 levels: Root → Russia → Trigger → Type → Siloviki → External → Outcome
+// ══════════════════════════════════════════════════════════
+const CLR={
+  root:{bg:'#1e293b',bd:'#475569',tx:'#f1f5f9'},
+  ctx:{bg:'#1e1538',bd:'#7c3aed',tx:'#e0d4fc'},
+  trg:{bg:'#2d1f0a',bd:'#f59e0b',tx:'#fef3c7'},
+  typ:{bg:'#1a1847',bd:'#6366f1',tx:'#e0e7ff'},
+  sil:{bg:'#2e1230',bd:'#f472b6',tx:'#fce7f3'},
+  ext:{bg:'#0d2d33',bd:'#06b6d4',tx:'#cffafe'},
+  dem:{bg:'#0a2e1b',bd:'#34d399',tx:'#d1fae5'},
+  aut:{bg:'#2e0a0a',bd:'#ef4444',tx:'#fee2e2'},
+  hyb:{bg:'#2e1a05',bd:'#f59e0b',tx:'#ffedd5'},
+  frz:{bg:'#1a1a1f',bd:'#6b7280',tx:'#d1d5db'},
+};
+
+function tree(){
+  const rw=val('rw'),rp=val('rp'),ra=Math.max(0,1-rw-rp);
+  const ht=val('ht'),mt=val('mt'),sl=val('sl'),di=val('di'),wa=val('wa');
+  const ot=1-ht, cl=1-mt, sn=1-sl;
+  const diwa=Math.min(1,di*0.5+wa*0.5); // combined external factor
+  const noext=1-diwa;
+
+  return {id:'root',l:'БЕЛАРУСЬ',s:'рэжым Лукашэнкі',c:'root',
+    tip:'Персаналісцкі аўтарытарны рэжым.\nВНС як рамка сукцэсіі.\n24% верагоднасць транзіту да 2030,\n54% да 2035, 69% да 2040.',
+    ch:[
+    // ═══ A: RUSSIA WEAK ═══
+    {id:'A',l:'Расія аслаблена',s:'занятая сабой',p:rw,c:'ctx',
+     tip:'Расія паглынутая вайной, унутранымі\nкрызісамі або значна аслабленая.\nНазвана перадумовай №1 экспертамі.',
+     ch:[
+      {id:'A1',l:'Здароўе Лукашэнкі',s:'83% — трыгер №1',p:ht,c:'trg',
+       tip:'Хвароба, недзеяздольнасць або смерць.\nАналогія: Узбекістан-2016.',
+       ch:[
+        {id:'A1a',l:'Кіраваная перадача',s:'74% экспертаў',p:mt,c:'typ',
+         tip:'Рэжым кантралюе працэс.\nМадэль: Казахстан-2019.',
+         ch:[
+          {id:'A1a1',l:'Сілавікі лаяльныя',s:'падтрымліваюць пераемніка',p:sl,c:'sil',
+           tip:'Сілавы блок кансалідавана\nпадтрымлівае абранага пераемніка.\n65% экспертаў: «далучацца да пераможцы».',
+           ch:[
+            {id:'A1a1x',l:'Дэмсілы + Захад\nуключаны',s:'канкурэнцыя',p:diwa,c:'ext',
+             tip:'Дэмакратычныя сілы ўдзельнічаюць,\nЗахад актыўна падтрымлівае.\n30% + 35% экспертаў.',
+             ch:[{id:'o1',l:'Пактаваная\nдэмакратызацыя',s:'Польшча-89',c:'dem',
+                  tip:'Найлепшы зыход: перамовы + рэформы.\nПатрабуе кампрамісу ўсіх бакоў.\nАналогія: Круглы стол 1989.'}]},
+            {id:'A1a1y',l:'Дэмсілы выключаны\nЗахад пасіўны',s:'39%+35%',p:noext,c:'ext',
+             tip:'Дэмсілы не дапушчаны (39%),\nЗахад заняты сваімі справамі (35%).\nНіхто не аспрэчвае сукцэсію.',
+             ch:[{id:'o2',l:'Аўтарытарная\nсукцэсія',s:'Узбекістан-16',c:'aut',
+                  tip:'Новы кіраўнік з сістэмы.\nКасметычныя рэформы без дэмакратызацыі.\nАналогія: Мірзіёеў.'}]}
+          ]},
+          {id:'A1a2',l:'Сілавікі раскалоліся',s:'канкурэнцыя фракцый',p:sn,c:'sil',
+           tip:'КДБ, армія, АМАП — розныя інтарэсы.\nАналогія: Казахстан-2022 (Масімаў).\nМяцеж Вагнера — сілавікі не ўмяшаліся.',
+           ch:[
+            {id:'o3',l:'Элітная\nканкурэнцыя',s:'«Казахстан-22»',c:'hyb',
+             tip:'Групоўкі змагаюцца за ўладу.\nВынік залежыць ад таго, хто мацнейшы.\nМожа адкрыць акно для дэмсіл.'}
+          ]}
+        ]},
+        {id:'A1b',l:'Калапс / хаос',s:'рэжым не ўтрымлівае',p:cl,c:'typ',
+         tip:'Кіраваная перадача не ўдаецца.\nЭліты і сілавікі не кансалідаваныя.\nАналогія: Румынія-1989.',
+         ch:[
+          {id:'A1b1',l:'Сілавікі нейтральныя',s:'«чакаюць і глядзяць»',p:0.55,c:'sil',
+           tip:'Мяцеж Вагнера — сілавікі выбралі\nне ўмешвацца. Магчымая мадэль\nдля беларускіх сілавікоў.',
+           ch:[
+            {id:'o4',l:'Рэвалюцыйны\nтранзіт',s:'Румынія-89',c:'hyb',
+             tip:'Высокія рызыкі. Хто першы запоўніць\nвакуум — той атрымае ўладу.\nV-Dem: часцей за ўсё → новы аўтарытарызм.'}
+          ]},
+          {id:'A1b2',l:'Сілавікі рэпрэсуюць',s:'жорсткі адказ',p:0.45,c:'sil',
+           tip:'Сілавы блок падаўляе хаос.\nВяртанне да аўтарытарнага парадку.\nАналогія: Тыбет-2008, Іран-2009.',
+           ch:[
+            {id:'o5',l:'Рэстаўрацыя\nаўтарытарызму',s:'новы гарант',c:'aut',
+             tip:'Сілавік бярэ ўладу «для стабільнасці».\nАналогія: Сісі ў Егіпце.'}
+          ]}
+        ]}
+      ]},
+      {id:'A2',l:'Іншы трыгер',s:'эканоміка / пратэсты / змова',p:ot,c:'trg',
+       tip:'Эканамічны крызіс (13%), пратэсты (9%),\nзмова эліт, знешні ціск.',
+       ch:[
+        {id:'o6',l:'Нявызначаны\nзыход',s:'залежыць ад кантэксту',c:'hyb',
+         tip:'Розныя трыгеры → розная дынаміка.\nВынік непрадказальны.'}
+      ]}
+    ]},
+    // ═══ B: RUSSIA PRAGMATIC ═══
+    {id:'B',l:'Расія прагматычная',s:'падтрымае лаяльнага (65%)',p:rp,c:'ctx',
+     tip:'Расія не кіруе напрамую, але\nпадтрымае геапалітычна лаяльнага.\n65% экспертаў — самы папулярны адказ.',
+     ch:[
+      {id:'B1',l:'Здароўе Лукашэнкі',s:'+ кантроль РФ',p:ht,c:'trg',
+       tip:'Той жа трыгер, але Расія\nўважліва сочыць і ўплывае.',
+       ch:[
+        {id:'B1a',l:'Кіраваная + РФ арбітр',s:'сумеснае рашэнне',p:mt,c:'typ',
+         tip:'Расія дамаўляецца з элітамі\nпра прыймальнага кандыдата.',
+         ch:[
+          {id:'B1a1',l:'Сілавікі лаяльныя',s:'адзіны блок',p:sl,c:'sil',
+           tip:'Сілавікі падпарадкоўваюцца\nузгодненаму пераемніку.',
+           ch:[
+            {id:'B1a1x',l:'Захад уключаецца',s:'канкурэнцыя ўплываў',p:wa,c:'ext',
+             tip:'ЕС/ЗША спрабуюць уплываць —\nканкурэнцыя з РФ за ўплыў.',
+             ch:[{id:'o7',l:'Гібрыд:\nпаміж РФ і ЕС',s:'нестабільны',c:'hyb',
+                  tip:'Краіна паміж двума цэнтрамі сілы.\nМалдова як аналогія.\nМожа эвалюцыянаваць у любы бок.'}]},
+            {id:'B1a1y',l:'Захад пасіўны',s:'35% экспертаў',p:1-wa,c:'ext',
+             tip:'Захад заняты сваімі справамі.\nРасія — адзіны знешні гулец.',
+             ch:[{id:'o8',l:'Прарасійскі\nгарант',s:'Туркменістан-22',c:'aut',
+                  tip:'Лаяльны РФ пераемнік.\nСтабільны аўтарытарызм.\nАналогія: Сердар Бярдымухамедаў.'}]}
+          ]},
+          {id:'B1a2',l:'Сілавікі раскалоліся',s:'+ РФ уключаецца',p:sn,c:'sil',
+           tip:'Фракцыі канкуруюць, РФ\nвымушана ўмешвацца напрамую.\nАналогія: АДКБ у Казахстане-2022.',
+           ch:[
+            {id:'o9',l:'РФ навязвае\nпарадак',s:'АДКБ-мадэль',c:'aut',
+             tip:'Расія ўводзіць войскі / ціск\nі ўсталёўвае лаяльны рэжым.\nПрэцэдэнт: студзень 2022 KZ.'}
+          ]}
+        ]},
+        {id:'B1b',l:'Элітны калапс',s:'РФ не ўтрымлівае',p:cl,c:'typ',
+         tip:'Кіраваная перадача правальваецца\nnават пры ўмяшанні Расіі.',
+         ch:[
+          {id:'o10',l:'Крызіс з\nінтэрвенцыяй РФ',s:'найгорш для суверэн.',c:'aut',
+           tip:'РФ выкарыстоўвае хаос для\nпаглыблення інтэграцыі.\nНебяспечны сцэнар для незалежнасці.'}
+        ]}
+      ]},
+      {id:'B2',l:'Рашэнне Лукашэнкі\n+ Крэмль',s:'запланаваны транзіт',p:ot,c:'trg',
+       tip:'Лукашэнка і Крэмль дамаўляюцца\nпра «мяккі» пераход.\n39% — рашэнне Лукашэнкі як трыгер.',
+       ch:[
+        {id:'o11',l:'«Мяккая\nлібералізацыя»',s:'чырвоная лінія!',c:'frz',
+         tip:'ЧЫРВОНАЯ ЛІНІЯ экспертаў:\nкасметычныя рэформы без рэальных зменаў.\nДэпалітызуе грамадства.\nНайгорш: выглядае як транзіт, але не з\'яўляецца ім.'}
+      ]}
+    ]},
+    // ═══ C: RUSSIA AGGRESSIVE ═══
+    {id:'C',l:'Расія агрэсіўная',s:'інтэграцыя / анэксія',p:ra,c:'ctx',
+     tip:'Чырвоная лінія экспертаў.\nІнкарпарацыя, акупацыя, моцная РФ.\n«Перамога Расіі + Вялікая ўгода».',
+     ch:[
+      {id:'C1',l:'Глыбокая інтэграцыя',s:'«саюзная дзяржава+»',p:0.55,c:'trg',
+       tip:'Фармальна незалежная,\nале рэальна кантраляваная РФ.',
+       ch:[
+        {id:'o12',l:'Замарожаны\nаўтарытарызм',s:'залежнасць ад РФ',c:'frz',
+         tip:'Ніякіх зменаў. Поўная залежнасць.\nТранзіт замарожаны на дзесяцігоддзі.'}
+      ]},
+      {id:'C2',l:'Фактычная анэксія',s:'ліквідацыя суверэнітэту',p:0.25,c:'trg',
+       tip:'Поўная страта дзяржаўнасці.\nНазвана найгоршым сцэнарам.',
+       ch:[
+        {id:'o13',l:'Страта\nсуверэнітэту',s:'немагчымы транзіт',c:'frz',
+         tip:'Транзіт немагчымы.\nСамы цёмны сцэнар.'}
+      ]},
+      {id:'C3',l:'Вайна на тэрыторыі',s:'НАТА–РФ · недаацэнены',p:0.20,c:'trg',
+       tip:'Недаацэнены фактар\n(названы экспертамі).\nМілітарны сцэнар.',
+       ch:[
+        {id:'o14',l:'Радыкальная\nнявызначанасць',s:'усе сцэнарыі',c:'hyb',
+         tip:'Непрадказальны зыход.\nМожа адкрыць акно для любога сцэнарыя.'}
+      ]}
+    ]}
+  ]};
+}
+
+// ══════════════════════════════════════════════════════════
+// LAYOUT ENGINE
+// ══════════════════════════════════════════════════════════
+const NW=142,NH=54,LH=62,PX=6,PY=24;
+let nodes=[],edges=[],hoverNode=null;
+
+function leaves(n){
+  if(collapsed[n.id])return 1;
+  if(!n.ch||!n.ch.length)return 1;
+  return n.ch.reduce((s,c)=>s+leaves(c),0);
+}
+function layout(n,depth,left){
+  const lc=leaves(n);
+  const w=lc*(NW+PX)-PX;
+  n._d=depth; n._y=depth*(NH+PY)+10;
+  n._leaves=lc; n._w=w;
+  if(collapsed[n.id]||!n.ch||!n.ch.length){
+    n._x=left+w/2; return;
+  }
+  let cx=left;
+  n.ch.forEach(c=>{layout(c,depth+1,cx);cx+=c._w+PX});
+  n._x=(n.ch[0]._x+n.ch[n.ch.length-1]._x)/2;
+}
+function cumul(n,pc){
+  n._cum=pc*(n.p||1);
+  if(!collapsed[n.id]&&n.ch)n.ch.forEach(c=>cumul(c,n._cum));
+}
+function collect(n){
+  nodes.push(n);
+  if(!collapsed[n.id]&&n.ch){
+    n.ch.forEach(c=>{edges.push({from:n,to:c});collect(c)});
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// CANVAS RENDERER
+// ══════════════════════════════════════════════════════════
+const cv=document.getElementById('cv');
+const ctx2=cv.getContext('2d');
+const dpr=window.devicePixelRatio||1;
+
+function isLeaf(n){return collapsed[n.id]||!n.ch||!n.ch.length}
+function outType(n){
+  // find leaf types under this node
+  if(isLeaf(n))return n.c;
+  let types=new Set();
+  function walk(nd){if(isLeaf(nd)){types.add(nd.c)}else if(nd.ch)nd.ch.forEach(walk)}
+  walk(n); return types.size===1?[...types][0]:'mixed';
+}
+
+function render(){
+  const t=tree();
+  layout(t,0,10);
+  cumul(t,1);
+  nodes=[];edges=[];collect(t);
+
+  const maxX=Math.max(...nodes.map(n=>n._x+NW/2))+20;
+  const maxY=Math.max(...nodes.map(n=>n._y))+NH+30;
+  const W=Math.max(1380,maxX),H=maxY;
+  cv.style.width=W+'px';cv.style.height=H+'px';
+  cv.width=W*dpr;cv.height=H*dpr;
+  ctx2.setTransform(dpr,0,0,dpr,0,0);
+  ctx2.clearRect(0,0,W,H);
+
+  // Draw edges
+  edges.forEach(e=>{
+    const x1=e.from._x, y1=e.from._y+NH;
+    const x2=e.to._x, y2=e.to._y;
+    const p=e.to.p||0.5;
+    const cum=e.to._cum||0;
+
+    // Highlight path on hover
+    let highlight=false;
+    if(hoverNode){
+      let nd=hoverNode;
+      while(nd){if(nd.id===e.to.id){highlight=true;break}nd=nd._parent}
+      if(!highlight){nd=e.to;while(nd){if(nd.id===hoverNode.id){highlight=true;break}nd=nd._parent}}
+    }
+
+    const lw=Math.max(1.5, p*8);
+    ctx2.beginPath();
+    const my=(y1+y2)/2;
+    ctx2.moveTo(x1,y1);ctx2.bezierCurveTo(x1,my,x2,my,x2,y2);
+    const c=CLR[e.to.c]||CLR.root;
+    ctx2.strokeStyle=highlight?c.bd:'#2a3050';
+    ctx2.lineWidth=highlight?lw+1:lw;
+    ctx2.globalAlpha=highlight?0.9:Math.max(0.15,p*0.6);
+    ctx2.stroke();
+    ctx2.globalAlpha=1;
+  });
+
+  // Draw nodes
+  nodes.forEach(n=>{
+    const c=CLR[n.c]||CLR.root;
+    const x=n._x-NW/2, y=n._y;
+    const leaf=isLeaf(n);
+    const h=leaf&&!n.ch?NH+12:NH;
+    const isHover=hoverNode&&hoverNode.id===n.id;
+
+    // Shadow on hover
+    if(isHover){
+      ctx2.shadowColor=c.bd;ctx2.shadowBlur=15;
+    }
+
+    // Rect
+    ctx2.fillStyle=c.bg;
+    ctx2.strokeStyle=isHover?'#fff':c.bd;
+    ctx2.lineWidth=isHover?2.5:1.5;
+    roundRect(ctx2,x,y,NW,h,7);
+    ctx2.fill();ctx2.stroke();
+    ctx2.shadowColor='transparent';ctx2.shadowBlur=0;
+
+    // Label
+    ctx2.fillStyle=c.tx;
+    ctx2.font='600 10.5px "Segoe UI",system-ui,sans-serif';
+    ctx2.textAlign='center';
+    const lines=n.l.split('\n');
+    lines.forEach((ln,i)=>{ctx2.fillText(ln,n._x,y+14+i*12,NW-10)});
+
+    // Prob badge
+    if(n.p!==undefined&&n.p!==null){
+      const pct=Math.round(n.p*100);
+      const py=y+(lines.length>1?36:28);
+      ctx2.font='700 12px "Segoe UI",system-ui,sans-serif';
+      ctx2.fillStyle=pct>=50?'#34d399':pct>=25?'#f59e0b':'#ef4444';
+      ctx2.fillText(pct+'%',n._x,py);
+      // mini bar
+      const bw=NW-16,bx=x+8,by=py+3;
+      ctx2.fillStyle='#1e2235';roundRect(ctx2,bx,by,bw,3,1.5);ctx2.fill();
+      ctx2.fillStyle=c.bd;roundRect(ctx2,bx,by,bw*n.p,3,1.5);ctx2.fill();
+    }
+
+    // Cumulative on leaves
+    if(leaf&&n._cum!==undefined&&!n.ch){
+      const cpct=(n._cum*100).toFixed(1);
+      ctx2.font='700 10px "Segoe UI",system-ui,sans-serif';
+      ctx2.fillStyle=c.bd;
+      ctx2.fillText('['+cpct+'%]',n._x,y+h-4);
+    }
+
+    // Sub text
+    if(n.s){
+      const sy=leaf&&!n.ch?y+h-16:y+NH-5;
+      ctx2.font='400 8.5px "Segoe UI",system-ui,sans-serif';
+      ctx2.fillStyle='#6b7394';
+      ctx2.fillText(n.s.substring(0,26),n._x,sy,NW-8);
+    }
+
+    // Collapse indicator
+    if(n.ch&&n.ch.length){
+      const ind=collapsed[n.id]?'▸':'';
+      if(ind){
+        ctx2.font='700 11px sans-serif';ctx2.fillStyle='#f59e0b';
+        ctx2.textAlign='right';ctx2.fillText(ind,x+NW-5,y+13);ctx2.textAlign='center';
+      }
+    }
+
+    // Store parent refs for path highlighting
+    if(n.ch&&!collapsed[n.id])n.ch.forEach(c=>{c._parent=n});
+  });
+
+  updateSummary(t);
+}
+
+function roundRect(c,x,y,w,h,r){
+  c.beginPath();c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);
+  c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);c.lineTo(x+r,y+h);
+  c.quadraticCurveTo(x,y+h,x,y+h-r);c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath();
+}
+
+// ══════════════════════════════════════════════════════════
+// INTERACTION — hover & click
+// ══════════════════════════════════════════════════════════
+function findNode(mx,my){
+  for(let i=nodes.length-1;i>=0;i--){
+    const n=nodes[i];
+    const x=n._x-NW/2,y=n._y;
+    const leaf=isLeaf(n);
+    const h=leaf&&!n.ch?NH+12:NH;
+    if(mx>=x&&mx<=x+NW&&my>=y&&my<=y+h)return n;
+  }
+  return null;
+}
+
+cv.addEventListener('mousemove',e=>{
+  const r=cv.getBoundingClientRect();
+  const mx=e.clientX-r.left, my=e.clientY-r.top;
+  const n=findNode(mx,my);
+  if(n!==hoverNode){hoverNode=n;render();showTip(e,n)}
+  if(n)moveTip(e);
+});
+cv.addEventListener('mouseleave',()=>{hoverNode=null;render();hideTip()});
+cv.addEventListener('click',e=>{
+  const r=cv.getBoundingClientRect();
+  const n=findNode(e.clientX-r.left,e.clientY-r.top);
+  if(n&&n.ch&&n.ch.length){
+    collapsed[n.id]=!collapsed[n.id];
+    render();
+  }
+});
+
+const tip=document.getElementById('tip');
+function showTip(e,n){
+  if(!n){hideTip();return}
+  let html=`<b>${n.l.replace(/\n/g,' ')}</b><br>`;
+  if(n.tip)html+=n.tip.replace(/\n/g,'<br>')+'<br>';
+  if(n.p!=null)html+=`<br>Верагоднасць галіны: <b>${Math.round(n.p*100)}%</b>`;
+  if(n._cum!=null&&isLeaf(n))html+=`<br>Кумулятыўная: <b>${(n._cum*100).toFixed(1)}%</b>`;
+  if(n.ch&&n.ch.length)html+=`<br><span style="color:var(--dim);font-size:0.7rem">Клік: ${collapsed[n.id]?'разгарнуць':'згарнуць'}</span>`;
+  tip.innerHTML=html;tip.style.opacity='1';
+}
+function moveTip(e){tip.style.left=Math.min(e.clientX+12,window.innerWidth-290)+'px';tip.style.top=(e.clientY+16)+'px'}
+function hideTip(){tip.style.opacity='0'}
+
+// ══════════════════════════════════════════════════════════
+// SUMMARY
+// ══════════════════════════════════════════════════════════
+function allLeaves(n){
+  if(!n.ch||!n.ch.length||collapsed[n.id])return[n];
+  return n.ch.flatMap(c=>allLeaves(c));
+}
+function updateSummary(t){
+  const lv=allLeaves(t);
+  const agg={dem:0,aut:0,hyb:0,frz:0};
+  lv.forEach(n=>{const k=agg.hasOwnProperty(n.c)?n.c:'hyb';agg[k]+=(n._cum||0)});
+  const tot=Object.values(agg).reduce((s,v)=>s+v,0)||1;
+  const labels={dem:'Дэмакратызацыя',aut:'Аўтарытарная\nсукцэсія',hyb:'Гібрыдны',frz:'Замарожаны'};
+  const colors={dem:'var(--green)',aut:'var(--red)',hyb:'var(--orange)',frz:'#6b7280'};
+  let h='';
+  Object.entries(agg).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{
+    h+=`<div class="scard"><div class="pct" style="color:${colors[k]}">${(v/tot*100).toFixed(1)}%</div><div class="lbl">${labels[k].replace('\n','<br>')}</div></div>`;
+  });
+  document.getElementById('sum').innerHTML=h;
+}
+
+// Init
+buildCtrls();render();
+</script>
+</body>
+</html>
