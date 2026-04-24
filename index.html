@@ -2,538 +2,1190 @@
 <html lang="be">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1440">
-<title>Дрэва сцэнарыяў транзіту ўлады v4</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Транзіт улады ў Беларусі — Дрэва сцэнароў</title>
+<template id="__bundler_thumbnail" data-bg-color="#fbfaf7">
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+<rect width="1200" height="800" fill="#fbfaf7"/>
+<rect x="200" y="180" width="800" height="3" fill="#1a1a1a"/>
+<text x="600" y="340" font-family="Georgia,serif" font-size="92" fill="#1a1a1a" text-anchor="middle" font-weight="400">Транзіт</text>
+<text x="600" y="440" font-family="Georgia,serif" font-size="92" fill="#a4392a" text-anchor="middle" font-style="italic">улады</text>
+<rect x="200" y="540" width="800" height="1" fill="#d4d0c4"/>
+<circle cx="400" cy="620" r="10" fill="#2f6b4f"/>
+<circle cx="520" cy="620" r="10" fill="#a4392a"/>
+<circle cx="640" cy="620" r="10" fill="#b58a2e"/>
+<circle cx="760" cy="620" r="10" fill="#6b6a63"/>
+</svg>
+</template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..800;1,8..60,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0b0e18;--card:#151a2e;--border:#252a40;--text:#dfe3ed;--dim:#6b7394;--accent:#5b8def;--green:#34d399;--red:#ef4444;--orange:#f59e0b;--purple:#a78bfa;--cyan:#22d3ee;--pink:#f472b6}
+:root{
+  /* BLUEPRINT dark theme */
+  --bg:#0b1424;
+  --paper:#0f1b2f;
+  --paper-2:#132340;
+  --ink:#e6eef7;
+  --ink-2:#b8c7d8;
+  --muted:#7a8da3;
+  --muted-2:#4a5f7e;
+  --rule:#1a2842;
+  --rule-2:#25365a;
+  --grid:rgba(86,140,200,0.06);
+  --accent:#7ed0e8;           /* cyan accent */
+  --accent-ink:#a8e4f4;
+  --accent-warm:#f5d97e;       /* warm hover/highlight */
+  --gold:#d4a54e;
+  --teal:#5ac8b8;
+  --indigo:#9fc4e8;
+  --slate:#a8b8d0;
+  /* outcome colors — muted blueprint */
+  --dem:#5ac8b8;
+  --aut:#e8886a;
+  --hyb:#d4a54e;
+  --frz:#6b7a92;
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
-.header{text-align:center;padding:1.5rem 1rem 0.3rem}
-.header h1{font-size:1.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.header p{color:var(--dim);font-size:0.78rem;margin-top:0.2rem}
+html,body{background:var(--bg);color:var(--ink);font-family:"Source Serif 4",Georgia,serif;font-feature-settings:"ss01","liga";-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{
+  background-image:
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:48px 48px, 48px 48px;
+  background-position:-1px -1px;
+}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-feature-settings:"ss01"}
+.sans{font-family:"Inter",system-ui,sans-serif}
 
-/* Legend */
-.legend{display:flex;justify-content:center;gap:1rem;padding:0.4rem;flex-wrap:wrap;font-size:0.72rem;color:var(--dim)}
-.legend span{display:flex;align-items:center;gap:3px}
-.legend span::before{content:'';width:10px;height:10px;border-radius:2px;display:inline-block}
-.lc1::before{background:#7c3aed}.lc2::before{background:#f59e0b}.lc3::before{background:#6366f1}
-.lc4::before{background:#f472b6}.lc5::before{background:#06b6d4}.lc6::before{background:var(--green)}
-.lc7::before{background:var(--red)}.lc8::before{background:var(--orange)}.lc9::before{background:#6b7280}
+/* ─── layout ─── */
+.masthead{border-bottom:1px solid var(--ink);padding:14px 32px 12px;display:flex;align-items:baseline;justify-content:space-between;gap:24px}
+.masthead .brand{font-family:"Inter",sans-serif;font-weight:700;font-size:11px;letter-spacing:0.18em;text-transform:uppercase}
+.masthead .brand em{color:var(--accent);font-style:normal}
+.masthead .meta{font-family:"Inter",sans-serif;font-size:10.5px;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase}
 
-/* Controls */
-.controls-wrap{max-width:1400px;margin:0.5rem auto;padding:0 1rem}
-.ctrl-row{display:flex;gap:0.4rem;flex-wrap:wrap;justify-content:center;margin-bottom:0.4rem}
-.ctrl{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:0.35rem 0.6rem;display:flex;align-items:center;gap:0.4rem;font-size:0.73rem}
-.ctrl label{color:var(--dim);white-space:nowrap}
-.ctrl .v{color:var(--accent);font-weight:700;min-width:28px;text-align:right;font-size:0.8rem}
-.ctrl.locked .v{color:var(--dim)}
-input[type=range]{-webkit-appearance:none;height:4px;border-radius:2px;background:#1e2235;outline:none;width:80px}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid #fff}
-.preset-row{display:flex;gap:3px;justify-content:center;margin:0.4rem 0}
-.pbtn{padding:0.25rem 0.6rem;border-radius:4px;border:1px solid var(--border);background:var(--card);color:var(--dim);cursor:pointer;font-size:0.7rem;transition:all 0.15s}
-.pbtn:hover,.pbtn.on{border-color:var(--accent);color:var(--accent);background:rgba(91,141,239,0.1)}
+.hero{max-width:1240px;margin:0 auto;padding:48px 32px 28px;text-align:center}
+.kicker{font-family:"Inter",sans-serif;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:18px}
+h1.title{font-family:"Source Serif 4",Georgia,serif;font-weight:400;font-size:clamp(38px,5.2vw,64px);line-height:1.02;letter-spacing:-0.015em;margin-bottom:18px}
+h1.title em{font-style:italic;color:var(--accent-ink)}
+.dek{font-family:"Source Serif 4",serif;font-weight:300;font-size:20px;line-height:1.45;color:var(--ink-2);max-width:760px;margin:0 auto;text-wrap:balance}
+.byline{margin-top:22px;font-family:"Inter",sans-serif;font-size:11.5px;color:var(--muted);letter-spacing:0.04em}
+.byline span{color:var(--ink);font-weight:600}
 
-/* Canvas area */
-.canvas-wrap{overflow-x:auto;padding:0 0.5rem 1rem;position:relative}
-canvas{display:block;margin:0 auto;cursor:default}
+.rule{max-width:1240px;margin:28px auto 0;padding:0 32px}
+.rule hr{border:none;border-top:1px solid var(--rule-2)}
 
-/* Summary */
-.summary{max-width:1100px;margin:0 auto;padding:0 1rem 0.5rem;display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center}
-.scard{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.5rem 1rem;text-align:center;min-width:100px;flex:1;max-width:180px}
-.scard .pct{font-size:1.5rem;font-weight:700}
-.scard .lbl{font-size:0.7rem;color:var(--dim);margin-top:0.1rem}
+/* ─── stats strip ─── */
+.stats{max-width:1240px;margin:22px auto 8px;padding:0 32px;display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.stat{border-left:1px solid var(--rule-2);padding:4px 18px 4px 20px}
+.stat:first-child{border-left:none;padding-left:0}
+.stat .n{font-family:"Source Serif 4",serif;font-weight:300;font-size:40px;line-height:1;letter-spacing:-0.02em;color:var(--ink)}
+.stat .n em{color:var(--accent);font-style:normal;font-weight:400}
+.stat .lbl{font-family:"Inter",sans-serif;font-size:11px;color:var(--muted);margin-top:8px;line-height:1.4;letter-spacing:0.02em}
 
-.note{max-width:1000px;margin:0 auto 0.5rem;background:rgba(91,141,239,0.06);border:1px solid rgba(91,141,239,0.12);border-radius:7px;padding:0.6rem 0.8rem;font-size:0.76rem;color:var(--dim);line-height:1.5}
-.note strong{color:var(--accent)}
-.footer{text-align:center;padding:1rem;font-size:0.7rem;color:var(--dim);border-top:1px solid var(--border)}
+/* ─── section headers ─── */
+.section-head{max-width:1240px;margin:56px auto 20px;padding:0 32px;display:flex;align-items:baseline;gap:14px}
+.section-head .num{font-family:"Inter",sans-serif;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.2em}
+.section-head h2{font-family:"Source Serif 4",serif;font-weight:500;font-size:26px;letter-spacing:-0.01em}
+.section-head .sub{flex:1;font-family:"Inter",sans-serif;font-size:12px;color:var(--muted);text-align:right;letter-spacing:0.02em}
 
-/* Tooltip */
-#tip{position:fixed;background:#1a2040;border:1px solid var(--accent);border-radius:8px;padding:0.5rem 0.7rem;font-size:0.78rem;color:var(--text);pointer-events:none;opacity:0;transition:opacity 0.15s;max-width:280px;z-index:999;line-height:1.4;box-shadow:0 8px 30px rgba(0,0,0,0.5)}
-#tip b{color:var(--accent)}
+/* ─── presets ─── */
+.presets-wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+.presets{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.preset{position:relative;background:var(--paper);border:1px solid var(--rule);padding:16px 18px 14px;cursor:pointer;transition:all .2s;text-align:left}
+.preset:hover{border-color:var(--ink);transform:translateY(-1px);box-shadow:0 2px 0 var(--ink)}
+.preset.on{border-color:var(--accent);background:rgba(126,208,232,0.08);box-shadow:inset 3px 0 0 var(--accent)}
+.preset .label{font-family:"Inter",sans-serif;font-size:10px;letter-spacing:0.18em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+.preset .name{font-family:"Source Serif 4",serif;font-weight:500;font-size:19px;letter-spacing:-0.01em}
+.preset .tag{position:absolute;top:14px;right:14px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--muted-2)}
+.preset .expand{margin-top:10px;font-family:"Inter",sans-serif;font-size:12.5px;color:var(--ink-2);line-height:1.5;max-height:0;opacity:0;overflow:hidden;transition:all .3s}
+.preset:hover .expand,.preset.on .expand{max-height:260px;opacity:1;margin-top:10px}
+.preset .expand .pair{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dotted var(--rule)}
+.preset .expand .pair:last-child{border-bottom:none}
+.preset .expand .pair .k{color:var(--muted)}
+.preset .expand .pair .v{font-family:"JetBrains Mono",monospace;font-weight:500;color:var(--ink);font-size:11.5px}
+.preset .expand p{font-family:"Source Serif 4",serif;font-size:13.5px;font-style:italic;color:var(--ink-2);margin-bottom:10px;line-height:1.45}
+
+/* ─── sliders ─── */
+.sliders-wrap{max-width:1240px;margin:22px auto 0;padding:0 32px}
+.sliders{background:var(--paper);border:1px solid var(--rule);padding:22px 26px}
+.sliders-title{font-family:"Inter",sans-serif;font-size:10.5px;letter-spacing:0.18em;color:var(--muted);text-transform:uppercase;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.sliders-title .reset{cursor:pointer;color:var(--accent);font-weight:600;letter-spacing:0.06em;text-transform:none;font-size:11px}
+.sliders-title .reset:hover{text-decoration:underline}
+.slider-group{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 28px}
+.slider{position:relative}
+.slider .head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.slider .k{font-family:"Inter",sans-serif;font-size:12px;font-weight:600;color:var(--ink)}
+.slider .v{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:500;color:var(--accent)}
+.slider .v.locked{color:var(--muted-2)}
+.slider .desc{font-family:"Inter",sans-serif;font-size:10.5px;color:var(--muted);margin-bottom:8px;line-height:1.35;min-height:28px}
+input[type=range]{-webkit-appearance:none;width:100%;height:2px;background:var(--rule-2);outline:none;border-radius:0}
+input[type=range]:disabled{opacity:0.5}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);border:2px solid var(--paper);box-shadow:0 0 0 1px var(--accent);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--accent);border:2px solid var(--paper);box-shadow:0 0 0 1px var(--accent);cursor:pointer}
+.slider .axis{display:flex;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--muted-2);margin-top:3px}
+
+/* ─── tree (BLUEPRINT) ─── */
+.tree-wrap{max-width:none;margin:20px 16px 0;padding:0;position:relative}
+.tree-legend{display:flex;gap:18px;flex-wrap:wrap;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:#7a8da3;padding:10px 18px;justify-content:center;background:#0b1424;border:1px solid #1a2842;border-bottom:none;letter-spacing:0.04em}
+.tree-legend span{display:flex;align-items:center;gap:6px;text-transform:uppercase}
+.tree-legend span::before{content:"";width:12px;height:2px;display:inline-block;background:#7a8da3}
+.lg-dem::before{background:#5ac8b8 !important}
+.lg-aut::before{background:#e8886a !important}
+.lg-hyb::before{background:#d4a54e !important}
+.lg-frz::before{background:#6b7a92 !important}
+.tree-legend .sep{color:#3a4a66;margin:0 4px}
+
+.tree-canvas-wrap{background:#0b1424;border:1px solid #1a2842;overflow:hidden;position:relative;height:calc(100vh - 220px);min-height:520px;max-height:780px;
+  background-image:
+    linear-gradient(rgba(86,140,200,0.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(86,140,200,0.06) 1px,transparent 1px);
+  background-size:48px 48px, 48px 48px}
+.tree-canvas-wrap::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(ellipse at 50% 40%,rgba(90,200,232,0.03),transparent 70%);pointer-events:none}
+.tree-canvas-wrap::after{content:"ДРЭВА · SCENARIO TREE · n=29 · 2026";position:absolute;bottom:10px;right:16px;font-family:"JetBrains Mono",monospace;font-size:9px;color:#3a4a66;letter-spacing:0.2em;pointer-events:none}
+#cv{display:block;cursor:default;position:relative;z-index:1;width:100%;height:100%}
+.tree-corner{position:absolute;width:20px;height:20px;border:1px solid #3a5580;pointer-events:none;z-index:2}
+.tree-corner.tl{top:6px;left:6px;border-right:none;border-bottom:none}
+.tree-corner.tr{top:6px;right:6px;border-left:none;border-bottom:none}
+.tree-corner.bl{bottom:6px;left:6px;border-right:none;border-top:none}
+.tree-corner.br{bottom:6px;right:6px;border-left:none;border-top:none}
+.tree-frame-label{position:absolute;top:8px;left:50%;transform:translateX(-50%);font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:0.35em;color:#5a7ca3;pointer-events:none;z-index:2}
+.tree-scale{position:absolute;top:8px;right:40px;font-family:"JetBrains Mono",monospace;font-size:9px;color:#3a5580;pointer-events:none;z-index:2;letter-spacing:0.1em}
+
+/* ─── summary ─── */
+.summary-wrap{max-width:1240px;margin:24px auto 0;padding:0 32px}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:3px solid var(--ink);border-bottom:1px solid var(--rule-2);padding:16px 0}
+.sc{padding:4px 22px;border-left:1px solid var(--rule-2)}
+.sc:first-child{border-left:none}
+.sc .n{font-family:"Source Serif 4",serif;font-weight:300;font-size:36px;line-height:1;letter-spacing:-0.02em}
+.sc.sc-dem .n{color:var(--dem)} .sc.sc-aut .n{color:var(--aut)} .sc.sc-hyb .n{color:var(--gold)} .sc.sc-frz .n{color:var(--frz)}
+.sc .lbl{font-family:"Inter",sans-serif;font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.35;letter-spacing:0.02em}
+.sc .lbl strong{color:var(--ink);font-weight:600;display:block;font-size:12.5px;margin-bottom:3px}
+
+.note{max-width:1240px;margin:24px auto 0;padding:0 32px;font-family:"Source Serif 4",serif;font-size:14px;line-height:1.55;color:var(--ink-2);font-style:italic;max-width:880px}
+.note strong{font-style:normal;color:var(--ink);font-weight:600}
+
+/* ─── PCA panel ─── */
+.pca-wrap{max-width:1240px;margin:56px auto 0;padding:0 32px}
+.pca-intro{font-family:"Source Serif 4",serif;font-size:15px;line-height:1.55;color:var(--ink-2);max-width:760px;margin-bottom:22px}
+.pca-intro strong{color:var(--ink);font-weight:600}
+.pca-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:34px;align-items:start}
+.pca-col h3{font-family:"Inter",sans-serif;font-size:11px;letter-spacing:0.18em;color:var(--muted);text-transform:uppercase;margin-bottom:14px;font-weight:700}
+.pca-col h3 em{color:var(--accent);font-style:normal}
+.heatmap{display:grid;grid-template-columns:1.7fr repeat(4,1fr);background:var(--paper);border:1px solid var(--rule);font-family:"Inter",sans-serif}
+.heatmap .hdr,.heatmap .row-lbl,.heatmap .cell{padding:6px 8px;font-size:10.5px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:center}
+.heatmap .hdr{font-weight:700;background:#132340;color:var(--ink-2);letter-spacing:0.1em;font-size:10px}
+.heatmap .row-lbl{justify-content:flex-start;font-size:11px;color:var(--ink);border-right:1px solid var(--rule);background:#0f1b2f}
+.heatmap .cell{font-family:"JetBrains Mono",monospace;font-weight:500;font-size:10.5px}
+.heatmap>div:nth-last-child(-n+5){border-bottom:none}
+
+.factor-card{background:var(--paper);border:1px solid var(--rule);padding:14px 16px;margin-bottom:10px;border-left:3px solid var(--rule)}
+.factor-card.f1{border-left-color:#9fc4e8}
+.factor-card.f2{border-left-color:#5ac8b8}
+.factor-card.f3{border-left-color:#d4a54e}
+.factor-card.f4{border-left-color:#7ed0e8}
+.factor-card .fh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.factor-card .fn{font-family:"Source Serif 4",serif;font-size:17px;font-weight:500}
+.factor-card .fp{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted);font-weight:500}
+.factor-card .fd{font-family:"Inter",sans-serif;font-size:12.5px;color:var(--ink-2);line-height:1.5;margin-top:2px}
+.factor-card .fm{font-family:"Inter",sans-serif;font-size:11px;color:var(--muted);margin-top:6px;font-style:italic}
+
+.var-bars{background:var(--paper);border:1px solid var(--rule);padding:14px 16px;margin-top:12px}
+.var-bars h4{font-family:"Inter",sans-serif;font-size:10.5px;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase;margin-bottom:12px;font-weight:700;display:flex;justify-content:space-between}
+.var-bars h4 span{color:var(--accent);font-family:"JetBrains Mono",monospace;letter-spacing:0.02em;text-transform:none}
+.var-row{display:grid;grid-template-columns:28px 1fr 44px;gap:10px;align-items:center;margin-bottom:6px;font-family:"Inter",sans-serif;font-size:11.5px}
+.var-row .k{font-weight:700;color:var(--ink-2);font-family:"JetBrains Mono",monospace;font-size:11px}
+.var-row .track{background:#132340;height:14px;position:relative}
+.var-row .fill{height:100%;display:flex;align-items:center;padding:0 6px;color:#fff;font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:500}
+.var-row.f1 .fill{background:#9fc4e8}
+.var-row.f2 .fill{background:#5ac8b8}
+.var-row.f3 .fill{background:#d4a54e}
+.var-row.f4 .fill{background:#7ed0e8}
+.var-row .v{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);text-align:right}
+
+/* ─── overlay (leaf detail card) ─── */
+.overlay{position:fixed;inset:0;background:rgba(26,26,26,0.55);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity .2s;backdrop-filter:blur(2px)}
+.overlay.on{opacity:1;pointer-events:auto}
+.ocard{background:var(--paper);max-width:720px;width:92%;max-height:88vh;overflow-y:auto;padding:0;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.25);transform:translateY(8px);transition:transform .3s}
+.overlay.on .ocard{transform:translateY(0)}
+.ocard-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border:none;background:transparent;cursor:pointer;font-size:22px;color:var(--muted);line-height:1}
+.ocard-close:hover{color:var(--ink)}
+.ocard-head{padding:28px 32px 20px;border-bottom:1px solid var(--rule)}
+.ocard-kind{font-family:"Inter",sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;margin-bottom:10px}
+.ocard-kind.k-dem{color:var(--dem)} .ocard-kind.k-aut{color:var(--aut)} .ocard-kind.k-hyb{color:var(--gold)} .ocard-kind.k-frz{color:var(--frz)}
+.ocard-title{font-family:"Source Serif 4",serif;font-size:30px;font-weight:500;line-height:1.1;letter-spacing:-0.015em;margin-bottom:10px}
+.ocard-title em{font-style:italic;font-weight:400}
+.ocard-sub{font-family:"Source Serif 4",serif;font-size:17px;font-style:italic;color:var(--ink-2);line-height:1.4}
+.ocard-body{padding:20px 32px 28px}
+.ocard-row{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--rule)}
+.ocard-row:last-child{border-bottom:none}
+.ocard-row .rl{font-family:"Inter",sans-serif;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);font-weight:700;flex:0 0 130px;padding-top:2px}
+.ocard-row .rv{flex:1;font-family:"Source Serif 4",serif;font-size:15px;line-height:1.55;color:var(--ink)}
+.ocard-row.cum .rv{font-family:"JetBrains Mono",monospace;font-weight:600;font-size:22px;color:var(--accent)}
+.ocard-path{padding:14px 32px;background:#132340;border-bottom:1px solid var(--rule);font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);line-height:1.7}
+.ocard-path .seg{color:var(--ink)}
+.ocard-path .arr{color:var(--muted-2);margin:0 6px}
+.ocard-analog{background:#132340;padding:16px 32px;margin:16px -32px -28px;border-top:1px solid var(--rule)}
+.ocard-analog .al{font-family:"Inter",sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px}
+.ocard-analog .at{font-family:"Source Serif 4",serif;font-size:17px;font-weight:500}
+.ocard-analog .ad{font-family:"Source Serif 4",serif;font-size:14px;color:var(--ink-2);line-height:1.5;margin-top:6px;font-style:italic}
+
+/* ─── tooltip ─── */
+#tip{position:fixed;background:#1a2842;color:var(--ink);border:1px solid #2c4068;padding:10px 13px;font-family:"Inter",sans-serif;font-size:12px;line-height:1.45;max-width:300px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:500;box-shadow:0 8px 24px rgba(0,0,0,0.25)}
+#tip b{color:#fff;font-weight:700;display:block;margin-bottom:4px;font-size:12.5px}
+#tip .t-p{font-family:"JetBrains Mono",monospace;color:var(--accent-warm);margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.2);font-size:11px}
+#tip .t-hint{color:var(--muted);font-size:10.5px;margin-top:4px;font-style:italic}
+
+/* ─── footer ─── */
+.footer{border-top:3px solid var(--ink);margin-top:64px;padding:32px;text-align:center}
+.footer .brand{font-family:"Inter",sans-serif;font-size:11px;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase}
+.footer .brand em{color:var(--accent);font-style:normal;font-weight:600}
+.footer .cit{font-family:"Source Serif 4",serif;font-size:13px;color:var(--muted);margin-top:8px;font-style:italic}
+
+@media (max-width:900px){
+  .stats,.summary{grid-template-columns:repeat(2,1fr)}
+  .presets{grid-template-columns:1fr}
+  .pca-grid{grid-template-columns:1fr}
+  .slider-group{grid-template-columns:repeat(2,1fr)}
+}
 </style>
 </head>
 <body>
-<div class="header">
-  <h1>ДРЭВА СЦЭНАРЫЯЎ ТРАНЗІТУ ЎЛАДЫ Ў БЕЛАРУСІ</h1>
-  <p>Маніторынг беларускага транзіту · Цэнтр новых ідэй · 2026 · Інтэрактыўная мадэль (n=23)</p>
-</div>
-<div class="legend">
-  <span class="lc1">Кантэкст Расіі</span>
-  <span class="lc2">Трыгер</span>
-  <span class="lc3">Тып транзіту</span>
-  <span class="lc4">Сілавікі</span>
-  <span class="lc5">Знешнія гульцы</span>
-  <span class="lc6">Дэмакратызацыя</span>
-  <span class="lc7">Аўтарытарная сукцэсія</span>
-  <span class="lc8">Гібрыдны рэжым</span>
-  <span class="lc9">Замарожаны</span>
+
+<div class="masthead">
+  <div class="brand">Цэнтр новых ідэй · <em>Маніторынг беларускага транзіту</em></div>
+  <div class="meta">Красавік 2026</div>
 </div>
 
-<div class="preset-row">
-  <button class="pbtn on" onclick="preset('expert')">Медыяна экспертаў</button>
-  <button class="pbtn" onclick="preset('optimist')">Аптыміст</button>
-  <button class="pbtn" onclick="preset('pessimist')">Песіміст</button>
-  <button class="pbtn" onclick="preset('geoshock')">Геашок</button>
-</div>
-<div class="controls-wrap">
-  <div class="ctrl-row" id="cr1"></div>
-  <div class="ctrl-row" id="cr2"></div>
+<section class="hero">
+  <div class="kicker">Дрэва сцэнароў · Эксперыментальная інтэрактыўная мадэль</div>
+  <h1 class="title">Як зменіцца <em>ўлада</em><br>у Беларусі</h1>
+  <p class="dek">Транзіт — пытанне не "ці", а "калі і як". Мадэль разгортвае 14 магчымых сцэнароў з шасці крытычных развілак, ацэненых 29 экспертамі. Рухайце слайдеры або выбірайце пресет — дрэва пералічыцца.</p>
+  <div class="byline"><span>Аналітычная справаздача падрыхтавана Claude Opus 4.6</span> · пад кіраўніцтвам Антона Раднянкова, на падставе апытання 29 экспертаў, кампаратыўнага аналізу (Хантынгтан, O'Доннел/Шміттэр, V-Dem) і PCA-валідацыі</div>
+</section>
+
+<div class="rule"><hr></div>
+
+<section class="stats">
+  <div class="stat"><div class="n"><em>15%</em></div><div class="lbl">Медыяна верагоднасці транзіту да&nbsp;2030</div></div>
+  <div class="stat"><div class="n"><em>60%</em></div><div class="lbl">Да&nbsp;2035 году</div></div>
+  <div class="stat"><div class="n"><em>90%</em></div><div class="lbl">Да&nbsp;2040 году</div></div>
+  <div class="stat"><div class="n"><em>79%</em></div><div class="lbl">Эксперты: здароўе Лукашэнкі — галоўны трыгер</div></div>
+</section>
+
+<div class="section-head">
+  <div class="num">§&nbsp;1</div>
+  <h2>Тры экспертныя пресеты</h2>
+  <div class="sub">Наведзіце, каб убачыць допушчэнні</div>
 </div>
 
-<div class="canvas-wrap"><canvas id="cv"></canvas></div>
-<div class="summary" id="sum"></div>
-<div class="note">
-  <strong>Як чытаць:</strong> Таўшчыня лініі = верагоднасць шляху. Лічба ў вузле = умоўная верагоднасць галіны. <strong>[лічба]</strong> на лістах = кумулятыўная верагоднасць сцэнарыя (здабытак верагоднасцяў ад кораня). Клікніце на вузел, каб разгарнуць/згарнуць галіну. Навядзіце курсор для падрабязнасцей.
+<div class="presets-wrap">
+  <div class="presets" id="presets"></div>
 </div>
-<div class="footer">Маніторынг беларускага транзіту · Цэнтр новых ідэй · 2026 · Заснавана на апытанні 23 экспертаў і кампаратыўным аналізе (Хантынгтан, O'Доннел/Шміттэр, V-Dem)</div>
+
+<div class="section-head">
+  <div class="num">§&nbsp;2</div>
+  <h2>Ацэнка верагоднасцяў</h2>
+  <div class="sub">Слайдеры змяняюць верагонасці сцэнароў дрэва</div>
+</div>
+
+<div class="sliders-wrap">
+  <div class="sliders">
+    <div class="sliders-title"><span>Узровень 1 · Кантэкст Расіі</span><span class="reset" onclick="preset('expert')">↻ Скінуць да медыяны</span></div>
+    <div class="slider-group" id="sg-ctx"></div>
+    <div class="sliders-title" style="margin-top:22px"><span>Узроўні 2–5 · Трыгер, тып транзіту, сілавікі, знешнія сілы</span></div>
+    <div class="slider-group" id="sg-flow"></div>
+  </div>
+</div>
+
+<div class="section-head">
+  <div class="num">§&nbsp;3</div>
+  <h2>Дрэва сцэнароў</h2>
+  <div class="sub">Клік па блоку → картачка з дэталямі · Навядзенне → падсветка шляху</div>
+</div>
+
+<div class="tree-wrap">
+  <div class="tree-legend">
+    <span class="lg-dem">Дэмакратызацыя</span>
+    <span class="lg-aut">Аўтарытарная перадача</span>
+    <span class="lg-hyb">Гібрыдны варыянт</span>
+    <span class="lg-frz">Замарожаны / страта суверэн.</span>
+    <span class="sep">|</span>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted)">таўшчыня лініі&nbsp;·&nbsp;верагоднасць&nbsp;галіны</span>
+  </div>
+  <div class="tree-canvas-wrap">
+    <div class="tree-corner tl"></div>
+    <div class="tree-corner tr"></div>
+    <div class="tree-corner bl"></div>
+    <div class="tree-corner br"></div>
+    <div class="tree-frame-label">FIG. 01 · ДРЭВА СЦЭНАРЫЯЎ · ВА · ВМ</div>
+    <div class="tree-scale">SCALE 1:1 · Σ P = 1.0</div>
+    <canvas id="cv"></canvas>
+  </div>
+</div>
+
+<div class="summary-wrap">
+  <div class="summary" id="sum"></div>
+</div>
+
+<p class="note">
+  <strong>Як чытаць.</strong> Лічба ў вузле — умоўная верагоднасць сцэнарнай галіны. <strong>[лічба]</strong> унізе галіны — кумулятыўная верагоднасць сцэнару (адлік верагоднасцяў ад кораня). Таўшчыня лініі адпавядае вазе шляху. Кожны галіна — канкрэтны сцэнарны вынік з гістарычным аналогам.
+</p>
+
+<div class="section-head">
+  <div class="num">§&nbsp;4</div>
+  <h2>Фактарная валідацыя (PCA)</h2>
+  <div class="sub">4 фактары · 65.8% варыяцыі · n=29</div>
+</div>
+
+<div class="pca-wrap">
+  <p class="pca-intro">
+    PCA на 14 зменных апытання выявіў чатыры незалежныя фактары, якія разам тлумачаць <strong>65.8% варыяцыі</strong>. Кожны фактар адпавядае аднаму або некалькім узроўням дрэва — гэта пацвярджае, што тэарэтычная структура мадэлі не выпадковая, а адлюстроўвае асноўныя восі сцэнарнага поля.
+  </p>
+  <div class="pca-grid">
+    <div class="pca-col">
+      <h3>Нагружанні фактараў <em>·</em> гратка 14&times;4</h3>
+      <div class="heatmap" id="heatmap"></div>
+    </div>
+    <div class="pca-col">
+      <h3>Чатыры восі <em>·</em> інтэрпрэтацыя</h3>
+      <div id="factor-cards"></div>
+      <div class="var-bars">
+        <h4>Тлумачаная варыяцыя <span>Σ 65.8%</span></h4>
+        <div id="var-bars"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="brand">Цэнтр новых ідэй <em>·</em> Маніторынг беларускага транзіту 2026</div>
+  <div class="cit">Красавік 2026 · Падрыхтавана Claude Opus 4.6 пад кіраўніцтвам Антона Раднянкова. Заснавана на апытанні 29 экспертаў, кампаратыўным аналізе (Хантынгтан, O'Доннел/Шміттэр, V-Dem) і PCA-валідацыі (4 фактары, 65.8% варыяцыі)</div>
+</div>
+
 <div id="tip"></div>
 
+<div class="overlay" id="overlay" onclick="if(event.target.id==='overlay')closeCard()">
+  <div class="ocard" id="ocard"></div>
+</div>
+
 <script>
-// ══════════════════════════════════════════════════════════
-// STATE
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+// Транзіт улады — дрэва сцэнароў
+// ══════════════════════════════════════════════════════════════
+
+// ─── Fadct Sliders ────────────────────────────────────────────
 const F = [
-  {id:'rw',label:'Расія аслаблена',v:35,min:5,max:75,row:1,c:'#7c3aed',desc:'Расія занятая вайной або ўнутранымі крызісамі'},
-  {id:'rp',label:'Расія прагматычная',v:45,min:10,max:75,row:1,c:'#7c3aed',desc:'Падтрымае любога геапалітычна лаяльнага'},
-  {id:'ra',label:'Расія агрэсіўная',v:20,min:0,max:0,row:1,c:'#7c3aed',locked:true,desc:'= 100% − астатнія (аўта)'},
-  {id:'ht',label:'Здароўе трыгер',v:60,min:20,max:90,row:2,c:'#f59e0b',desc:'Здароўе Лукашэнкі як асноўны трыгер (83%)'},
-  {id:'mt',label:'Кіраваная перадача',v:65,min:20,max:90,row:2,c:'#6366f1',desc:'Рэжым кантралюе працэс (74%)'},
-  {id:'sl',label:'Сілавікі лаяльныя',v:55,min:10,max:85,row:2,c:'#f472b6',desc:'Сілавікі падтрымліваюць пераемніка'},
-  {id:'di',label:'Дэмсілы ўключаны',v:30,min:5,max:70,row:2,c:'#06b6d4',desc:'Дэмакратычныя сілы ўдзельнічаюць у працэсе'},
-  {id:'wa',label:'Захад актыўны',v:35,min:10,max:75,row:2,c:'#06b6d4',desc:'ЕС/ЗША актыўна ўключаюцца'},
+  {id:'rw',label:'Расія аслаблена',v:35,min:5,max:75,group:'ctx',
+   desc:'Расія занятая вайной або ўнутранымі крызісамі'},
+  {id:'rp',label:'Расія прагматычная',v:45,min:10,max:75,group:'ctx',
+   desc:'Падтрымае любога геапалітычна лаяльнага пераемніка (66% экспертаў)'},
+  {id:'ra',label:'Расія агрэсіўная',v:20,min:0,max:0,group:'ctx',locked:true,
+   desc:'Інтэграцыя, анексія, ваенны ціск — разлічваецца аўтаматычна (100% − астатнія варыянты)'},
+  {id:'ht',label:'Здароўе — трыгер',v:60,min:20,max:90,group:'flow',
+   desc:'Здароўе Лукашэнкі як трыгер транзіту (79% экспертаў)'},
+  {id:'mt',label:'Кіраваная перадача',v:65,min:20,max:90,group:'flow',
+   desc:'Рэжым кантралюе працэс пераемнасці (72% экспертаў)'},
+  {id:'sl',label:'Сілавікі лаяльныя',v:55,min:10,max:85,group:'flow',
+   desc:'Сілавікі падтрымліваюць пераемніка (69%: "далучацца да пераможцы")'},
+  {id:'di',label:'Дэмсілы ўключаны',v:30,min:5,max:70,group:'flow',
+   desc:'Дэмакратычныя сілы ўдзельнічаюць у працэсе (толькі 10% экспертаў кажуць пра лідарскую ролю)'},
+  {id:'wa',label:'Захад актыўны',v:35,min:10,max:75,group:'flow',
+   desc:'ЕС/ЗША уключаюцца ў момант транзіту (31% экспертаў кажуць пра актыўнае прасоўванне)'},
 ];
-const P = {
-  expert:{rw:35,rp:45,ht:60,mt:65,sl:55,di:30,wa:35},
-  optimist:{rw:55,rp:35,ht:65,mt:45,sl:35,di:55,wa:65},
-  pessimist:{rw:12,rp:43,ht:50,mt:75,sl:75,di:10,wa:15},
-  geoshock:{rw:65,rp:25,ht:40,mt:25,sl:25,di:45,wa:65},
-};
-let collapsed = {};
+
+// ─── Presets ──────────────────────────────────────────────────
+const PRESETS = [
+  {id:'expert',name:'Медыяна экспертаў',label:'КАНСЭНСУС · n=29',
+   summary:'Сярэднеўзважаны сцэнары. Расія прагматычная, трыгер — здароўе, кіраваная перадача праз УНС з абмежаванай роляй Захаду.',
+   vals:{rw:35,rp:45,ht:60,mt:65,sl:55,di:30,wa:35}},
+  {id:'optimist',name:'Аптымістычны',label:'АКНО МАГЧЫМАСЦЯЎ',
+   summary:'Расія аслаблена вайной, дэмсілы маюць уплыў, Захад актыўна ўключаны — рамка для пактавага транзіту, аналаг Польшчы-1989.',
+   vals:{rw:55,rp:35,ht:65,mt:45,sl:35,di:55,wa:65}},
+  {id:'pessimist',name:'Песімістычны',label:'ЖОРСТКІ СЦЭНАР',
+   summary:'Расія кантралюе працэс, сілавікі лаяльныя, дэмсілы адрэзаны, Захад пасіўны — узбекістанская "асветніцкая аўтакратыя" або туркменістанская дынастыя.',
+   vals:{rw:12,rp:43,ht:50,mt:75,sl:75,di:10,wa:15}},
+];
 
 function val(id){return F.find(f=>f.id===id).v/100}
-function syncRa(){F.find(f=>f.id==='ra').v=Math.max(0,100-F.find(f=>f.id==='rw').v-F.find(f=>f.id==='rp').v)}
+function syncRa(){
+  const rw=F.find(f=>f.id==='rw').v, rp=F.find(f=>f.id==='rp').v;
+  F.find(f=>f.id==='ra').v = Math.max(0, 100-rw-rp);
+}
 
-// ══════════════════════════════════════════════════════════
-// SLIDERS
-// ══════════════════════════════════════════════════════════
-function buildCtrls(){
-  const r1=document.getElementById('cr1'),r2=document.getElementById('cr2');
-  r1.innerHTML='';r2.innerHTML='';
-  F.forEach(f=>{
-    const row=f.row===1?r1:r2;
-    let h=`<div class="ctrl${f.locked?' locked':''}" style="border-color:${f.c}"><label>${f.label}</label>`;
-    if(!f.locked) h+=`<input type="range" id="sl-${f.id}" min="${f.min}" max="${f.max}" value="${f.v}" oninput="onSl('${f.id}',this.value)">`;
-    h+=`<span class="v" id="v-${f.id}">${f.v}%</span></div>`;
-    row.innerHTML+=h;
+let activePreset = 'expert';
+
+// ─── Build presets UI ─────────────────────────────────────────
+function buildPresets(){
+  const c = document.getElementById('presets');
+  c.innerHTML = PRESETS.map(p => `
+    <div class="preset ${p.id===activePreset?'on':''}" data-id="${p.id}" onclick="preset('${p.id}')">
+      <div class="tag">#${PRESETS.indexOf(p)+1}</div>
+      <div class="label">${p.label}</div>
+      <div class="name">${p.name}</div>
+      <div class="expand">
+        <p>${p.summary}</p>
+        ${Object.entries(p.vals).map(([k,v])=>{
+          const f = F.find(ff=>ff.id===k);
+          return `<div class="pair"><span class="k">${f.label}</span><span class="v">${v}%</span></div>`;
+        }).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ─── Sliders ──────────────────────────────────────────────────
+function buildSliders(){
+  const ctx = document.getElementById('sg-ctx');
+  const flow = document.getElementById('sg-flow');
+  ctx.innerHTML = '';
+  flow.innerHTML = '';
+  F.forEach(f => {
+    const host = f.group==='ctx'?ctx:flow;
+    const el = document.createElement('div');
+    el.className = 'slider';
+    el.innerHTML = `
+      <div class="head">
+        <span class="k">${f.label}</span>
+        <span class="v ${f.locked?'locked':''}" id="v-${f.id}">${f.v}%</span>
+      </div>
+      <div class="desc">${f.desc}</div>
+      <input type="range" id="sl-${f.id}" min="${f.min}" max="${f.max}" value="${f.v}" ${f.locked?'disabled':''}
+        oninput="onSl('${f.id}', this.value)">
+      <div class="axis"><span>${f.min}%</span><span>${f.max}%</span></div>
+    `;
+    host.appendChild(el);
   });
 }
-function onSl(id,v){
-  v=+v; F.find(f=>f.id===id).v=v;
-  if(id==='rw'||id==='rp'){
+
+function onSl(id, v){
+  v = +v;
+  F.find(f=>f.id===id).v = v;
+  if(id==='rw' || id==='rp'){
     const rw=F.find(f=>f.id==='rw').v, rp=F.find(f=>f.id==='rp').v;
-    if(rw+rp>95){F.find(f=>f.id==='rp').v=95-rw;document.getElementById('sl-rp').value=F.find(f=>f.id==='rp').v}
+    if(rw+rp > 95){
+      F.find(f=>f.id==='rp').v = Math.max(10, 95-rw);
+      document.getElementById('sl-rp').value = F.find(f=>f.id==='rp').v;
+    }
     syncRa();
-    F.filter(f=>f.row===1).forEach(f=>document.getElementById('v-'+f.id).textContent=f.v+'%');
+    F.filter(f=>f.group==='ctx').forEach(f=>{
+      document.getElementById('v-'+f.id).textContent = f.v+'%';
+    });
+  } else {
+    document.getElementById('v-'+id).textContent = v+'%';
   }
-  document.getElementById('v-'+id).textContent=F.find(f=>f.id===id).v+'%';
-  document.querySelectorAll('.pbtn').forEach(b=>b.classList.remove('on'));
-  render();
-}
-function preset(n){
-  const p=P[n];if(!p)return;
-  Object.entries(p).forEach(([k,v])=>{F.find(f=>f.id===k).v=v;const s=document.getElementById('sl-'+k);if(s)s.value=v});
-  syncRa();F.forEach(f=>document.getElementById('v-'+f.id).textContent=f.v+'%');
-  document.querySelectorAll('.pbtn').forEach(b=>b.classList.remove('on'));
-  document.querySelector(`[onclick="preset('${n}')"]`).classList.add('on');
+  activePreset = null;
+  document.querySelectorAll('.preset').forEach(p=>p.classList.remove('on'));
   render();
 }
 
-// ══════════════════════════════════════════════════════════
+function preset(name){
+  const p = PRESETS.find(x=>x.id===name);
+  if(!p) return;
+  Object.entries(p.vals).forEach(([k,v])=>{
+    F.find(f=>f.id===k).v = v;
+    const s = document.getElementById('sl-'+k);
+    if(s) s.value = v;
+  });
+  syncRa();
+  F.forEach(f => document.getElementById('v-'+f.id).textContent = f.v+'%');
+  activePreset = name;
+  document.querySelectorAll('.preset').forEach(p=>p.classList.toggle('on', p.dataset.id===name));
+  render();
+}
+
+// ══════════════════════════════════════════════════════════════
 // TREE MODEL
-// 6 levels: Root → Russia → Trigger → Type → Siloviki → External → Outcome
-// ══════════════════════════════════════════════════════════
-const CLR={
-  root:{bg:'#1e293b',bd:'#475569',tx:'#f1f5f9'},
-  ctx:{bg:'#1e1538',bd:'#7c3aed',tx:'#e0d4fc'},
-  trg:{bg:'#2d1f0a',bd:'#f59e0b',tx:'#fef3c7'},
-  typ:{bg:'#1a1847',bd:'#6366f1',tx:'#e0e7ff'},
-  sil:{bg:'#2e1230',bd:'#f472b6',tx:'#fce7f3'},
-  ext:{bg:'#0d2d33',bd:'#06b6d4',tx:'#cffafe'},
-  dem:{bg:'#0a2e1b',bd:'#34d399',tx:'#d1fae5'},
-  aut:{bg:'#2e0a0a',bd:'#ef4444',tx:'#fee2e2'},
-  hyb:{bg:'#2e1a05',bd:'#f59e0b',tx:'#ffedd5'},
-  frz:{bg:'#1a1a1f',bd:'#6b7280',tx:'#d1d5db'},
+// ══════════════════════════════════════════════════════════════
+// Blueprint palette — cyan monochrome on deep navy, single warm accent
+const BP = {
+  bg:'#0b1424',
+  grid:'rgba(86,140,200,0.06)',
+  line:'#3a5580',        // dim connection
+  lineHi:'#7ed0e8',       // hovered path
+  axis:'#1e3355',
+  text:'#cfe0ef',
+  textDim:'#7a8da3',
+  textMute:'#4a5f7e',
+  mark:'#5ac8e8',
+  markHi:'#f5d97e',
+};
+const KINDS = {
+  root:{shape:'square', color:'#cfe0ef', tag:'§0 ROOT'},
+  ctx: {shape:'diamond', color:'#9fc4e8', tag:'§1 CTX'},
+  trg: {shape:'triangle',color:'#d4a54e', tag:'§2 TRG'},
+  typ: {shape:'circle', color:'#a8b8d0', tag:'§3 TYP'},
+  sil: {shape:'hex',    color:'#c88eaa', tag:'§4 SIL'},
+  ext: {shape:'plus',    color:'#5ac8b8', tag:'§5 EXT'},
+  // outcomes — only leaves get the accent ring
+  dem: {shape:'leaf',    color:'#5ac8b8', tag:'→ ДЭМ', kind:'Дэмакратызацыя'},
+  aut: {shape:'leaf',    color:'#e8886a', tag:'→ АЎТ', kind:'Аўтарытарная перадача'},
+  hyb: {shape:'leaf',    color:'#d4a54e', tag:'→ ГІБ', kind:'Гібрыдны зыход'},
+  frz: {shape:'leaf',    color:'#6b7a92', tag:'→ ЗАМ', kind:'Замарожаны'},
 };
 
-function tree(){
-  const rw=val('rw'),rp=val('rp'),ra=Math.max(0,1-rw-rp);
-  const ht=val('ht'),mt=val('mt'),sl=val('sl'),di=val('di'),wa=val('wa');
+function buildTree(){
+  const rw=val('rw'), rp=val('rp'), ra=Math.max(0,1-rw-rp);
+  const ht=val('ht'), mt=val('mt'), sl=val('sl'), di=val('di'), wa=val('wa');
   const ot=1-ht, cl=1-mt, sn=1-sl;
-  const diwa=Math.min(1,di*0.5+wa*0.5); // combined external factor
-  const noext=1-diwa;
+  const diwa = Math.min(1, di*0.5 + wa*0.5);
+  const noext = 1-diwa;
 
-  return {id:'root',l:'БЕЛАРУСЬ',s:'рэжым Лукашэнкі',c:'root',
-    tip:'Персаналісцкі аўтарытарны рэжым.\nВНС як рамка сукцэсіі.\n24% верагоднасць транзіту да 2030,\n54% да 2035, 69% да 2040.',
+  return {id:'root', l:'БЕЛАРУСЬ', s:'рэжым Лукашэнкі', c:'root',
+    tip:'Персаналісцкі аўтарытарны рэжым. ВНС як канстытуцыйная рамка перадачы ўлады. Эксперты: 15% верагоднасць транзіту да 2030, 60% да 2035, 90% да 2040.',
     ch:[
-    // ═══ A: RUSSIA WEAK ═══
-    {id:'A',l:'Расія аслаблена',s:'занятая сабой',p:rw,c:'ctx',
-     tip:'Расія паглынутая вайной, унутранымі\nкрызісамі або значна аслабленая.\nНазвана перадумовай №1 экспертамі.',
-     ch:[
-      {id:'A1',l:'Здароўе Лукашэнкі',s:'83% — трыгер №1',p:ht,c:'trg',
-       tip:'Хвароба, недзеяздольнасць або смерць.\nАналогія: Узбекістан-2016.',
+      // A — Расія аслаблена
+      {id:'A', l:'Расія аслаблена', s:'занята сабой', p:rw, c:'ctx',
+       tip:'Расія паглынутая вайной, унутранымі крызісамі або значна аслабленая. Перадумова №1 для дэмакратычнага транзіту паводле экспертаў.',
        ch:[
-        {id:'A1a',l:'Кіраваная перадача',s:'74% экспертаў',p:mt,c:'typ',
-         tip:'Рэжым кантралюе працэс.\nМадэль: Казахстан-2019.',
+        {id:'A1', l:'Здароўе — трыгер', s:'трыгер №1 (79%)', p:ht, c:'trg',
+         tip:'Хвароба, недзеяздольнасць або смерць Лукашэнкі. Аналагія: Узбекістан-2016, Туркменістан-2022.',
          ch:[
-          {id:'A1a1',l:'Сілавікі лаяльныя',s:'падтрымліваюць пераемніка',p:sl,c:'sil',
-           tip:'Сілавы блок кансалідавана\nпадтрымлівае абранага пераемніка.\n65% экспертаў: «далучацца да пераможцы».',
+          {id:'A1a', l:'Кіраваная перадача', s:'72% экспертаў', p:mt, c:'typ',
+           tip:'Рэжым кантралюе працэс, эліты кансалідаваныя. Мадэль: Казахстан-2019.',
            ch:[
-            {id:'A1a1x',l:'Дэмсілы + Захад\nуключаны',s:'канкурэнцыя',p:diwa,c:'ext',
-             tip:'Дэмакратычныя сілы ўдзельнічаюць,\nЗахад актыўна падтрымлівае.\n30% + 35% экспертаў.',
-             ch:[{id:'o1',l:'Пактаваная\nдэмакратызацыя',s:'Польшча-89',c:'dem',
-                  tip:'Найлепшы зыход: перамовы + рэформы.\nПатрабуе кампрамісу ўсіх бакоў.\nАналогія: Круглы стол 1989.'}]},
-            {id:'A1a1y',l:'Дэмсілы выключаны\nЗахад пасіўны',s:'39%+35%',p:noext,c:'ext',
-             tip:'Дэмсілы не дапушчаны (39%),\nЗахад заняты сваімі справамі (35%).\nНіхто не аспрэчвае сукцэсію.',
-             ch:[{id:'o2',l:'Аўтарытарная\nсукцэсія',s:'Узбекістан-16',c:'aut',
-                  tip:'Новы кіраўнік з сістэмы.\nКасметычныя рэформы без дэмакратызацыі.\nАналогія: Мірзіёеў.'}]}
+            {id:'A1a1', l:'Сілавікі лаяльныя', s:'адзіны блок', p:sl, c:'sil',
+             tip:'Сілавы блок (КДБ, армія, АМАП) кансалідавана падтрымлівае пераемніка. 69% экспертаў: сілавікі «далучацца да пераможцы».',
+             ch:[
+              {id:'A1a1x', l:'Дэмсілы + Захад уключаны', s:'канкурэнцыя сіл', p:diwa, c:'ext',
+               tip:'Дэмакратычныя сілы маюць канал камунікацыі з унутранымі актарамі, Захад прапаноўвае «пакет для дэмакратызацыі».',
+               ch:[{id:'o1', l:'Пактаваная дэмакратызацыя', s:'Польшча-1989', c:'dem',
+                    analog:'Польшча · Круглы стол, 1989',
+                    desc:'Перамовы паміж рэфарматарамі ў рэжыме і дэмакратычнай супольнасцю. Кампраміс: інстытуцыйная пераемнасць у абмен на рэформы.',
+                    risk:'Патрабуе арганізаванай апазіцыі ўнутры краіны і рэфарматараў у сістэме. Для Беларусі — найлепшы зыход, але самая патрабавальная канфігурацыя.',
+                    warn:'Сёння адсутнічае пасля разгрому грамадзянскай супольнасці ў 2020 г.'}]
+              },
+              {id:'A1a1y', l:'Дэмсілы выключаны · Захад пасіўны', s:'ніхто не аспрэчвае', p:noext, c:'ext',
+               tip:'Дэмсілы адрэзаныя (45% экспертаў чакаюць менавіта гэтага), Захад зноў рэагуе запаздала.',
+               ch:[{id:'o2', l:'Аўтарытарная перадача', s:'Узбекістан-2016', c:'aut',
+                    analog:'Узбекістан · Мірзіёеў, 2016',
+                    desc:'«Асветніцкая аўтакратыя»: новы лідар з сістэмы, касметычныя рэформы (адкрыццё эканомікі, змякчэнне рыторыкі) без дэмакратызацыі.',
+                    risk:'Самы верагодны зыход пры адсутнасці знешняга ціску. Можа выглядаць як лібералізацыя — але структурна сістэма застаецца аўтарытарнай.'}]
+              }
+            ]},
+            {id:'A1a2', l:'Сілавікі раскалоліся', s:'канкурэнцыя фракцый', p:sn, c:'sil',
+             tip:'КДБ, армія, АМАП канкуруюць за кантроль над пераемнасцю. Мяцеж Вагнера-2023 — прэцэдэнт неўмяшання.',
+             ch:[{id:'o3', l:'Элітная канкурэнцыя', s:'«Казахстан-2022»', c:'hyb',
+                  analog:'Казахстан · Студзень 2022',
+                  desc:'Фракцыі змагаюцца за ўладу. Такаеў выкарыстаў крызіс, каб вызваліцца ад клана Назарбаева. Вынік залежыць ад таго, хто першы кансалідуе сілу.',
+                  risk:'Кароткі перыяд канкурэнцыі можа адкрыць акно для дэмсіл — але таксама можа скончыцца рэстаўрацыяй аўтарытарызму.'}]
+            }
           ]},
-          {id:'A1a2',l:'Сілавікі раскалоліся',s:'канкурэнцыя фракцый',p:sn,c:'sil',
-           tip:'КДБ, армія, АМАП — розныя інтарэсы.\nАналогія: Казахстан-2022 (Масімаў).\nМяцеж Вагнера — сілавікі не ўмяшаліся.',
+          {id:'A1b', l:'Калапс · хаос', s:'рэжым не ўтрымлівае', p:cl, c:'typ',
+           tip:'Кіраваная перадача правальваецца. Эліты не кансалідаваныя. Аналагія: Румынія-1989.',
            ch:[
-            {id:'o3',l:'Элітная\nканкурэнцыя',s:'«Казахстан-22»',c:'hyb',
-             tip:'Групоўкі змагаюцца за ўладу.\nВынік залежыць ад таго, хто мацнейшы.\nМожа адкрыць акно для дэмсіл.'}
+            {id:'A1b1', l:'Сілавікі нейтральныя', s:'«чакаюць і глядзяць»', p:0.55, c:'sil',
+             tip:'Як падчас мяцяжу Вагнера — сілавікі не ўмешваюцца. Вакуум улады.',
+             ch:[{id:'o4', l:'Рэвалюцыйны транзіт', s:'Румынія-1989', c:'hyb',
+                  analog:'Румынія · Снежань 1989',
+                  desc:'Хто першы запоўніць палітычны вакуум — атрымае ўладу. Высокія рызыкі гвалту і непрадказальнасці.',
+                  risk:'V-Dem: большасць падобных транзітаў вядзе да новага аўтарытарызму, а не да дэмакратыі.'}]
+            },
+            {id:'A1b2', l:'Сілавікі рэпрэсуюць', s:'жорсткі адказ', p:0.45, c:'sil',
+             tip:'Сілавы блок падаўляе хаос. Вяртанне да жорсткага аўтарытарызму.',
+             ch:[{id:'o5', l:'Рэстаўрацыя аўтарытарызму', s:'«новы гарант»', c:'aut',
+                  analog:'Егіпет · Сісі, 2013',
+                  desc:'Сілавік бярэ ўладу «дзеля стабільнасці». Масавыя рэпрэсіі для кансалідацыі.',
+                  risk:'Усталёўвае яшчэ больш закрыты рэжым на дзесяцігоддзі.'}]
+            }
           ]}
         ]},
-        {id:'A1b',l:'Калапс / хаос',s:'рэжым не ўтрымлівае',p:cl,c:'typ',
-         tip:'Кіраваная перадача не ўдаецца.\nЭліты і сілавікі не кансалідаваныя.\nАналогія: Румынія-1989.',
-         ch:[
-          {id:'A1b1',l:'Сілавікі нейтральныя',s:'«чакаюць і глядзяць»',p:0.55,c:'sil',
-           tip:'Мяцеж Вагнера — сілавікі выбралі\nне ўмешвацца. Магчымая мадэль\nдля беларускіх сілавікоў.',
-           ch:[
-            {id:'o4',l:'Рэвалюцыйны\nтранзіт',s:'Румынія-89',c:'hyb',
-             tip:'Высокія рызыкі. Хто першы запоўніць\nвакуум — той атрымае ўладу.\nV-Dem: часцей за ўсё → новы аўтарытарызм.'}
-          ]},
-          {id:'A1b2',l:'Сілавікі рэпрэсуюць',s:'жорсткі адказ',p:0.45,c:'sil',
-           tip:'Сілавы блок падаўляе хаос.\nВяртанне да аўтарытарнага парадку.\nАналогія: Тыбет-2008, Іран-2009.',
-           ch:[
-            {id:'o5',l:'Рэстаўрацыя\nаўтарытарызму',s:'новы гарант',c:'aut',
-             tip:'Сілавік бярэ ўладу «для стабільнасці».\nАналогія: Сісі ў Егіпце.'}
-          ]}
-        ]}
+        {id:'A2', l:'Іншы трыгер', s:'эканоміка · пратэсты', p:ot, c:'trg',
+         tip:'Эканамічны крызіс, масавыя пратэсты, змова эліт. Сумарна эксперты далі гэтым трыгерам менш адказаў, чым аднаму толькі здароўю.',
+         ch:[{id:'o6', l:'Нявызначаны зыход', s:'залежыць ад кантэксту', c:'hyb',
+              analog:'Кыргызстан · 2005, 2010',
+              desc:'Розныя трыгеры — розная дынаміка. Вынік непрадказальны.',
+              risk:'Каляровыя рэвалюцыі часта даюць «ратацыю элітаў без дэмакратызацыі».'}]
+        }
       ]},
-      {id:'A2',l:'Іншы трыгер',s:'эканоміка / пратэсты / змова',p:ot,c:'trg',
-       tip:'Эканамічны крызіс (13%), пратэсты (9%),\nзмова эліт, знешні ціск.',
+      // B — Расія прагматычная
+      {id:'B', l:'Расія прагматычная', s:'падтрымае лаяльнага', p:rp, c:'ctx',
+       tip:'Расія не кіруе напрамую, але падтрымае геапалітычна лаяльнага пераемніка. 66% экспертаў — самы папулярны адказ.',
        ch:[
-        {id:'o6',l:'Нявызначаны\nзыход',s:'залежыць ад кантэксту',c:'hyb',
-         tip:'Розныя трыгеры → розная дынаміка.\nВынік непрадказальны.'}
-      ]}
-    ]},
-    // ═══ B: RUSSIA PRAGMATIC ═══
-    {id:'B',l:'Расія прагматычная',s:'падтрымае лаяльнага (65%)',p:rp,c:'ctx',
-     tip:'Расія не кіруе напрамую, але\nпадтрымае геапалітычна лаяльнага.\n65% экспертаў — самы папулярны адказ.',
-     ch:[
-      {id:'B1',l:'Здароўе Лукашэнкі',s:'+ кантроль РФ',p:ht,c:'trg',
-       tip:'Той жа трыгер, але Расія\nўважліва сочыць і ўплывае.',
-       ch:[
-        {id:'B1a',l:'Кіраваная + РФ арбітр',s:'сумеснае рашэнне',p:mt,c:'typ',
-         tip:'Расія дамаўляецца з элітамі\nпра прыймальнага кандыдата.',
+        {id:'B1', l:'Здароўе + кантроль РФ', s:'той жа трыгер, арбітр', p:ht, c:'trg',
+         tip:'Той жа трыгер, але Крэмль уважліва сочыць за выбарам пераемніка.',
          ch:[
-          {id:'B1a1',l:'Сілавікі лаяльныя',s:'адзіны блок',p:sl,c:'sil',
-           tip:'Сілавікі падпарадкоўваюцца\nузгодненаму пераемніку.',
+          {id:'B1a', l:'Кіраваная + РФ арбітр', s:'узгодненае рашэнне', p:mt, c:'typ',
+           tip:'Расія дамаўляецца з беларускімі элітамі пра прыймальнага кандыдата.',
            ch:[
-            {id:'B1a1x',l:'Захад уключаецца',s:'канкурэнцыя ўплываў',p:wa,c:'ext',
-             tip:'ЕС/ЗША спрабуюць уплываць —\nканкурэнцыя з РФ за ўплыў.',
-             ch:[{id:'o7',l:'Гібрыд:\nпаміж РФ і ЕС',s:'нестабільны',c:'hyb',
-                  tip:'Краіна паміж двума цэнтрамі сілы.\nМалдова як аналогія.\nМожа эвалюцыянаваць у любы бок.'}]},
-            {id:'B1a1y',l:'Захад пасіўны',s:'35% экспертаў',p:1-wa,c:'ext',
-             tip:'Захад заняты сваімі справамі.\nРасія — адзіны знешні гулец.',
-             ch:[{id:'o8',l:'Прарасійскі\nгарант',s:'Туркменістан-22',c:'aut',
-                  tip:'Лаяльны РФ пераемнік.\nСтабільны аўтарытарызм.\nАналогія: Сердар Бярдымухамедаў.'}]}
+            {id:'B1a1', l:'Сілавікі лаяльныя', s:'адзіны блок', p:sl, c:'sil',
+             tip:'Сілавікі падпарадкоўваюцца ўзгодненаму пераемніку.',
+             ch:[
+              {id:'B1a1x', l:'Захад уключаецца', s:'канкурэнцыя ўплываў', p:wa, c:'ext',
+               tip:'ЕС/ЗША спрабуюць уплываць — канкурэнцыя з РФ за ўплыў.',
+               ch:[{id:'o7', l:'Гібрыд паміж РФ і ЕС', s:'Малдова-тып', c:'hyb',
+                    analog:'Малдова · 2009–2020',
+                    desc:'Краіна паміж двума цэнтрамі сілы. Можа эвалюцыянаваць у любы бок — залежыць ад унутранай дынамікі і геапалітыкі.',
+                    risk:'Нестабільны: кожныя выбары могуць перавярнуць курс. Патрабуе працаздольных інстытутаў.'}]
+              },
+              {id:'B1a1y', l:'Захад пасіўны', s:'«мы занятыя»', p:1-wa, c:'ext',
+               tip:'Захад заняты сваімі справамі. Расія — адзіны знешні гулец.',
+               ch:[{id:'o8', l:'Прарасійскі гарант', s:'Туркменістан-2022', c:'aut',
+                    analog:'Туркменістан · Бярдымухамедаў, 2022',
+                    desc:'Дынастычная або кланавая перадача. Пераемнік лаяльны Маскве. Стабільны аўтарытарызм з захаваннем фасаду.',
+                    risk:'Паглыбляе эканамічную і палітычную залежнасць ад РФ. Абмяжоўвае прастору для манеўру на дзесяцігоддзі.'}]
+              }
+            ]},
+            {id:'B1a2', l:'Сілавікі раскалоліся', s:'+ РФ уключаецца', p:sn, c:'sil',
+             tip:'Фракцыі канкуруюць, РФ вымушана ўмешвацца напрамую.',
+             ch:[{id:'o9', l:'РФ навязвае парадак', s:'АДКБ-мадэль', c:'aut',
+                  analog:'Казахстан · АДКБ, студзень 2022',
+                  desc:'Расія ўводзіць войскі або дыпламатычны ціск і ўсталёўвае лаяльны рэжым. Хуткая стабілізацыя праз знешнюю сілу.',
+                  risk:'Прэцэдэнт: АДКБ у KZ за 24 гадзіны. Для Беларусі — максімальная страта суб\'ектнасці пры захаванні фармальнай незалежнасці.'}]
+            }
           ]},
-          {id:'B1a2',l:'Сілавікі раскалоліся',s:'+ РФ уключаецца',p:sn,c:'sil',
-           tip:'Фракцыі канкуруюць, РФ\nвымушана ўмешвацца напрамую.\nАналогія: АДКБ у Казахстане-2022.',
-           ch:[
-            {id:'o9',l:'РФ навязвае\nпарадак',s:'АДКБ-мадэль',c:'aut',
-             tip:'Расія ўводзіць войскі / ціск\nі ўсталёўвае лаяльны рэжым.\nПрэцэдэнт: студзень 2022 KZ.'}
-          ]}
+          {id:'B1b', l:'Элітны калапс', s:'РФ не ўтрымлівае', p:cl, c:'typ',
+           tip:'Кіраваная перадача правальваецца нават пры ўмяшанні РФ.',
+           ch:[{id:'o10', l:'Крызіс з інтэрвенцыяй РФ', s:'паглыбленне інтэграцыі', c:'aut',
+                analog:'Казахстан · Студзень 2022 (+АДКБ)',
+                desc:'РФ выкарыстоўвае хаос для паглыблення інтэграцыі. Ваенная або паліцэйская прысутнасць.',
+                risk:'Самы небяспечны сцэнар для беларускага суверэнітэту.'}]
+          }
         ]},
-        {id:'B1b',l:'Элітны калапс',s:'РФ не ўтрымлівае',p:cl,c:'typ',
-         tip:'Кіраваная перадача правальваецца\nnават пры ўмяшанні Расіі.',
-         ch:[
-          {id:'o10',l:'Крызіс з\nінтэрвенцыяй РФ',s:'найгорш для суверэн.',c:'aut',
-           tip:'РФ выкарыстоўвае хаос для\nпаглыблення інтэграцыі.\nНебяспечны сцэнар для незалежнасці.'}
-        ]}
+        {id:'B2', l:'Рашэнне Лукашэнкі + Крэмль', s:'запланаваны транзіт', p:ot, c:'trg',
+         tip:'Лукашэнка і Крэмль дамаўляюцца пра «мяккі» пераход. 31% экспертаў — рашэнне самога Лукашэнкі як трыгер.',
+         ch:[{id:'o11', l:'«Мяккая лібералізацыя»', s:'чырвоная лінія!', c:'frz',
+              analog:'Беларусь · 2008–2010 (мікра-адлігі)',
+              desc:'Касметычныя рэформы без рэальных зменаў. Дэпалітызуе грамадства, паслабляе знешні ціск.',
+              risk:'ЧЫРВОНАЯ ЛІНІЯ экспертаў: выглядае як транзіт, але не з\'яўляецца ім. Найгорш — дэзактывуе міжнародны ціск на гады.'}]
+        }
       ]},
-      {id:'B2',l:'Рашэнне Лукашэнкі\n+ Крэмль',s:'запланаваны транзіт',p:ot,c:'trg',
-       tip:'Лукашэнка і Крэмль дамаўляюцца\nпра «мяккі» пераход.\n39% — рашэнне Лукашэнкі як трыгер.',
+      // C — Расія агрэсіўная
+      {id:'C', l:'Расія агрэсіўная', s:'інтэграцыя · анексія', p:ra, c:'ctx',
+       tip:'Найгоршы знешні кантэкст. Інкарпарацыя, акупацыя, «перамога Расіі + Вялікая ўгода».',
        ch:[
-        {id:'o11',l:'«Мяккая\nлібералізацыя»',s:'чырвоная лінія!',c:'frz',
-         tip:'ЧЫРВОНАЯ ЛІНІЯ экспертаў:\nкасметычныя рэформы без рэальных зменаў.\nДэпалітызуе грамадства.\nНайгорш: выглядае як транзіт, але не з\'яўляецца ім.'}
+        {id:'C1', l:'Глыбокая інтэграцыя', s:'«саюзная дзяржава+»', p:0.55, c:'trg',
+         tip:'Фармальна незалежная, але рэальна кантраляваная РФ.',
+         ch:[{id:'o12', l:'Замарожаны аўтарытарызм', s:'залежнасць ад РФ', c:'frz',
+              analog:'Прыднястроўе · 1992–цяпер',
+              desc:'Ніякіх структурных зменаў. Поўная эканамічная і палітычная залежнасць.',
+              risk:'Транзіт замарожаны на дзесяцігоддзі. Унутраная палітыка зведзена да кіравання фасадам.'}]
+        },
+        {id:'C2', l:'Фактычная анексія', s:'ліквідацыя суверэнітэту', p:0.25, c:'trg',
+         tip:'Поўная страта дзяржаўнасці. Названа сярод найгоршых сцэнароў у адказах экспертаў (10 адказаў пра «поўную інтэграцыю/перамогу РФ»).',
+         ch:[{id:'o13', l:'Страта суверэнітэту', s:'транзіт немагчымы', c:'frz',
+              analog:'Крым · 2014',
+              desc:'Тэрыторыя паглынутая. Палітычны транзіт немагчымы ў прынцыпе.',
+              risk:'Самы цёмны сцэнар. Адрэзае ўсе іншыя варыянты на пакаленне.'}]
+        },
+        {id:'C3', l:'Вайна на тэрыторыі', s:'НАТА–РФ', p:0.20, c:'trg',
+         tip:'Недаацэнены фактар (названы экспертамі сярод забытых). Мілітарны сцэнар.',
+         ch:[{id:'o14', l:'Радыкальная нявызначанасць', s:'усе варыянты адкрытыя', c:'hyb',
+              analog:'Украіна · 2022–цяпер',
+              desc:'Непрадказальны зыход. Вайна можа адкрыць акно для любога сцэнарыя — ад эміграцыі элітаў да знешне навязанага рэжыму.',
+              risk:'Самая высокая энтрапія. Усе іншыя сцэнарыі становяцца ўмоўнымі.'}]
+        }
       ]}
-    ]},
-    // ═══ C: RUSSIA AGGRESSIVE ═══
-    {id:'C',l:'Расія агрэсіўная',s:'інтэграцыя / анэксія',p:ra,c:'ctx',
-     tip:'Чырвоная лінія экспертаў.\nІнкарпарацыя, акупацыя, моцная РФ.\n«Перамога Расіі + Вялікая ўгода».',
-     ch:[
-      {id:'C1',l:'Глыбокая інтэграцыя',s:'«саюзная дзяржава+»',p:0.55,c:'trg',
-       tip:'Фармальна незалежная,\nале рэальна кантраляваная РФ.',
-       ch:[
-        {id:'o12',l:'Замарожаны\nаўтарытарызм',s:'залежнасць ад РФ',c:'frz',
-         tip:'Ніякіх зменаў. Поўная залежнасць.\nТранзіт замарожаны на дзесяцігоддзі.'}
-      ]},
-      {id:'C2',l:'Фактычная анэксія',s:'ліквідацыя суверэнітэту',p:0.25,c:'trg',
-       tip:'Поўная страта дзяржаўнасці.\nНазвана найгоршым сцэнарам.',
-       ch:[
-        {id:'o13',l:'Страта\nсуверэнітэту',s:'немагчымы транзіт',c:'frz',
-         tip:'Транзіт немагчымы.\nСамы цёмны сцэнар.'}
-      ]},
-      {id:'C3',l:'Вайна на тэрыторыі',s:'НАТА–РФ · недаацэнены',p:0.20,c:'trg',
-       tip:'Недаацэнены фактар\n(названы экспертамі).\nМілітарны сцэнар.',
-       ch:[
-        {id:'o14',l:'Радыкальная\nнявызначанасць',s:'усе сцэнарыі',c:'hyb',
-         tip:'Непрадказальны зыход.\nМожа адкрыць акно для любога сцэнарыя.'}
-      ]}
-    ]}
-  ]};
+    ]};
 }
 
-// ══════════════════════════════════════════════════════════
-// LAYOUT ENGINE
-// ══════════════════════════════════════════════════════════
-const NW=142,NH=54,LH=62,PX=6,PY=24;
-let nodes=[],edges=[],hoverNode=null;
+// ══════════════════════════════════════════════════════════════
+// LAYOUT
+// ══════════════════════════════════════════════════════════════
+// Blueprint layout — vertical, markers on intersections, labels beside.
+// Each level has a fixed Y; branches travel as orthogonal rails.
+// Layout works in UNIT space (leaf index, depth), then scales to actual canvas size.
+let NW = 158;                   // horizontal slot per leaf (recomputed from canvas width)
+let ROW_Y = [40, 140, 240, 340, 440, 540, 660]; // (recomputed from canvas height)
+let nodes=[], edges=[], hoverNode=null, hoverPath=new Set();
 
 function leaves(n){
-  if(collapsed[n.id])return 1;
-  if(!n.ch||!n.ch.length)return 1;
+  if(!n.ch || !n.ch.length) return 1;
   return n.ch.reduce((s,c)=>s+leaves(c),0);
 }
-function layout(n,depth,left){
-  const lc=leaves(n);
-  const w=lc*(NW+PX)-PX;
-  n._d=depth; n._y=depth*(NH+PY)+10;
-  n._leaves=lc; n._w=w;
-  if(collapsed[n.id]||!n.ch||!n.ch.length){
-    n._x=left+w/2; return;
+function layout(n, depth, left){
+  const lc = leaves(n);
+  const w = lc * NW;
+  n._d = depth;
+  n._y = ROW_Y[Math.min(depth, ROW_Y.length-1)];
+  n._w = w;
+  if(!n.ch || !n.ch.length){
+    n._x = left + w/2; return;
   }
-  let cx=left;
-  n.ch.forEach(c=>{layout(c,depth+1,cx);cx+=c._w+PX});
-  n._x=(n.ch[0]._x+n.ch[n.ch.length-1]._x)/2;
+  let cx = left;
+  n.ch.forEach(c => { layout(c, depth+1, cx); cx += c._w; });
+  n._x = (n.ch[0]._x + n.ch[n.ch.length-1]._x) / 2;
 }
-function cumul(n,pc){
-  n._cum=pc*(n.p||1);
-  if(!collapsed[n.id]&&n.ch)n.ch.forEach(c=>cumul(c,n._cum));
+function cumul(n, pc){
+  n._cum = pc * (n.p ?? 1);
+  if(n.ch) n.ch.forEach(c => { c._parent = n; cumul(c, n._cum); });
 }
 function collect(n){
   nodes.push(n);
-  if(!collapsed[n.id]&&n.ch){
-    n.ch.forEach(c=>{edges.push({from:n,to:c});collect(c)});
+  if(n.ch) n.ch.forEach(c => { edges.push({from:n, to:c}); collect(c); });
+}
+function isLeaf(n){ return !n.ch || !n.ch.length; }
+
+// ══════════════════════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════════════════════
+const cv = document.getElementById('cv');
+const ctx2 = cv.getContext('2d');
+const dpr = window.devicePixelRatio || 1;
+
+function buildHoverPath(n){
+  hoverPath = new Set();
+  if(!n) return;
+  let cur = n;
+  while(cur){ hoverPath.add(cur.id); cur = cur._parent; }
+}
+
+function drawMarker(ctx, x, y, kind, r, filled, color){
+  ctx.beginPath();
+  if(kind.shape === 'diamond'){
+    ctx.moveTo(x,y-r); ctx.lineTo(x+r,y); ctx.lineTo(x,y+r); ctx.lineTo(x-r,y); ctx.closePath();
+  } else if(kind.shape === 'triangle'){
+    ctx.moveTo(x,y-r); ctx.lineTo(x+r*0.9,y+r*0.7); ctx.lineTo(x-r*0.9,y+r*0.7); ctx.closePath();
+  } else if(kind.shape === 'square'){
+    ctx.rect(x-r,y-r,r*2,r*2);
+  } else if(kind.shape === 'hex'){
+    for(let i=0;i<6;i++){const a=Math.PI/3*i - Math.PI/2; const px=x+Math.cos(a)*r, py=y+Math.sin(a)*r; if(i===0)ctx.moveTo(px,py); else ctx.lineTo(px,py);}
+    ctx.closePath();
+  } else if(kind.shape === 'plus'){
+    const t = r*0.35;
+    ctx.rect(x-t,y-r,t*2,r*2); ctx.rect(x-r,y-t,r*2,t*2);
+  } else if(kind.shape === 'leaf'){
+    // outer ring + inner dot
+    ctx.arc(x,y,r+2,0,Math.PI*2);
+  } else {
+    ctx.arc(x,y,r,0,Math.PI*2);
+  }
+  if(filled){ ctx.fillStyle = color; ctx.fill(); }
+  ctx.strokeStyle = color; ctx.lineWidth = 1.2; ctx.stroke();
+  if(kind.shape === 'leaf'){
+    ctx.beginPath(); ctx.arc(x,y,2,0,Math.PI*2); ctx.fillStyle = color; ctx.fill();
   }
 }
 
-// ══════════════════════════════════════════════════════════
-// CANVAS RENDERER
-// ══════════════════════════════════════════════════════════
-const cv=document.getElementById('cv');
-const ctx2=cv.getContext('2d');
-const dpr=window.devicePixelRatio||1;
-
-function isLeaf(n){return collapsed[n.id]||!n.ch||!n.ch.length}
-function outType(n){
-  // find leaf types under this node
-  if(isLeaf(n))return n.c;
-  let types=new Set();
-  function walk(nd){if(isLeaf(nd)){types.add(nd.c)}else if(nd.ch)nd.ch.forEach(walk)}
-  walk(n); return types.size===1?[...types][0]:'mixed';
+function wrapText(ctx, text, maxWidth){
+  const words = text.split(' ');
+  const lines = []; let line = '';
+  words.forEach(w => {
+    const test = line ? line + ' ' + w : w;
+    if(ctx.measureText(test).width > maxWidth && line){
+      lines.push(line); line = w;
+    } else line = test;
+  });
+  if(line) lines.push(line);
+  return lines;
 }
 
 function render(){
-  const t=tree();
-  layout(t,0,10);
-  cumul(t,1);
-  nodes=[];edges=[];collect(t);
+  const t = buildTree();
 
-  const maxX=Math.max(...nodes.map(n=>n._x+NW/2))+20;
-  const maxY=Math.max(...nodes.map(n=>n._y))+NH+30;
-  const W=Math.max(1380,maxX),H=maxY;
-  cv.style.width=W+'px';cv.style.height=H+'px';
-  cv.width=W*dpr;cv.height=H*dpr;
+  // ── Measure available space & compute adaptive metrics ──
+  const wrap = cv.parentElement;
+  const cssW = Math.max(900, wrap.clientWidth);
+  const cssH = Math.max(460, wrap.clientHeight);
+
+  // Build tree first at unit scale to count leaves / depth
+  // We'll compute NW from (cssW - sideMargin)/totalLeaves.
+  const totalLeaves = leaves(t);
+  // recompute layout metrics
+  const SIDE = 14;
+  const LEFT_LABEL = 94;   // space for §0 КОРАНЬ … labels
+  NW = Math.max(72, (cssW - SIDE*2 - LEFT_LABEL) / totalLeaves);
+
+  // Depth 0..5 + leaf row → 7 rows. Distribute vertically in available height,
+  // leaving top padding for frame label and bottom for badge.
+  const TOP = 46, BOTTOM = 56;
+  const rows = 7;
+  const step = (cssH - TOP - BOTTOM) / (rows - 1);
+  ROW_Y = [];
+  for(let i=0;i<rows;i++) ROW_Y.push(TOP + step*i);
+
+  layout(t, 0, SIDE + LEFT_LABEL);
+  cumul(t, 1);
+  nodes = []; edges = [];
+  collect(t);
+
+  const W = cssW;
+  const H = cssH;
+
+  cv.style.width = W+'px';
+  cv.style.height = H+'px';
+  cv.width = W*dpr; cv.height = H*dpr;
   ctx2.setTransform(dpr,0,0,dpr,0,0);
   ctx2.clearRect(0,0,W,H);
 
-  // Draw edges
-  edges.forEach(e=>{
-    const x1=e.from._x, y1=e.from._y+NH;
-    const x2=e.to._x, y2=e.to._y;
-    const p=e.to.p||0.5;
-    const cum=e.to._cum||0;
-
-    // Highlight path on hover
-    let highlight=false;
-    if(hoverNode){
-      let nd=hoverNode;
-      while(nd){if(nd.id===e.to.id){highlight=true;break}nd=nd._parent}
-      if(!highlight){nd=e.to;while(nd){if(nd.id===hoverNode.id){highlight=true;break}nd=nd._parent}}
-    }
-
-    const lw=Math.max(1.5, p*8);
+  // ── axis rails (horizontal guides for each row) ──
+  ctx2.strokeStyle = BP.axis;
+  ctx2.lineWidth = 0.5;
+  ctx2.setLineDash([2,4]);
+  const depthsUsed = [...new Set(nodes.map(n=>n._d))].sort((a,b)=>a-b);
+  depthsUsed.forEach(d => {
+    const y = ROW_Y[d];
     ctx2.beginPath();
-    const my=(y1+y2)/2;
-    ctx2.moveTo(x1,y1);ctx2.bezierCurveTo(x1,my,x2,my,x2,y2);
-    const c=CLR[e.to.c]||CLR.root;
-    ctx2.strokeStyle=highlight?c.bd:'#2a3050';
-    ctx2.lineWidth=highlight?lw+1:lw;
-    ctx2.globalAlpha=highlight?0.9:Math.max(0.15,p*0.6);
+    ctx2.moveTo(SIDE, y); ctx2.lineTo(W-SIDE, y);
     ctx2.stroke();
-    ctx2.globalAlpha=1;
+  });
+  ctx2.setLineDash([]);
+
+  // level labels on the left
+  const levelNames = ['§0 КОРАНЬ','§1 КАНТЭКСТ РФ','§2 ТРЫГЕР','§3 ТЫП ТРАНЗІТУ','§4 СІЛАВІКІ','§5 ЗНЕШНІЯ','→ ЗЫХОД'];
+  ctx2.font = '500 9px "JetBrains Mono",monospace';
+  ctx2.fillStyle = BP.textMute;
+  ctx2.textAlign = 'left';
+  depthsUsed.forEach(d => {
+    ctx2.fillText(levelNames[d] || ('§'+d), SIDE+4, ROW_Y[d]-8);
   });
 
-  // Draw nodes
-  nodes.forEach(n=>{
-    const c=CLR[n.c]||CLR.root;
-    const x=n._x-NW/2, y=n._y;
-    const leaf=isLeaf(n);
-    const h=leaf&&!n.ch?NH+12:NH;
-    const isHover=hoverNode&&hoverNode.id===n.id;
+  // ── edges: orthogonal rails ──
+  edges.forEach(e => {
+    const x1=e.from._x, y1=e.from._y;
+    const x2=e.to._x, y2=e.to._y;
+    const p = e.to.p ?? 0.5;
+    const onPath = hoverPath.has(e.to.id);
+    const dim = hoverNode && !onPath;
+    const lw = Math.max(0.8, p*5.5);
 
-    // Shadow on hover
-    if(isHover){
-      ctx2.shadowColor=c.bd;ctx2.shadowBlur=15;
+    ctx2.strokeStyle = onPath ? BP.lineHi : BP.line;
+    ctx2.lineWidth = onPath ? lw+1 : lw;
+    ctx2.globalAlpha = onPath ? 1 : (dim ? 0.18 : 0.55);
+
+    // orthogonal: vertical down, horizontal, vertical down
+    const midY = y1 + (y2-y1)*0.5;
+    ctx2.beginPath();
+    ctx2.moveTo(x1, y1 + 10);
+    ctx2.lineTo(x1, midY);
+    ctx2.lineTo(x2, midY);
+    ctx2.lineTo(x2, y2 - 10);
+    ctx2.stroke();
+
+    // probability micro-label at midpoint of horizontal segment (for non-trivial branches)
+    if(p < 1 && Math.abs(x2-x1) > 30 && !dim){
+      const mx = (x1+x2)/2;
+      ctx2.globalAlpha = onPath ? 0.95 : 0.45;
+      ctx2.fillStyle = BP.bg;
+      ctx2.fillRect(mx-14, midY-7, 28, 14);
+      ctx2.font = '500 9px "JetBrains Mono",monospace';
+      ctx2.fillStyle = onPath ? BP.lineHi : BP.textDim;
+      ctx2.textAlign = 'center'; ctx2.textBaseline = 'middle';
+      ctx2.fillText(Math.round(p*100)+'%', mx, midY);
+      ctx2.textBaseline = 'alphabetic';
     }
+    ctx2.globalAlpha = 1;
+  });
 
-    // Rect
-    ctx2.fillStyle=c.bg;
-    ctx2.strokeStyle=isHover?'#fff':c.bd;
-    ctx2.lineWidth=isHover?2.5:1.5;
-    roundRect(ctx2,x,y,NW,h,7);
-    ctx2.fill();ctx2.stroke();
-    ctx2.shadowColor='transparent';ctx2.shadowBlur=0;
+  // ── nodes: markers + labels ──
+  nodes.forEach(n => {
+    const kind = KINDS[n.c] || KINDS.root;
+    const leaf = isLeaf(n);
+    const onPath = hoverPath.has(n.id);
+    const dim = hoverNode && !onPath;
+    const color = onPath ? BP.markHi : kind.color;
 
-    // Label
-    ctx2.fillStyle=c.tx;
-    ctx2.font='600 10.5px "Segoe UI",system-ui,sans-serif';
-    ctx2.textAlign='center';
-    const lines=n.l.split('\n');
-    lines.forEach((ln,i)=>{ctx2.fillText(ln,n._x,y+14+i*12,NW-10)});
+    ctx2.globalAlpha = dim ? 0.25 : 1;
 
-    // Prob badge
-    if(n.p!==undefined&&n.p!==null){
-      const pct=Math.round(n.p*100);
-      const py=y+(lines.length>1?36:28);
-      ctx2.font='700 12px "Segoe UI",system-ui,sans-serif';
-      ctx2.fillStyle=pct>=50?'#34d399':pct>=25?'#f59e0b':'#ef4444';
-      ctx2.fillText(pct+'%',n._x,py);
-      // mini bar
-      const bw=NW-16,bx=x+8,by=py+3;
-      ctx2.fillStyle='#1e2235';roundRect(ctx2,bx,by,bw,3,1.5);ctx2.fill();
-      ctx2.fillStyle=c.bd;roundRect(ctx2,bx,by,bw*n.p,3,1.5);ctx2.fill();
+    // marker
+    const r = leaf ? 7 : 6;
+    if(onPath){
+      ctx2.shadowColor = BP.lineHi; ctx2.shadowBlur = 14;
     }
+    drawMarker(ctx2, n._x, n._y, kind, r, true, color);
+    ctx2.shadowBlur = 0; ctx2.shadowColor='transparent';
 
-    // Cumulative on leaves
-    if(leaf&&n._cum!==undefined&&!n.ch){
-      const cpct=(n._cum*100).toFixed(1);
-      ctx2.font='700 10px "Segoe UI",system-ui,sans-serif';
-      ctx2.fillStyle=c.bd;
-      ctx2.fillText('['+cpct+'%]',n._x,y+h-4);
-    }
+    // label above the marker (for non-leaves) or below (for leaves)
+    const labelAbove = !leaf;
+    const ly = labelAbove ? n._y - 18 : n._y + 22;
+    const maxW = NW - 16;
 
-    // Sub text
+    ctx2.textAlign = 'center';
+    ctx2.fillStyle = onPath ? BP.text : (leaf ? kind.color : BP.text);
+    ctx2.font = leaf
+      ? '600 11.5px "Inter",sans-serif'
+      : '600 11px "Inter",sans-serif';
+
+    const lines = wrapText(ctx2, n.l.replace(/\n/g,' '), maxW);
+    lines.forEach((ln, i) => {
+      ctx2.fillText(ln, n._x, ly + i*13 - (labelAbove ? (lines.length-1)*13 : 0));
+    });
+
+    // sub-label / analog
     if(n.s){
-      const sy=leaf&&!n.ch?y+h-16:y+NH-5;
-      ctx2.font='400 8.5px "Segoe UI",system-ui,sans-serif';
-      ctx2.fillStyle='#6b7394';
-      ctx2.fillText(n.s.substring(0,26),n._x,sy,NW-8);
+      const subY = labelAbove
+        ? ly - lines.length*13 + 1
+        : ly + lines.length*13;
+      ctx2.font = '400 9.5px "JetBrains Mono",monospace';
+      ctx2.fillStyle = BP.textMute;
+      ctx2.fillText(n.s, n._x, subY);
     }
 
-    // Collapse indicator
-    if(n.ch&&n.ch.length){
-      const ind=collapsed[n.id]?'▸':'';
-      if(ind){
-        ctx2.font='700 11px sans-serif';ctx2.fillStyle='#f59e0b';
-        ctx2.textAlign='right';ctx2.fillText(ind,x+NW-5,y+13);ctx2.textAlign='center';
-      }
+    // probability readout right next to the marker
+    if(n.p != null && n.p < 1){
+      ctx2.font = '600 10px "JetBrains Mono",monospace';
+      ctx2.fillStyle = onPath ? BP.lineHi : BP.textDim;
+      ctx2.textAlign = 'left';
+      ctx2.fillText('p=' + n.p.toFixed(2), n._x + r + 6, n._y + 3);
     }
 
-    // Store parent refs for path highlighting
-    if(n.ch&&!collapsed[n.id])n.ch.forEach(c=>{c._parent=n});
+    // leaf: cumulative probability badge under sub-label
+    if(leaf){
+      const cpct = (n._cum*100).toFixed(1);
+      const subY = ly + lines.length*13 + (n.s?13:0) + 6;
+      // draw badge
+      ctx2.font = '700 11px "JetBrains Mono",monospace';
+      const txt = '[Σ ' + cpct + '%]';
+      const w = ctx2.measureText(txt).width + 12;
+      ctx2.strokeStyle = color; ctx2.lineWidth = 1;
+      ctx2.strokeRect(n._x - w/2, subY, w, 16);
+      ctx2.fillStyle = onPath ? BP.markHi : color;
+      ctx2.textAlign = 'center'; ctx2.textBaseline = 'middle';
+      ctx2.fillText(txt, n._x, subY + 8);
+      ctx2.textBaseline = 'alphabetic';
+
+      // kind tag on the left of the marker
+      ctx2.font = '500 8.5px "JetBrains Mono",monospace';
+      ctx2.fillStyle = BP.textMute;
+      ctx2.textAlign = 'right';
+      ctx2.fillText(kind.tag, n._x - r - 6, n._y + 3);
+    } else if(n.c === 'root'){
+      ctx2.font = '500 8.5px "JetBrains Mono",monospace';
+      ctx2.fillStyle = BP.textMute;
+      ctx2.textAlign = 'left';
+      ctx2.fillText(kind.tag, n._x + r + 6, n._y + 3);
+    }
+
+    ctx2.globalAlpha = 1;
   });
-
-  updateSummary(t);
 }
 
-function roundRect(c,x,y,w,h,r){
-  c.beginPath();c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);
-  c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);c.lineTo(x+r,y+h);
-  c.quadraticCurveTo(x,y+h,x,y+h-r);c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath();
-}
-
-// ══════════════════════════════════════════════════════════
-// INTERACTION — hover & click
-// ══════════════════════════════════════════════════════════
-function findNode(mx,my){
-  for(let i=nodes.length-1;i>=0;i--){
-    const n=nodes[i];
-    const x=n._x-NW/2,y=n._y;
-    const leaf=isLeaf(n);
-    const h=leaf&&!n.ch?NH+12:NH;
-    if(mx>=x&&mx<=x+NW&&my>=y&&my<=y+h)return n;
+// ══════════════════════════════════════════════════════════════
+// INTERACTION
+// ══════════════════════════════════════════════════════════════
+function findNode(mx, my){
+  // markers are points → use generous rect around them
+  let best=null, bestDist=Infinity;
+  for(const n of nodes){
+    const dx = mx - n._x, dy = my - n._y;
+    const rx = NW/2 - 4;
+    const ry = 40;
+    if(Math.abs(dx) <= rx && Math.abs(dy) <= ry){
+      // prefer nearest marker center
+      const d = dx*dx + dy*dy;
+      if(d < bestDist){ bestDist = d; best = n; }
+    }
   }
-  return null;
+  return best;
 }
 
-cv.addEventListener('mousemove',e=>{
-  const r=cv.getBoundingClientRect();
-  const mx=e.clientX-r.left, my=e.clientY-r.top;
-  const n=findNode(mx,my);
-  if(n!==hoverNode){hoverNode=n;render();showTip(e,n)}
-  if(n)moveTip(e);
-});
-cv.addEventListener('mouseleave',()=>{hoverNode=null;render();hideTip()});
-cv.addEventListener('click',e=>{
-  const r=cv.getBoundingClientRect();
-  const n=findNode(e.clientX-r.left,e.clientY-r.top);
-  if(n&&n.ch&&n.ch.length){
-    collapsed[n.id]=!collapsed[n.id];
+cv.addEventListener('mousemove', e => {
+  const r = cv.getBoundingClientRect();
+  const mx = (e.clientX - r.left) * (cv.width/dpr/r.width);
+  const my = (e.clientY - r.top) * (cv.height/dpr/r.height);
+  const n = findNode(mx, my);
+  if(n !== hoverNode){
+    hoverNode = n;
+    buildHoverPath(n);
     render();
+    showTip(e, n);
+    cv.style.cursor = n ? (isLeaf(n) ? 'pointer' : 'help') : 'default';
   }
+  if(n) moveTip(e);
+});
+cv.addEventListener('mouseleave', () => {
+  hoverNode = null; hoverPath = new Set();
+  render(); hideTip();
+});
+cv.addEventListener('click', e => {
+  const r = cv.getBoundingClientRect();
+  const mx = (e.clientX - r.left) * (cv.width/dpr/r.width);
+  const my = (e.clientY - r.top) * (cv.height/dpr/r.height);
+  const n = findNode(mx, my);
+  if(n && isLeaf(n)) openCard(n);
 });
 
-const tip=document.getElementById('tip');
-function showTip(e,n){
-  if(!n){hideTip();return}
-  let html=`<b>${n.l.replace(/\n/g,' ')}</b><br>`;
-  if(n.tip)html+=n.tip.replace(/\n/g,'<br>')+'<br>';
-  if(n.p!=null)html+=`<br>Верагоднасць галіны: <b>${Math.round(n.p*100)}%</b>`;
-  if(n._cum!=null&&isLeaf(n))html+=`<br>Кумулятыўная: <b>${(n._cum*100).toFixed(1)}%</b>`;
-  if(n.ch&&n.ch.length)html+=`<br><span style="color:var(--dim);font-size:0.7rem">Клік: ${collapsed[n.id]?'разгарнуць':'згарнуць'}</span>`;
-  tip.innerHTML=html;tip.style.opacity='1';
+// ─── Tooltip ──────────────────────────────────────────────────
+const tip = document.getElementById('tip');
+function showTip(e, n){
+  if(!n){ hideTip(); return; }
+  let html = `<b>${n.l.replace(/\n/g,' ')}</b>`;
+  if(n.tip) html += n.tip;
+  else if(n.desc) html += n.desc;
+  if(n.p != null) html += `<div class="t-p">Верагоднасць галіны: ${Math.round(n.p*100)}%</div>`;
+  if(n._cum != null && isLeaf(n)) html += `<div class="t-p">Кумулятыўна: ${(n._cum*100).toFixed(1)}%</div>`;
+  if(isLeaf(n)) html += `<div class="t-hint">Клік → падрабязнасці і аналаг</div>`;
+  tip.innerHTML = html;
+  tip.style.opacity = '1';
 }
-function moveTip(e){tip.style.left=Math.min(e.clientX+12,window.innerWidth-290)+'px';tip.style.top=(e.clientY+16)+'px'}
-function hideTip(){tip.style.opacity='0'}
+function moveTip(e){
+  const w = 300;
+  tip.style.left = Math.min(e.clientX+14, window.innerWidth-w-10)+'px';
+  tip.style.top = Math.min(e.clientY+16, window.innerHeight-140)+'px';
+}
+function hideTip(){ tip.style.opacity = '0'; }
 
-// ══════════════════════════════════════════════════════════
+// ─── Leaf card ────────────────────────────────────────────────
+function openCard(n){
+  const ov = document.getElementById('overlay');
+  const card = document.getElementById('ocard');
+  const kind = {dem:'Дэмакратызацыя', aut:'Аўтарытарная перадача', hyb:'Гібрыдны зыход', frz:'Замарожаны / страта суверэн.'}[n.c] || '';
+  // build path
+  const path = [];
+  let cur = n;
+  while(cur){ path.unshift(cur); cur = cur._parent; }
+  const pathHtml = path.map((p,i) => i===path.length-1
+    ? `<span class="seg" style="color:var(--accent);font-weight:600">${p.l.replace(/\n/g,' ')}</span>`
+    : `<span class="seg">${p.l.replace(/\n/g,' ')}</span>`
+  ).join('<span class="arr">→</span>');
+
+  card.innerHTML = `
+    <button class="ocard-close" onclick="closeCard()">✕</button>
+    <div class="ocard-head">
+      <div class="ocard-kind k-${n.c}">${kind}</div>
+      <div class="ocard-title">${n.l.replace(/\n/g,' ')}</div>
+      <div class="ocard-sub">${n.s || ''}</div>
+    </div>
+    <div class="ocard-path">${pathHtml}</div>
+    <div class="ocard-body">
+      <div class="ocard-row cum">
+        <div class="rl">Кумул. верагоднасць</div>
+        <div class="rv">${(n._cum*100).toFixed(1)}%</div>
+      </div>
+      ${n.desc ? `<div class="ocard-row">
+        <div class="rl">Дынаміка</div>
+        <div class="rv">${n.desc}</div>
+      </div>` : ''}
+      ${n.risk ? `<div class="ocard-row">
+        <div class="rl">Ацэнка</div>
+        <div class="rv">${n.risk}</div>
+      </div>` : ''}
+      ${n.warn ? `<div class="ocard-row">
+        <div class="rl" style="color:var(--accent)">Пасцярога</div>
+        <div class="rv" style="color:var(--accent-ink);font-style:italic">${n.warn}</div>
+      </div>` : ''}
+      ${n.analog ? `<div class="ocard-analog">
+        <div class="al">Гістарычны аналаг</div>
+        <div class="at">${n.analog}</div>
+      </div>` : ''}
+    </div>
+  `;
+  ov.classList.add('on');
+  document.body.style.overflow = 'hidden';
+}
+function closeCard(){
+  document.getElementById('overlay').classList.remove('on');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeCard(); });
+
+// ══════════════════════════════════════════════════════════════
 // SUMMARY
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
 function allLeaves(n){
-  if(!n.ch||!n.ch.length||collapsed[n.id])return[n];
-  return n.ch.flatMap(c=>allLeaves(c));
+  if(!n.ch || !n.ch.length) return [n];
+  return n.ch.flatMap(c => allLeaves(c));
 }
-function updateSummary(t){
-  const lv=allLeaves(t);
-  const agg={dem:0,aut:0,hyb:0,frz:0};
-  lv.forEach(n=>{const k=agg.hasOwnProperty(n.c)?n.c:'hyb';agg[k]+=(n._cum||0)});
-  const tot=Object.values(agg).reduce((s,v)=>s+v,0)||1;
-  const labels={dem:'Дэмакратызацыя',aut:'Аўтарытарная\nсукцэсія',hyb:'Гібрыдны',frz:'Замарожаны'};
-  const colors={dem:'var(--green)',aut:'var(--red)',hyb:'var(--orange)',frz:'#6b7280'};
-  let h='';
-  Object.entries(agg).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{
-    h+=`<div class="scard"><div class="pct" style="color:${colors[k]}">${(v/tot*100).toFixed(1)}%</div><div class="lbl">${labels[k].replace('\n','<br>')}</div></div>`;
+function updateSummary(){
+  const t = buildTree();
+  cumul(t, 1);
+  const lv = allLeaves(t);
+  const agg = {dem:0, aut:0, hyb:0, frz:0};
+  lv.forEach(n => { if(agg.hasOwnProperty(n.c)) agg[n.c] += n._cum; });
+  const tot = Object.values(agg).reduce((s,v)=>s+v, 0) || 1;
+  const labels = {
+    dem:{strong:'Дэмакратызацыя', sub:'пактаваны пераход, круглы стол'},
+    aut:{strong:'Аўтарытарная перадача', sub:'новы кіраўнік з сістэмы'},
+    hyb:{strong:'Гібрыдны / нявызначаны', sub:'канкурэнцыя, хаос, малдавізацыя'},
+    frz:{strong:'Замарожаны', sub:'страта суверэнітэту, інтэграцыя'}
+  };
+  let html = '';
+  ['dem','aut','hyb','frz'].forEach(k => {
+    const v = agg[k];
+    html += `<div class="sc sc-${k}">
+      <div class="n">${(v/tot*100).toFixed(1)}%</div>
+      <div class="lbl"><strong>${labels[k].strong}</strong>${labels[k].sub}</div>
+    </div>`;
   });
-  document.getElementById('sum').innerHTML=h;
+  document.getElementById('sum').innerHTML = html;
 }
 
-// Init
-buildCtrls();render();
+const _origRender = render;
+render = function(){ _origRender(); updateSummary(); };
+
+// ══════════════════════════════════════════════════════════════
+// PCA PANEL
+// ══════════════════════════════════════════════════════════════
+const LOADINGS = [
+  {var:'Верагодн. 2030',       f1:0.375,f2:-0.050,f3:-0.044,f4:-0.044},
+  {var:'Верагодн. 2035',       f1:0.314,f2:0.084,f3:0.416,f4:0.257},
+  {var:'Верагодн. 2040',       f1:0.163,f2:0.324,f3:0.350,f4:0.178},
+  {var:'Поўная перадача',      f1:0.376,f2:-0.249,f3:-0.013,f4:0.241},
+  {var:'Частковая перадача',   f1:-0.112,f2:-0.234,f3:0.368,f4:0.477},
+  {var:'Некіраваная',          f1:0.141,f2:0.449,f3:-0.067,f4:-0.401},
+  {var:'Попыт грамадства',     f1:0.052,f2:0.562,f3:0.010,f4:0.086},
+  {var:'Попыт Захаду',         f1:-0.110,f2:0.333,f3:-0.169,f4:0.288},
+  {var:'Попыт эліт',           f1:-0.244,f2:0.336,f3:0.249,f4:0.157},
+  {var:'Рэфарматары',          f1:0.144,f2:-0.132,f3:0.099,f4:-0.272},
+  {var:'Вайна магчыма',        f1:-0.006,f2:-0.060,f3:0.556,f4:-0.330},
+  {var:'Пуцін магчыма',        f1:-0.235,f2:-0.061,f3:0.392,f4:-0.384},
+  {var:'Лука непазбежна',      f1:0.436,f2:0.028,f3:0.008,f4:-0.070},
+  {var:'Пуцін непазбежна',     f1:0.469,f2:0.053,f3:0.006,f4:-0.065},
+];
+const FACTORS = [
+  {id:'F1',cls:'f1',name:'Тэмп кадравага транзіту',pct:24.2,desc:'Сыход лідараў, поўная перадача, ацэнкі непазбежнасці.',map:'Кантэкст Расіі · Трыгер'},
+  {id:'F2',cls:'f2',name:'Грамадскі ціск знізу',pct:17.8,desc:'Попыт грамадства, хаатычнасць, некіраванасць.',map:'Тып транзіту · Дэмсілы'},
+  {id:'F3',cls:'f3',name:'Геапалітычны шок',pct:13.1,desc:'Вайна, змена Пуціна, геашок на даляглядзе.',map:'Кантэкст Расіі'},
+  {id:'F4',cls:'f4',name:'Кіраванасць працэсу',pct:10.7,desc:'Кіраваная перадача vs хаос, сілавікі.',map:'Сілавікі · Захад'},
+];
+
+function colorFor(v){
+  // diverging red-white-blue, muted editorial
+  if(v > 0.4) return {bg:'#4a8d9a',fg:'#fff'};
+  if(v > 0.25) return {bg:'#6ba8b5',fg:'#0b1424'};
+  if(v > 0.1) return {bg:'#9fc8d0',fg:'#0b1424'};
+  if(v > -0.1) return {bg:'#1a2842',fg:'#7a8da3'};
+  if(v > -0.25) return {bg:'#8a6c5c',fg:'#fff'};
+  return {bg:'#b25a44',fg:'#fff'};
+}
+
+function buildHeatmap(){
+  const h = document.getElementById('heatmap');
+  let html = '<div class="hdr"></div>';
+  ['F1','F2','F3','F4'].forEach(f => html += `<div class="hdr">${f}</div>`);
+  LOADINGS.forEach(row => {
+    html += `<div class="row-lbl">${row.var}</div>`;
+    ['f1','f2','f3','f4'].forEach(f => {
+      const v = row[f];
+      const c = colorFor(v);
+      html += `<div class="cell" style="background:${c.bg};color:${c.fg}">${v>=0?'+':''}${v.toFixed(2)}</div>`;
+    });
+  });
+  h.innerHTML = html;
+}
+
+function buildFactorCards(){
+  const c = document.getElementById('factor-cards');
+  c.innerHTML = FACTORS.map(f => `
+    <div class="factor-card ${f.cls}">
+      <div class="fh">
+        <div class="fn">${f.id} · ${f.name}</div>
+        <div class="fp">${f.pct}%</div>
+      </div>
+      <div class="fd">${f.desc}</div>
+      <div class="fm">↔ ${f.map}</div>
+    </div>
+  `).join('');
+  const max = Math.max(...FACTORS.map(f=>f.pct));
+  document.getElementById('var-bars').innerHTML = FACTORS.map(f => `
+    <div class="var-row ${f.cls}">
+      <div class="k">${f.id}</div>
+      <div class="track"><div class="fill" style="width:${(f.pct/max*100).toFixed(1)}%">${f.pct}%</div></div>
+      <div class="v">${f.pct}%</div>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════
+buildPresets();
+buildSliders();
+buildHeatmap();
+buildFactorCards();
+render();
+
 </script>
 </body>
 </html>
