@@ -136,7 +136,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 .lg-frz::before{background:#6b7a92 !important}
 .tree-legend .sep{color:#3a4a66;margin:0 4px}
 
-.tree-canvas-wrap{background:#0b1424;border:1px solid #1a2842;overflow:hidden;position:relative;height:calc(100vh - 220px);min-height:520px;max-height:780px;
+.tree-canvas-wrap{background:#0b1424;border:1px solid #1a2842;overflow:hidden;position:relative;height:calc(100vh - 200px);min-height:600px;max-height:880px;
   background-image:
     linear-gradient(rgba(86,140,200,0.06) 1px,transparent 1px),
     linear-gradient(90deg,rgba(86,140,200,0.06) 1px,transparent 1px);
@@ -165,44 +165,6 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 
 .note{max-width:1240px;margin:24px auto 0;padding:0 32px;font-family:"Source Serif 4",serif;font-size:14px;line-height:1.55;color:var(--ink-2);font-style:italic;max-width:880px}
 .note strong{font-style:normal;color:var(--ink);font-weight:600}
-
-/* ─── PCA panel ─── */
-.pca-wrap{max-width:1240px;margin:56px auto 0;padding:0 32px}
-.pca-intro{font-family:"Source Serif 4",serif;font-size:15px;line-height:1.55;color:var(--ink-2);max-width:760px;margin-bottom:22px}
-.pca-intro strong{color:var(--ink);font-weight:600}
-.pca-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:34px;align-items:start}
-.pca-col h3{font-family:"Inter",sans-serif;font-size:11px;letter-spacing:0.18em;color:var(--muted);text-transform:uppercase;margin-bottom:14px;font-weight:700}
-.pca-col h3 em{color:var(--accent);font-style:normal}
-.heatmap{display:grid;grid-template-columns:1.7fr repeat(4,1fr);background:var(--paper);border:1px solid var(--rule);font-family:"Inter",sans-serif}
-.heatmap .hdr,.heatmap .row-lbl,.heatmap .cell{padding:6px 8px;font-size:10.5px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:center}
-.heatmap .hdr{font-weight:700;background:#132340;color:var(--ink-2);letter-spacing:0.1em;font-size:10px}
-.heatmap .row-lbl{justify-content:flex-start;font-size:11px;color:var(--ink);border-right:1px solid var(--rule);background:#0f1b2f}
-.heatmap .cell{font-family:"JetBrains Mono",monospace;font-weight:500;font-size:10.5px}
-.heatmap>div:nth-last-child(-n+5){border-bottom:none}
-
-.factor-card{background:var(--paper);border:1px solid var(--rule);padding:14px 16px;margin-bottom:10px;border-left:3px solid var(--rule)}
-.factor-card.f1{border-left-color:#9fc4e8}
-.factor-card.f2{border-left-color:#5ac8b8}
-.factor-card.f3{border-left-color:#d4a54e}
-.factor-card.f4{border-left-color:#7ed0e8}
-.factor-card .fh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
-.factor-card .fn{font-family:"Source Serif 4",serif;font-size:17px;font-weight:500}
-.factor-card .fp{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted);font-weight:500}
-.factor-card .fd{font-family:"Inter",sans-serif;font-size:12.5px;color:var(--ink-2);line-height:1.5;margin-top:2px}
-.factor-card .fm{font-family:"Inter",sans-serif;font-size:11px;color:var(--muted);margin-top:6px;font-style:italic}
-
-.var-bars{background:var(--paper);border:1px solid var(--rule);padding:14px 16px;margin-top:12px}
-.var-bars h4{font-family:"Inter",sans-serif;font-size:10.5px;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase;margin-bottom:12px;font-weight:700;display:flex;justify-content:space-between}
-.var-bars h4 span{color:var(--accent);font-family:"JetBrains Mono",monospace;letter-spacing:0.02em;text-transform:none}
-.var-row{display:grid;grid-template-columns:28px 1fr 44px;gap:10px;align-items:center;margin-bottom:6px;font-family:"Inter",sans-serif;font-size:11.5px}
-.var-row .k{font-weight:700;color:var(--ink-2);font-family:"JetBrains Mono",monospace;font-size:11px}
-.var-row .track{background:#132340;height:14px;position:relative}
-.var-row .fill{height:100%;display:flex;align-items:center;padding:0 6px;color:#fff;font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:500}
-.var-row.f1 .fill{background:#9fc4e8}
-.var-row.f2 .fill{background:#5ac8b8}
-.var-row.f3 .fill{background:#d4a54e}
-.var-row.f4 .fill{background:#7ed0e8}
-.var-row .v{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);text-align:right}
 
 /* ─── overlay (leaf detail card) ─── */
 .overlay{position:fixed;inset:0;background:rgba(26,26,26,0.55);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity .2s;backdrop-filter:blur(2px)}
@@ -246,7 +208,6 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 @media (max-width:900px){
   .stats,.summary{grid-template-columns:repeat(2,1fr)}
   .presets{grid-template-columns:1fr}
-  .pca-grid{grid-template-columns:1fr}
   .slider-group{grid-template-columns:repeat(2,1fr)}
 }
 </style>
@@ -262,7 +223,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
   <div class="kicker">Дрэва сцэнароў · Эксперыментальная інтэрактыўная мадэль</div>
   <h1 class="title">Як зменіцца <em>ўлада</em><br>у Беларусі</h1>
   <p class="dek">Транзіт — пытанне не "ці", а "калі і як". Мадэль разгортвае 14 магчымых сцэнароў з шасці крытычных развілак, ацэненых 29 экспертамі. Рухайце слайдеры або выбірайце пресет — дрэва пералічыцца.</p>
-  <div class="byline"><span>Аналітычная справаздача падрыхтавана Claude Opus 4.6</span> · пад кіраўніцтвам Антона Раднянкова, на падставе апытання 29 экспертаў, кампаратыўнага аналізу (Хантынгтан, O'Доннел/Шміттэр, V-Dem) і PCA-валідацыі</div>
+  <div class="byline"><span>Аналітычная справаздача падрыхтавана Claude Opus 4.6</span> · пад кіраўніцтвам Антона Раднянкова, на падставе апытання 29 экспертаў і кампаратыўнага аналізу (Хантынгтан, O'Доннел/Шміттэр, V-Dem)</div>
 </section>
 
 <div class="rule"><hr></div>
@@ -307,10 +268,10 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 
 <div class="tree-wrap">
   <div class="tree-legend">
-    <span class="lg-dem">Дэмакратызацыя</span>
-    <span class="lg-aut">Аўтарытарная перадача</span>
-    <span class="lg-hyb">Гібрыдны варыянт</span>
-    <span class="lg-frz">Замарожаны / страта суверэн.</span>
+    <span class="lg-dem">Акно дэмакратызацыі</span>
+    <span class="lg-aut">Аўтарытарная пераемнасць</span>
+    <span class="lg-hyb">Геапалітычны гібрыд</span>
+    <span class="lg-frz">Замарожванне / страта суб'ектнасці</span>
     <span class="sep">|</span>
     <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted)">таўшчыня лініі&nbsp;·&nbsp;верагоднасць&nbsp;галіны</span>
   </div>
@@ -333,35 +294,9 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
   <strong>Як чытаць.</strong> Лічба ў вузле — умоўная верагоднасць сцэнарнай галіны. <strong>[лічба]</strong> унізе галіны — кумулятыўная верагоднасць сцэнару (адлік верагоднасцяў ад кораня). Таўшчыня лініі адпавядае вазе шляху. Кожны галіна — канкрэтны сцэнарны вынік з гістарычным аналогам.
 </p>
 
-<div class="section-head">
-  <div class="num">§&nbsp;4</div>
-  <h2>Фактарная валідацыя (PCA)</h2>
-  <div class="sub">4 фактары · 65.8% варыяцыі · n=29</div>
-</div>
-
-<div class="pca-wrap">
-  <p class="pca-intro">
-    PCA на 14 зменных апытання выявіў чатыры незалежныя фактары, якія разам тлумачаць <strong>65.8% варыяцыі</strong>. Кожны фактар адпавядае аднаму або некалькім узроўням дрэва — гэта пацвярджае, што тэарэтычная структура мадэлі не выпадковая, а адлюстроўвае асноўныя восі сцэнарнага поля.
-  </p>
-  <div class="pca-grid">
-    <div class="pca-col">
-      <h3>Нагружанні фактараў <em>·</em> гратка 14&times;4</h3>
-      <div class="heatmap" id="heatmap"></div>
-    </div>
-    <div class="pca-col">
-      <h3>Чатыры восі <em>·</em> інтэрпрэтацыя</h3>
-      <div id="factor-cards"></div>
-      <div class="var-bars">
-        <h4>Тлумачаная варыяцыя <span>Σ 65.8%</span></h4>
-        <div id="var-bars"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="footer">
   <div class="brand">Цэнтр новых ідэй <em>·</em> Маніторынг беларускага транзіту 2026</div>
-  <div class="cit">Красавік 2026 · Падрыхтавана Claude Opus 4.6 пад кіраўніцтвам Антона Раднянкова. Заснавана на апытанні 29 экспертаў, кампаратыўным аналізе (Хантынгтан, O'Доннел/Шміттэр, V-Dem) і PCA-валідацыі (4 фактары, 65.8% варыяцыі)</div>
+  <div class="cit">Красавік 2026 · Падрыхтавана Claude Opus 4.6 пад кіраўніцтвам Антона Раднянкова. Заснавана на апытанні 29 экспертаў і кампаратыўным аналізе (Хантынгтан, O'Доннел/Шміттэр, V-Dem)</div>
 </div>
 
 <div id="tip"></div>
@@ -519,10 +454,10 @@ const KINDS = {
   sil: {shape:'hex',    color:'#c88eaa', tag:'§4 SIL'},
   ext: {shape:'plus',    color:'#5ac8b8', tag:'§5 EXT'},
   // outcomes — only leaves get the accent ring
-  dem: {shape:'leaf',    color:'#5ac8b8', tag:'→ ДЭМ', kind:'Дэмакратызацыя'},
-  aut: {shape:'leaf',    color:'#e8886a', tag:'→ АЎТ', kind:'Аўтарытарная перадача'},
-  hyb: {shape:'leaf',    color:'#d4a54e', tag:'→ ГІБ', kind:'Гібрыдны зыход'},
-  frz: {shape:'leaf',    color:'#6b7a92', tag:'→ ЗАМ', kind:'Замарожаны'},
+  dem: {shape:'leaf',    color:'#5ac8b8', tag:'→ ДЭМ', kind:'Акно дэмакратызацыі'},
+  aut: {shape:'leaf',    color:'#e8886a', tag:'→ АЎТ', kind:'Аўтарытарная пераемнасць'},
+  hyb: {shape:'leaf',    color:'#d4a54e', tag:'→ ГІБ', kind:'Геапалітычны гібрыд'},
+  frz: {shape:'leaf',    color:'#6b7a92', tag:'→ ЗАМ', kind:"Замарожванне / страта суб'ектнасці"},
 };
 
 function buildTree(){
@@ -553,7 +488,7 @@ function buildTree(){
                ch:[{id:'o1', l:'Пактаваная дэмакратызацыя', s:'Польшча-1989', c:'dem',
                     analog:'Польшча · Круглы стол, 1989',
                     desc:'Перамовы паміж рэфарматарамі ў рэжыме і дэмакратычнай супольнасцю. Кампраміс: інстытуцыйная пераемнасць у абмен на рэформы.',
-                    risk:'Патрабуе арганізаванай апазіцыі ўнутры краіны і рэфарматараў у сістэме. Для Беларусі — найлепшы зыход, але самая патрабавальная канфігурацыя.',
+                    risk:'Патрабуе арганізаванай апазіцыі ўнутры краіны і рэфарматараў у сістэме. Для Беларусі — найлепшы вынік, але самая патрабавальная канфігурацыя.',
                     warn:'Сёння адсутнічае пасля разгрому грамадзянскай супольнасці ў 2020 г.'}]
               },
               {id:'A1a1y', l:'Дэмсілы выключаны · Захад пасіўны', s:'ніхто не аспрэчвае', p:noext, c:'ext',
@@ -561,7 +496,7 @@ function buildTree(){
                ch:[{id:'o2', l:'Аўтарытарная перадача', s:'Узбекістан-2016', c:'aut',
                     analog:'Узбекістан · Мірзіёеў, 2016',
                     desc:'«Асветніцкая аўтакратыя»: новы лідар з сістэмы, касметычныя рэформы (адкрыццё эканомікі, змякчэнне рыторыкі) без дэмакратызацыі.',
-                    risk:'Самы верагодны зыход пры адсутнасці знешняга ціску. Можа выглядаць як лібералізацыя — але структурна сістэма застаецца аўтарытарнай.'}]
+                    risk:'Самы верагодны вынік пры адсутнасці знешняга ціску. Можа выглядаць як лібералізацыя — але структурна сістэма застаецца аўтарытарнай.'}]
               }
             ]},
             {id:'A1a2', l:'Сілавікі раскалоліся', s:'канкурэнцыя фракцый', p:sn, c:'sil',
@@ -593,7 +528,7 @@ function buildTree(){
         ]},
         {id:'A2', l:'Іншы трыгер', s:'эканоміка · пратэсты', p:ot, c:'trg',
          tip:'Эканамічны крызіс, масавыя пратэсты, змова эліт. Сумарна эксперты далі гэтым трыгерам менш адказаў, чым аднаму толькі здароўю.',
-         ch:[{id:'o6', l:'Нявызначаны зыход', s:'залежыць ад кантэксту', c:'hyb',
+         ch:[{id:'o6', l:'Нявызначаны вынік', s:'залежыць ад кантэксту', c:'hyb',
               analog:'Кыргызстан · 2005, 2010',
               desc:'Розныя трыгеры — розная дынаміка. Вынік непрадказальны.',
               risk:'Каляровыя рэвалюцыі часта даюць «ратацыю элітаў без дэмакратызацыі».'}]
@@ -673,7 +608,7 @@ function buildTree(){
          tip:'Недаацэнены фактар (названы экспертамі сярод забытых). Мілітарны сцэнар.',
          ch:[{id:'o14', l:'Радыкальная нявызначанасць', s:'усе варыянты адкрытыя', c:'hyb',
               analog:'Украіна · 2022–цяпер',
-              desc:'Непрадказальны зыход. Вайна можа адкрыць акно для любога сцэнарыя — ад эміграцыі элітаў да знешне навязанага рэжыму.',
+              desc:'Непрадказальны вынік. Вайна можа адкрыць акно для любога сцэнарыя — ад эміграцыі элітаў да знешне навязанага рэжыму.',
               risk:'Самая высокая энтрапія. Усе іншыя сцэнарыі становяцца ўмоўнымі.'}]
         }
       ]}
@@ -788,8 +723,8 @@ function render(){
   NW = Math.max(72, (cssW - SIDE*2 - LEFT_LABEL) / totalLeaves);
 
   // Depth 0..5 + leaf row → 7 rows. Distribute vertically in available height,
-  // leaving top padding for frame label and bottom for badge.
-  const TOP = 46, BOTTOM = 56;
+  // leaving top padding for frame label and bottom for badge + analog reference.
+  const TOP = 46, BOTTOM = 110;
   const rows = 7;
   const step = (cssH - TOP - BOTTOM) / (rows - 1);
   ROW_Y = [];
@@ -823,7 +758,7 @@ function render(){
   ctx2.setLineDash([]);
 
   // level labels on the left
-  const levelNames = ['§0 КОРАНЬ','§1 КАНТЭКСТ РФ','§2 ТРЫГЕР','§3 ТЫП ТРАНЗІТУ','§4 СІЛАВІКІ','§5 ЗНЕШНІЯ','→ ЗЫХОД'];
+  const levelNames = ['§0 КОРАНЬ','§1 КАНТЭКСТ РФ','§2 ТРЫГЕР','§3 ТЫП ТРАНЗІТУ','§4 СІЛАВІКІ','§5 ЗНЕШНІЯ','→ ВЫНІК'];
   ctx2.font = '500 9px "JetBrains Mono",monospace';
   ctx2.fillStyle = BP.textMute;
   ctx2.textAlign = 'left';
@@ -912,12 +847,15 @@ function render(){
       ctx2.fillText(n.s, n._x, subY);
     }
 
-    // probability readout right next to the marker
-    if(n.p != null && n.p < 1){
+    // cumulative probability readout right next to the marker
+    // shows total path probability to this node; shrinks down the path toward the leaf
+    if(n.p != null && n._cum != null && n._cum < 1 && !leaf){
       ctx2.font = '600 10px "JetBrains Mono",monospace';
       ctx2.fillStyle = onPath ? BP.lineHi : BP.textDim;
       ctx2.textAlign = 'left';
-      ctx2.fillText('p=' + n.p.toFixed(2), n._x + r + 6, n._y + 3);
+      const cumPct = (n._cum*100);
+      const cumTxt = cumPct >= 10 ? cumPct.toFixed(1) + '%' : cumPct.toFixed(2) + '%';
+      ctx2.fillText(cumTxt, n._x + r + 6, n._y + 3);
     }
 
     // leaf: cumulative probability badge under sub-label
@@ -934,6 +872,19 @@ function render(){
       ctx2.textAlign = 'center'; ctx2.textBaseline = 'middle';
       ctx2.fillText(txt, n._x, subY + 8);
       ctx2.textBaseline = 'alphabetic';
+
+      // historical analog reference under the badge (italic, wrapped)
+      if(n.analog){
+        ctx2.font = 'italic 9.5px "Source Serif 4",Georgia,serif';
+        ctx2.fillStyle = onPath ? BP.text : BP.textDim;
+        ctx2.textAlign = 'center';
+        const analogMaxW = Math.max(80, NW - 8);
+        const analogLines = wrapText(ctx2, '↪ ' + n.analog, analogMaxW);
+        const analogY = subY + 16 + 11;
+        analogLines.forEach((ln, i) => {
+          ctx2.fillText(ln, n._x, analogY + i*11);
+        });
+      }
 
       // kind tag on the left of the marker
       ctx2.font = '500 8.5px "JetBrains Mono",monospace';
@@ -1020,7 +971,7 @@ function hideTip(){ tip.style.opacity = '0'; }
 function openCard(n){
   const ov = document.getElementById('overlay');
   const card = document.getElementById('ocard');
-  const kind = {dem:'Дэмакратызацыя', aut:'Аўтарытарная перадача', hyb:'Гібрыдны зыход', frz:'Замарожаны / страта суверэн.'}[n.c] || '';
+  const kind = {dem:'Акно дэмакратызацыі', aut:'Аўтарытарная пераемнасць', hyb:'Геапалітычны гібрыд', frz:"Замарожванне / страта суб'ектнасці"}[n.c] || '';
   // build path
   const path = [];
   let cur = n;
@@ -1085,10 +1036,10 @@ function updateSummary(){
   lv.forEach(n => { if(agg.hasOwnProperty(n.c)) agg[n.c] += n._cum; });
   const tot = Object.values(agg).reduce((s,v)=>s+v, 0) || 1;
   const labels = {
-    dem:{strong:'Дэмакратызацыя', sub:'пактаваны пераход, круглы стол'},
-    aut:{strong:'Аўтарытарная перадача', sub:'новы кіраўнік з сістэмы'},
-    hyb:{strong:'Гібрыдны / нявызначаны', sub:'канкурэнцыя, хаос, малдавізацыя'},
-    frz:{strong:'Замарожаны', sub:'страта суверэнітэту, інтэграцыя'}
+    dem:{strong:'Акно дэмакратызацыі', sub:'пактаваны пераход, круглы стол'},
+    aut:{strong:'Аўтарытарная пераемнасць', sub:'новы кіраўнік з сістэмы'},
+    hyb:{strong:'Геапалітычны гібрыд', sub:'канкурэнцыя, хаос, малдавізацыя'},
+    frz:{strong:"Замарожванне / страта суб'ектнасці", sub:'інтэграцыя, залежнасць ад РФ'}
   };
   let html = '';
   ['dem','aut','hyb','frz'].forEach(k => {
@@ -1105,85 +1056,10 @@ const _origRender = render;
 render = function(){ _origRender(); updateSummary(); };
 
 // ══════════════════════════════════════════════════════════════
-// PCA PANEL
-// ══════════════════════════════════════════════════════════════
-const LOADINGS = [
-  {var:'Верагодн. 2030',       f1:0.375,f2:-0.050,f3:-0.044,f4:-0.044},
-  {var:'Верагодн. 2035',       f1:0.314,f2:0.084,f3:0.416,f4:0.257},
-  {var:'Верагодн. 2040',       f1:0.163,f2:0.324,f3:0.350,f4:0.178},
-  {var:'Поўная перадача',      f1:0.376,f2:-0.249,f3:-0.013,f4:0.241},
-  {var:'Частковая перадача',   f1:-0.112,f2:-0.234,f3:0.368,f4:0.477},
-  {var:'Некіраваная',          f1:0.141,f2:0.449,f3:-0.067,f4:-0.401},
-  {var:'Попыт грамадства',     f1:0.052,f2:0.562,f3:0.010,f4:0.086},
-  {var:'Попыт Захаду',         f1:-0.110,f2:0.333,f3:-0.169,f4:0.288},
-  {var:'Попыт эліт',           f1:-0.244,f2:0.336,f3:0.249,f4:0.157},
-  {var:'Рэфарматары',          f1:0.144,f2:-0.132,f3:0.099,f4:-0.272},
-  {var:'Вайна магчыма',        f1:-0.006,f2:-0.060,f3:0.556,f4:-0.330},
-  {var:'Пуцін магчыма',        f1:-0.235,f2:-0.061,f3:0.392,f4:-0.384},
-  {var:'Лука непазбежна',      f1:0.436,f2:0.028,f3:0.008,f4:-0.070},
-  {var:'Пуцін непазбежна',     f1:0.469,f2:0.053,f3:0.006,f4:-0.065},
-];
-const FACTORS = [
-  {id:'F1',cls:'f1',name:'Тэмп кадравага транзіту',pct:24.2,desc:'Сыход лідараў, поўная перадача, ацэнкі непазбежнасці.',map:'Кантэкст Расіі · Трыгер'},
-  {id:'F2',cls:'f2',name:'Грамадскі ціск знізу',pct:17.8,desc:'Попыт грамадства, хаатычнасць, некіраванасць.',map:'Тып транзіту · Дэмсілы'},
-  {id:'F3',cls:'f3',name:'Геапалітычны шок',pct:13.1,desc:'Вайна, змена Пуціна, геашок на даляглядзе.',map:'Кантэкст Расіі'},
-  {id:'F4',cls:'f4',name:'Кіраванасць працэсу',pct:10.7,desc:'Кіраваная перадача vs хаос, сілавікі.',map:'Сілавікі · Захад'},
-];
-
-function colorFor(v){
-  // diverging red-white-blue, muted editorial
-  if(v > 0.4) return {bg:'#4a8d9a',fg:'#fff'};
-  if(v > 0.25) return {bg:'#6ba8b5',fg:'#0b1424'};
-  if(v > 0.1) return {bg:'#9fc8d0',fg:'#0b1424'};
-  if(v > -0.1) return {bg:'#1a2842',fg:'#7a8da3'};
-  if(v > -0.25) return {bg:'#8a6c5c',fg:'#fff'};
-  return {bg:'#b25a44',fg:'#fff'};
-}
-
-function buildHeatmap(){
-  const h = document.getElementById('heatmap');
-  let html = '<div class="hdr"></div>';
-  ['F1','F2','F3','F4'].forEach(f => html += `<div class="hdr">${f}</div>`);
-  LOADINGS.forEach(row => {
-    html += `<div class="row-lbl">${row.var}</div>`;
-    ['f1','f2','f3','f4'].forEach(f => {
-      const v = row[f];
-      const c = colorFor(v);
-      html += `<div class="cell" style="background:${c.bg};color:${c.fg}">${v>=0?'+':''}${v.toFixed(2)}</div>`;
-    });
-  });
-  h.innerHTML = html;
-}
-
-function buildFactorCards(){
-  const c = document.getElementById('factor-cards');
-  c.innerHTML = FACTORS.map(f => `
-    <div class="factor-card ${f.cls}">
-      <div class="fh">
-        <div class="fn">${f.id} · ${f.name}</div>
-        <div class="fp">${f.pct}%</div>
-      </div>
-      <div class="fd">${f.desc}</div>
-      <div class="fm">↔ ${f.map}</div>
-    </div>
-  `).join('');
-  const max = Math.max(...FACTORS.map(f=>f.pct));
-  document.getElementById('var-bars').innerHTML = FACTORS.map(f => `
-    <div class="var-row ${f.cls}">
-      <div class="k">${f.id}</div>
-      <div class="track"><div class="fill" style="width:${(f.pct/max*100).toFixed(1)}%">${f.pct}%</div></div>
-      <div class="v">${f.pct}%</div>
-    </div>
-  `).join('');
-}
-
-// ══════════════════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════════════════
 buildPresets();
 buildSliders();
-buildHeatmap();
-buildFactorCards();
 render();
 
 </script>
