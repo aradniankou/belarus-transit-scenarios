@@ -63,6 +63,9 @@ body{
 .masthead .brand{font-family:"Inter",sans-serif;font-weight:700;font-size:11px;letter-spacing:0.18em;text-transform:uppercase}
 .masthead .brand em{color:var(--accent);font-style:normal}
 .masthead .meta{font-family:"Inter",sans-serif;font-size:10.5px;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase}
+.meta-group{display:flex;align-items:center;gap:14px}
+.lang-toggle{background:transparent;border:1px solid var(--rule-2);color:var(--ink-2);font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:600;letter-spacing:0.1em;padding:5px 11px;cursor:pointer;transition:all .15s}
+.lang-toggle:hover{border-color:var(--accent);color:var(--accent)}
 
 .hero{max-width:1240px;margin:0 auto;padding:48px 32px 28px;text-align:center}
 .kicker{font-family:"Inter",sans-serif;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:18px}
@@ -215,30 +218,33 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 <body>
 
 <div class="masthead">
-  <div class="brand">Цэнтр новых ідэй · <em>Маніторынг беларускага транзіту</em></div>
-  <div class="meta">Красавік 2026</div>
+  <div class="brand" data-i18n="masthead.brand">Цэнтр новых ідэй · <em>Маніторынг беларускага транзіту</em></div>
+  <div class="meta-group">
+    <div class="meta" data-i18n="masthead.meta">Ліпень 2026</div>
+    <button id="lang-toggle" class="lang-toggle" onclick="applyLang(LANG==='be'?'en':'be')" aria-label="Toggle language">EN</button>
+  </div>
 </div>
 
 <section class="hero">
-  <div class="kicker">Дрэва сцэнароў · Эксперыментальная інтэрактыўная мадэль</div>
-  <h1 class="title">Як зменіцца <em>ўлада</em><br>у Беларусі</h1>
-  <p class="dek">Транзіт — пытанне не "ці", а "калі і як". Мадэль разгортвае 14 магчымых сцэнароў з шасці крытычных развілак, ацэненых 29 экспертамі. Рухайце слайдеры або выбірайце пресет — дрэва пералічыцца.</p>
-  <div class="byline"><span>Аналітычная справаздача падрыхтавана Claude Opus 4.6</span> · пад кіраўніцтвам Антона Раднянкова, на падставе апытання 29 экспертаў і кампаратыўнага аналізу (Хантынгтан, O'Доннел/Шміттэр, V-Dem)</div>
+  <div class="kicker" data-i18n="hero.kicker">Дрэва сцэнароў · Эксперыментальная інтэрактыўная мадэль</div>
+  <h1 class="title" data-i18n="hero.title">Як зменіцца <em>ўлада</em><br>у Беларусі</h1>
+  <p class="dek" data-i18n="hero.dek">Транзіт — пытанне не "ці", а "калі і як". Мадэль разгортвае 14 магчымых сцэнароў з шасці крытычных развілак, ацэненых 29 экспертамі. Рухайце слайдеры або выбірайце пресет — дрэва пералічыцца.</p>
+  <div class="byline" data-i18n="hero.byline"><span>Аналітычная справаздача падрыхтавана Claude Opus 4.8</span> · пад кіраўніцтвам Антона Раднянкова, Рыгора Астапені і Зміцера Крука, на падставе апытання 29 экспертаў і кампаратыўнага аналізу (Хантынгтан, O'Доннел/Шміттэр, V-Dem)</div>
 </section>
 
 <div class="rule"><hr></div>
 
 <section class="stats">
-  <div class="stat"><div class="n"><em>15%</em></div><div class="lbl">Медыяна верагоднасці транзіту да&nbsp;2030</div></div>
-  <div class="stat"><div class="n"><em>60%</em></div><div class="lbl">Да&nbsp;2035 году</div></div>
-  <div class="stat"><div class="n"><em>90%</em></div><div class="lbl">Да&nbsp;2040 году</div></div>
-  <div class="stat"><div class="n"><em>79%</em></div><div class="lbl">Эксперты: здароўе Лукашэнкі — галоўны трыгер</div></div>
+  <div class="stat"><div class="n"><em>15%</em></div><div class="lbl" data-i18n="stat.0">Медыяна верагоднасці транзіту да&nbsp;2030</div></div>
+  <div class="stat"><div class="n"><em>60%</em></div><div class="lbl" data-i18n="stat.1">Да&nbsp;2035 году</div></div>
+  <div class="stat"><div class="n"><em>90%</em></div><div class="lbl" data-i18n="stat.2">Да&nbsp;2040 году</div></div>
+  <div class="stat"><div class="n"><em>79%</em></div><div class="lbl" data-i18n="stat.3">Эксперты: здароўе Лукашэнкі — галоўны трыгер</div></div>
 </section>
 
 <div class="section-head">
   <div class="num">§&nbsp;1</div>
-  <h2>Тры экспертныя пресеты</h2>
-  <div class="sub">Наведзіце, каб убачыць допушчэнні</div>
+  <h2 data-i18n="s1.h2">Тры экспертныя пресеты</h2>
+  <div class="sub" data-i18n="s1.sub">Наведзіце, каб убачыць допушчэнні</div>
 </div>
 
 <div class="presets-wrap">
@@ -247,40 +253,40 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 
 <div class="section-head">
   <div class="num">§&nbsp;2</div>
-  <h2>Ацэнка верагоднасцяў</h2>
-  <div class="sub">Слайдеры змяняюць верагонасці сцэнароў дрэва</div>
+  <h2 data-i18n="s2.h2">Ацэнка верагоднасцяў</h2>
+  <div class="sub" data-i18n="s2.sub">Слайдеры змяняюць верагонасці сцэнароў дрэва</div>
 </div>
 
 <div class="sliders-wrap">
   <div class="sliders">
-    <div class="sliders-title"><span>Узровень 1 · Кантэкст Расіі</span><span class="reset" onclick="preset('expert')">↻ Скінуць да медыяны</span></div>
+    <div class="sliders-title"><span data-i18n="sliders.lvl1">Узровень 1 · Кантэкст Расіі</span><span class="reset" onclick="preset('expert')" data-i18n="sliders.reset">↻ Скінуць да медыяны</span></div>
     <div class="slider-group" id="sg-ctx"></div>
-    <div class="sliders-title" style="margin-top:22px"><span>Узроўні 2–5 · Трыгер, тып транзіту, сілавікі, знешнія сілы</span></div>
+    <div class="sliders-title" style="margin-top:22px"><span data-i18n="sliders.lvls2_5">Узроўні 2–5 · Трыгер, тып транзіту, сілавікі, знешнія сілы</span></div>
     <div class="slider-group" id="sg-flow"></div>
   </div>
 </div>
 
 <div class="section-head">
   <div class="num">§&nbsp;3</div>
-  <h2>Дрэва сцэнароў</h2>
-  <div class="sub">Клік па блоку → картачка з дэталямі · Навядзенне → падсветка шляху</div>
+  <h2 data-i18n="s3.h2">Дрэва сцэнароў</h2>
+  <div class="sub" data-i18n="s3.sub">Клік па блоку → картачка з дэталямі · Навядзенне → падсветка шляху</div>
 </div>
 
 <div class="tree-wrap">
   <div class="tree-legend">
-    <span class="lg-dem">Акно дэмакратызацыі</span>
-    <span class="lg-aut">Аўтарытарная пераемнасць</span>
-    <span class="lg-hyb">Геапалітычны гібрыд</span>
-    <span class="lg-frz">Замарожванне / страта суб'ектнасці</span>
+    <span class="lg-dem" data-i18n="legend.dem">Акно дэмакратызацыі</span>
+    <span class="lg-aut" data-i18n="legend.aut">Аўтарытарная пераемнасць</span>
+    <span class="lg-hyb" data-i18n="legend.hyb">Геапалітычны гібрыд</span>
+    <span class="lg-frz" data-i18n="legend.frz">Замарожванне / страта суб'ектнасці</span>
     <span class="sep">|</span>
-    <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted)">таўшчыня лініі&nbsp;·&nbsp;верагоднасць&nbsp;галіны</span>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted)" data-i18n="legend.weight">таўшчыня лініі&nbsp;·&nbsp;верагоднасць&nbsp;галіны</span>
   </div>
   <div class="tree-canvas-wrap">
     <div class="tree-corner tl"></div>
     <div class="tree-corner tr"></div>
     <div class="tree-corner bl"></div>
     <div class="tree-corner br"></div>
-    <div class="tree-frame-label">FIG. 01 · ДРЭВА СЦЭНАРЫЯЎ · ВА · ВМ</div>
+    <div class="tree-frame-label" data-i18n="frame.label">FIG. 01 · ДРЭВА СЦЭНАРЫЯЎ · ВА · ВМ</div>
     <div class="tree-scale">SCALE 1:1 · Σ P = 1.0</div>
     <canvas id="cv"></canvas>
   </div>
@@ -290,13 +296,13 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
   <div class="summary" id="sum"></div>
 </div>
 
-<p class="note">
-  <strong>Як чытаць.</strong> Лічба ў вузле — умоўная верагоднасць сцэнарнай галіны. <strong>[лічба]</strong> унізе галіны — кумулятыўная верагоднасць сцэнару (адлік верагоднасцяў ад кораня). Таўшчыня лініі адпавядае вазе шляху. Кожны галіна — канкрэтны сцэнарны вынік з гістарычным аналогам.
+<p class="note" data-i18n="note">
+  <strong>Як чытаць.</strong> Лічба ў вузле — кумулятыўная верагоднасць шляху да гэтага вузла. <strong>[Σ XX%]</strong> унізе галіны — фінальная верагоднасць сцэнару. Лічбы над лініямі — умоўныя верагоднасці выбару галіны на дадзенай развілцы. Таўшчыня лініі адпавядае вазе шляху. Кожная галіна — канкрэтны сцэнарны вынік з гістарычным аналагам.
 </p>
 
 <div class="footer">
-  <div class="brand">Цэнтр новых ідэй <em>·</em> Маніторынг беларускага транзіту 2026</div>
-  <div class="cit">Красавік 2026 · Падрыхтавана Claude Opus 4.6 пад кіраўніцтвам Антона Раднянкова. Заснавана на апытанні 29 экспертаў і кампаратыўным аналізе (Хантынгтан, O'Доннел/Шміттэр, V-Dem)</div>
+  <div class="brand" data-i18n="footer.brand">Цэнтр новых ідэй <em>·</em> Маніторынг беларускага транзіту 2026</div>
+  <div class="cit" data-i18n="footer.cit">Ліпень 2026 · Падрыхтавана Claude Opus 4.8 пад кіраўніцтвам Антона Раднянкова, Рыгора Астапені і Зміцера Крука. Заснавана на апытанні 29 экспертаў і кампаратыўным аналізе (Хантынгтан, O'Доннел/Шміттэр, V-Dem)</div>
 </div>
 
 <div id="tip"></div>
@@ -307,39 +313,173 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 
 <script>
 // ══════════════════════════════════════════════════════════════
-// Транзіт улады — дрэва сцэнароў
+// Транзіт улады — дрэва сцэнароў (bilingual BE / EN)
 // ══════════════════════════════════════════════════════════════
+
+// ─── i18n state ───────────────────────────────────────────────
+let LANG = 'be';
+// helper: pick localized field (e.g. T(node,'l') returns node.l_en if LANG==='en' and present, else node.l)
+function T(obj, key){
+  if(!obj) return '';
+  if(LANG === 'en' && obj[key+'_en'] != null) return obj[key+'_en'];
+  return obj[key] != null ? obj[key] : '';
+}
+
+// ─── UI translations (static elements + dynamic labels) ───────
+const UI = {
+  be: {
+    'masthead.brand':'Цэнтр новых ідэй · <em>Маніторынг беларускага транзіту</em>',
+    'masthead.meta':'Ліпень 2026',
+    'hero.kicker':'Дрэва сцэнароў · Эксперыментальная інтэрактыўная мадэль',
+    'hero.title':'Як зменіцца <em>ўлада</em><br>у Беларусі',
+    'hero.dek':'Транзіт — пытанне не «ці», а «калі і як». Мадэль разгортвае 14 магчымых сцэнароў з шасці крытычных развілак, ацэненых 29 экспертамі. Рухайце слайдеры або выбірайце пресет — дрэва пералічыцца.',
+    'hero.byline':'<span>Аналітычная справаздача падрыхтавана Claude Opus 4.8</span> · пад кіраўніцтвам Антона Раднянкова, Рыгора Астапені і Зміцера Крука, на падставе апытання 29 экспертаў і кампаратыўнага аналізу (Хантынгтан, O\'Доннел/Шміттэр, V-Dem)',
+    'stat.0':'Медыяна верагоднасці транзіту да&nbsp;2030',
+    'stat.1':'Да&nbsp;2035 году',
+    'stat.2':'Да&nbsp;2040 году',
+    'stat.3':'Эксперты: здароўе Лукашэнкі — галоўны трыгер',
+    's1.h2':'Тры экспертныя пресеты',
+    's1.sub':'Наведзіце, каб убачыць допушчэнні',
+    's2.h2':'Ацэнка верагоднасцяў',
+    's2.sub':'Слайдеры змяняюць верагоднасці сцэнароў дрэва',
+    'sliders.lvl1':'Узровень 1 · Кантэкст Расіі',
+    'sliders.lvls2_5':'Узроўні 2–5 · Трыгер, тып транзіту, сілавікі, знешнія сілы',
+    'sliders.reset':'↻ Скінуць да медыяны',
+    's3.h2':'Дрэва сцэнароў',
+    's3.sub':'Клік па блоку → картачка з дэталямі · Навядзенне → падсветка шляху',
+    'legend.dem':'Акно дэмакратызацыі',
+    'legend.aut':'Аўтарытарная пераемнасць',
+    'legend.hyb':'Геапалітычны гібрыд',
+    'legend.frz':"Замарожванне / страта суб'ектнасці",
+    'legend.weight':'таўшчыня лініі&nbsp;·&nbsp;верагоднасць&nbsp;галіны',
+    'frame.label':'FIG. 01 · ДРЭВА СЦЭНАРЫЯЎ · ВА · ВМ',
+    'note':'<strong>Як чытаць.</strong> Лічба ў вузле — кумулятыўная верагоднасць шляху да гэтага вузла. <strong>[Σ XX%]</strong> унізе галіны — фінальная верагоднасць сцэнару. Лічбы над лініямі — умоўныя верагоднасці выбару галіны на дадзенай развілцы. Таўшчыня лініі адпавядае вазе шляху. Кожная галіна — канкрэтны сцэнарны вынік з гістарычным аналагам.',
+    'footer.brand':'Цэнтр новых ідэй <em>·</em> Маніторынг беларускага транзіту 2026',
+    'footer.cit':"Ліпень 2026 · Падрыхтавана Claude Opus 4.8 пад кіраўніцтвам Антона Раднянкова, Рыгора Астапені і Зміцера Крука. Заснавана на апытанні 29 экспертаў і кампаратыўным аналізе (Хантынгтан, O'Доннел/Шміттэр, V-Dem)",
+    // canvas-rendered level labels
+    levels:['§0 КОРАНЬ','§1 КАНТЭКСТ РФ','§2 ТРЫГЕР','§3 ТЫП ТРАНЗІТУ','§4 СІЛАВІКІ','§5 ЗНЕШНІЯ','→ ВЫНІК'],
+    // category labels for overlay card
+    categories:{dem:'Акно дэмакратызацыі',aut:'Аўтарытарная пераемнасць',hyb:'Геапалітычны гібрыд',frz:"Замарожванне / страта суб'ектнасці"},
+    // summary block labels
+    summary:{
+      dem:{strong:'Акно дэмакратызацыі',sub:'пактаваны пераход, круглы стол'},
+      aut:{strong:'Аўтарытарная пераемнасць',sub:'новы кіраўнік з сістэмы'},
+      hyb:{strong:'Геапалітычны гібрыд',sub:'канкурэнцыя, хаос, малдавізацыя'},
+      frz:{strong:"Замарожванне / страта суб'ектнасці",sub:'інтэграцыя, залежнасць ад РФ'}
+    },
+    // tooltip + card labels
+    tip:{branchP:'Верагоднасць галіны',cumP:'Кумулятыўна',hint:'Клік → падрабязнасці і аналаг'},
+    card:{cumP:'Кумул. верагоднасць',dyn:'Дынаміка',assess:'Ацэнка',warn:'Пасцярога',analog:'Гістарычны аналаг'},
+    btn:'EN'
+  },
+  en: {
+    'masthead.brand':'Center for New Ideas · <em>Belarusian Transit Monitoring</em>',
+    'masthead.meta':'July 2026',
+    'hero.kicker':'Scenario tree · Experimental interactive model',
+    'hero.title':'How <em>power</em> will change<br>in Belarus',
+    'hero.dek':'Transit is no longer a question of «whether», but of «when and how». The model unfolds 14 possible scenarios from six critical forks, assessed by 29 experts. Move the sliders or pick a preset — the tree recalculates.',
+    'hero.byline':"<span>Analytical report prepared by Claude Opus 4.8</span> · under the direction of Anton Radniankou, Ryhor Astapenia and Dzmitry Kruk, based on a survey of 29 experts and comparative analysis (Huntington, O'Donnell/Schmitter, V-Dem)",
+    'stat.0':'Median probability of transit by&nbsp;2030',
+    'stat.1':'By&nbsp;2035',
+    'stat.2':'By&nbsp;2040',
+    'stat.3':"Experts: Lukashenka's health — the primary trigger",
+    's1.h2':'Three expert presets',
+    's1.sub':'Hover to reveal the assumptions',
+    's2.h2':'Probability assessment',
+    's2.sub':"Sliders change the tree's branch probabilities",
+    'sliders.lvl1':'Level 1 · Russian context',
+    'sliders.lvls2_5':'Levels 2–5 · Trigger, transit type, <em>silaviki</em>, external forces',
+    'sliders.reset':'↻ Reset to median',
+    's3.h2':'Scenario tree',
+    's3.sub':'Click a node → details card · Hover → path highlight',
+    'legend.dem':'Window of democratization',
+    'legend.aut':'Authoritarian succession',
+    'legend.hyb':'Geopolitical hybrid',
+    'legend.frz':'Freeze / loss of agency',
+    'legend.weight':'line thickness&nbsp;·&nbsp;branch&nbsp;probability',
+    'frame.label':'FIG. 01 · SCENARIO TREE · BY · BM',
+    'note':'<strong>How to read.</strong> The number at a node is the cumulative probability of the path from root to that node. <strong>[Σ XX%]</strong> at the bottom of a branch is the final scenario probability. Numbers above the lines are conditional probabilities of choosing each branch at that fork. Line thickness reflects the path weight. Each branch is a concrete scenario outcome with a historical analog.',
+    'footer.brand':'Center for New Ideas <em>·</em> Belarusian Transit Monitoring 2026',
+    'footer.cit':"July 2026 · Prepared by Claude Opus 4.8 under the direction of Anton Radniankou, Ryhor Astapenia and Dzmitry Kruk. Based on a survey of 29 experts and comparative analysis (Huntington, O'Donnell/Schmitter, V-Dem)",
+    levels:['§0 ROOT','§1 RUSSIAN CONTEXT','§2 TRIGGER','§3 TRANSIT TYPE','§4 SILAVIKI','§5 EXTERNAL','→ OUTCOME'],
+    categories:{dem:'Window of democratization',aut:'Authoritarian succession',hyb:'Geopolitical hybrid',frz:'Freeze / loss of agency'},
+    summary:{
+      dem:{strong:'Window of democratization',sub:'pacted transition, round table'},
+      aut:{strong:'Authoritarian succession',sub:'new ruler from within the system'},
+      hyb:{strong:'Geopolitical hybrid',sub:'competition, chaos, Moldovization'},
+      frz:{strong:'Freeze / loss of agency',sub:'integration, dependence on Russia'}
+    },
+    tip:{branchP:'Branch probability',cumP:'Cumulative',hint:'Click → details and analog'},
+    card:{cumP:'Cumulative prob.',dyn:'Dynamics',assess:'Assessment',warn:'Warning',analog:'Historical analog'},
+    btn:'BE'
+  }
+};
+
+// Apply current language to all static + dynamic UI; called on init and on toggle.
+function applyLang(newLang){
+  if(newLang) LANG = newLang;
+  document.documentElement.lang = LANG;
+  // static elements with data-i18n
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n;
+    const v = UI[LANG][k];
+    if(v != null) el.innerHTML = v;
+  });
+  // toggle button label
+  const btn = document.getElementById('lang-toggle');
+  if(btn) btn.textContent = UI[LANG].btn;
+  // page title
+  document.title = LANG==='en' ? 'Power transit in Belarus — Scenario tree' : 'Транзіт улады ў Беларусі — Дрэва сцэнароў';
+  // dynamic UI: re-render presets, sliders and tree
+  if(typeof buildPresets === 'function') buildPresets();
+  if(typeof buildSliders === 'function') buildSliders();
+  if(typeof render === 'function') render();
+}
 
 // ─── Fadct Sliders ────────────────────────────────────────────
 const F = [
-  {id:'rw',label:'Расія аслаблена',v:35,min:5,max:75,group:'ctx',
-   desc:'Расія занятая вайной або ўнутранымі крызісамі'},
-  {id:'rp',label:'Расія прагматычная',v:45,min:10,max:75,group:'ctx',
-   desc:'Падтрымае любога геапалітычна лаяльнага пераемніка (66% экспертаў)'},
-  {id:'ra',label:'Расія агрэсіўная',v:20,min:0,max:0,group:'ctx',locked:true,
-   desc:'Інтэграцыя, анексія, ваенны ціск — разлічваецца аўтаматычна (100% − астатнія варыянты)'},
-  {id:'ht',label:'Здароўе — трыгер',v:60,min:20,max:90,group:'flow',
-   desc:'Здароўе Лукашэнкі як трыгер транзіту (79% экспертаў)'},
-  {id:'mt',label:'Кіраваная перадача',v:65,min:20,max:90,group:'flow',
-   desc:'Рэжым кантралюе працэс пераемнасці (72% экспертаў)'},
-  {id:'sl',label:'Сілавікі лаяльныя',v:55,min:10,max:85,group:'flow',
-   desc:'Сілавікі падтрымліваюць пераемніка (69%: "далучацца да пераможцы")'},
-  {id:'di',label:'Дэмсілы ўключаны',v:30,min:5,max:70,group:'flow',
-   desc:'Дэмакратычныя сілы ўдзельнічаюць у працэсе (толькі 10% экспертаў кажуць пра лідарскую ролю)'},
-  {id:'wa',label:'Захад актыўны',v:35,min:10,max:75,group:'flow',
-   desc:'ЕС/ЗША уключаюцца ў момант транзіту (31% экспертаў кажуць пра актыўнае прасоўванне)'},
+  {id:'rw',label:'Расія аслаблена',label_en:'Russia weakened',v:35,min:5,max:75,group:'ctx',
+   desc:'Расія занятая вайной або ўнутранымі крызісамі',
+   desc_en:'Russia is preoccupied with war or internal crises'},
+  {id:'rp',label:'Расія прагматычная',label_en:'Russia pragmatic',v:45,min:10,max:75,group:'ctx',
+   desc:'Падтрымае любога геапалітычна лаяльнага пераемніка (66% экспертаў)',
+   desc_en:'Backs any geopolitically loyal successor (66% of experts)'},
+  {id:'ra',label:'Расія агрэсіўная',label_en:'Russia aggressive',v:20,min:0,max:0,group:'ctx',locked:true,
+   desc:'Інтэграцыя, анексія, ваенны ціск — разлічваецца аўтаматычна (100% − астатнія варыянты)',
+   desc_en:'Integration, annexation, military pressure — auto-computed (100% − other options)'},
+  {id:'ht',label:'Здароўе — трыгер',label_en:'Health as trigger',v:60,min:20,max:90,group:'flow',
+   desc:'Здароўе Лукашэнкі як трыгер транзіту (79% экспертаў)',
+   desc_en:"Lukashenka's health as the transit trigger (79% of experts)"},
+  {id:'mt',label:'Кіраваная перадача',label_en:'Managed handover',v:65,min:20,max:90,group:'flow',
+   desc:'Рэжым кантралюе працэс пераемнасці (72% экспертаў)',
+   desc_en:'The regime controls the succession process (72% of experts)'},
+  {id:'sl',label:'Сілавікі лаяльныя',label_en:'Loyal <em>silaviki</em>',v:55,min:10,max:85,group:'flow',
+   desc:'Сілавікі падтрымліваюць пераемніка (69%: "далучацца да пераможцы")',
+   desc_en:'<em>Silaviki</em> back the successor (69%: "join the winner")'},
+  {id:'di',label:'Дэмсілы ўключаны',label_en:'Dem. forces engaged',v:30,min:5,max:70,group:'flow',
+   desc:'Дэмакратычныя сілы ўдзельнічаюць у працэсе (толькі 10% экспертаў кажуць пра лідарскую ролю)',
+   desc_en:'Democratic forces take part in the process (only 10% of experts cite a leading role)'},
+  {id:'wa',label:'Захад актыўны',label_en:'West active',v:35,min:10,max:75,group:'flow',
+   desc:'ЕС/ЗША уключаюцца ў момант транзіту (31% экспертаў кажуць пра актыўнае прасоўванне)',
+   desc_en:'EU/US engage at the moment of transit (31% of experts foresee active promotion)'},
 ];
 
 // ─── Presets ──────────────────────────────────────────────────
 const PRESETS = [
-  {id:'expert',name:'Медыяна экспертаў',label:'КАНСЭНСУС · n=29',
+  {id:'expert',name:'Медыяна экспертаў',name_en:'Expert median',
+   label:'КАНСЭНСУС · n=29',label_en:'CONSENSUS · n=29',
    summary:'Сярэднеўзважаны сцэнары. Расія прагматычная, трыгер — здароўе, кіраваная перадача праз УНС з абмежаванай роляй Захаду.',
+   summary_en:'Average-weighted scenario. Russia pragmatic, trigger is health, managed handover via the All-Belarusian People\'s Assembly with a limited Western role.',
    vals:{rw:35,rp:45,ht:60,mt:65,sl:55,di:30,wa:35}},
-  {id:'optimist',name:'Аптымістычны',label:'АКНО МАГЧЫМАСЦЯЎ',
+  {id:'optimist',name:'Аптымістычны',name_en:'Optimistic',
+   label:'АКНО МАГЧЫМАСЦЯЎ',label_en:'WINDOW OF OPPORTUNITY',
    summary:'Расія аслаблена вайной, дэмсілы маюць уплыў, Захад актыўна ўключаны — рамка для пактавага транзіту, аналаг Польшчы-1989.',
+   summary_en:'Russia weakened by war, democratic forces influential, West actively engaged — a frame for a pacted transit, analog to Poland-1989.',
    vals:{rw:55,rp:35,ht:65,mt:45,sl:35,di:55,wa:65}},
-  {id:'pessimist',name:'Песімістычны',label:'ЖОРСТКІ СЦЭНАР',
+  {id:'pessimist',name:'Песімістычны',name_en:'Pessimistic',
+   label:'ЖОРСТКІ СЦЭНАР',label_en:'HARD SCENARIO',
    summary:'Расія кантралюе працэс, сілавікі лаяльныя, дэмсілы адрэзаны, Захад пасіўны — узбекістанская "асветніцкая аўтакратыя" або туркменістанская дынастыя.',
+   summary_en:'Russia controls the process, <em>silaviki</em> loyal, democratic forces cut off, West passive — an Uzbek-style "enlightened autocracy" or a Turkmen-style dynasty.',
    vals:{rw:12,rp:43,ht:50,mt:75,sl:75,di:10,wa:15}},
 ];
 
@@ -357,13 +497,13 @@ function buildPresets(){
   c.innerHTML = PRESETS.map(p => `
     <div class="preset ${p.id===activePreset?'on':''}" data-id="${p.id}" onclick="preset('${p.id}')">
       <div class="tag">#${PRESETS.indexOf(p)+1}</div>
-      <div class="label">${p.label}</div>
-      <div class="name">${p.name}</div>
+      <div class="label">${T(p,'label')}</div>
+      <div class="name">${T(p,'name')}</div>
       <div class="expand">
-        <p>${p.summary}</p>
+        <p>${T(p,'summary')}</p>
         ${Object.entries(p.vals).map(([k,v])=>{
           const f = F.find(ff=>ff.id===k);
-          return `<div class="pair"><span class="k">${f.label}</span><span class="v">${v}%</span></div>`;
+          return `<div class="pair"><span class="k">${T(f,'label')}</span><span class="v">${v}%</span></div>`;
         }).join('')}
       </div>
     </div>
@@ -382,10 +522,10 @@ function buildSliders(){
     el.className = 'slider';
     el.innerHTML = `
       <div class="head">
-        <span class="k">${f.label}</span>
+        <span class="k">${T(f,'label')}</span>
         <span class="v ${f.locked?'locked':''}" id="v-${f.id}">${f.v}%</span>
       </div>
-      <div class="desc">${f.desc}</div>
+      <div class="desc">${T(f,'desc')}</div>
       <input type="range" id="sl-${f.id}" min="${f.min}" max="${f.max}" value="${f.v}" ${f.locked?'disabled':''}
         oninput="onSl('${f.id}', this.value)">
       <div class="axis"><span>${f.min}%</span><span>${f.max}%</span></div>
@@ -467,149 +607,203 @@ function buildTree(){
   const diwa = Math.min(1, di*0.5 + wa*0.5);
   const noext = 1-diwa;
 
-  return {id:'root', l:'БЕЛАРУСЬ', s:'рэжым Лукашэнкі', c:'root',
+  return {id:'root', l:'БЕЛАРУСЬ', l_en:'BELARUS', s:'рэжым Лукашэнкі', s_en:"Lukashenka's regime", c:'root',
     tip:'Персаналісцкі аўтарытарны рэжым. ВНС як канстытуцыйная рамка перадачы ўлады. Эксперты: 15% верагоднасць транзіту да 2030, 60% да 2035, 90% да 2040.',
+    tip_en:"Personalist authoritarian regime. The All-Belarusian People's Assembly as a constitutional frame for the transfer of power. Experts: 15% probability of transit by 2030, 60% by 2035, 90% by 2040.",
     ch:[
-      // A — Расія аслаблена
-      {id:'A', l:'Расія аслаблена', s:'занята сабой', p:rw, c:'ctx',
+      // A — Russia weakened
+      {id:'A', l:'Расія аслаблена', l_en:'Russia weakened', s:'занята сабой', s_en:'busy with itself', p:rw, c:'ctx',
        tip:'Расія паглынутая вайной, унутранымі крызісамі або значна аслабленая. Перадумова №1 для дэмакратычнага транзіту паводле экспертаў.',
+       tip_en:'Russia is consumed by war, internal crises or significantly weakened. According to the experts, this is precondition #1 for a democratic transit.',
        ch:[
-        {id:'A1', l:'Здароўе — трыгер', s:'трыгер №1 (79%)', p:ht, c:'trg',
+        {id:'A1', l:'Здароўе — трыгер', l_en:'Health as trigger', s:'трыгер №1 (79%)', s_en:'trigger #1 (79%)', p:ht, c:'trg',
          tip:'Хвароба, недзеяздольнасць або смерць Лукашэнкі. Аналагія: Узбекістан-2016, Туркменістан-2022.',
+         tip_en:'Illness, incapacity or death of Lukashenka. Analog: Uzbekistan-2016, Turkmenistan-2022.',
          ch:[
-          {id:'A1a', l:'Кіраваная перадача', s:'72% экспертаў', p:mt, c:'typ',
+          {id:'A1a', l:'Кіраваная перадача', l_en:'Managed handover', s:'72% экспертаў', s_en:'72% of experts', p:mt, c:'typ',
            tip:'Рэжым кантралюе працэс, эліты кансалідаваныя. Мадэль: Казахстан-2019.',
+           tip_en:'The regime controls the process, elites consolidated. Model: Kazakhstan-2019.',
            ch:[
-            {id:'A1a1', l:'Сілавікі лаяльныя', s:'адзіны блок', p:sl, c:'sil',
+            {id:'A1a1', l:'Сілавікі лаяльныя', l_en:'Silaviki loyal', s:'адзіны блок', s_en:'single bloc', p:sl, c:'sil',
              tip:'Сілавы блок (КДБ, армія, АМАП) кансалідавана падтрымлівае пераемніка. 69% экспертаў: сілавікі «далучацца да пераможцы».',
+             tip_en:'The <em>silaviki</em> bloc (KGB, army, OMON) consolidates around the successor. 69% of experts: "the <em>silaviki</em> will join the winner."',
              ch:[
-              {id:'A1a1x', l:'Дэмсілы + Захад уключаны', s:'канкурэнцыя сіл', p:diwa, c:'ext',
+              {id:'A1a1x', l:'Дэмсілы + Захад уключаны', l_en:'Dem. forces + West engaged', s:'канкурэнцыя сіл', s_en:'competition of forces', p:diwa, c:'ext',
                tip:'Дэмакратычныя сілы маюць канал камунікацыі з унутранымі актарамі, Захад прапаноўвае «пакет для дэмакратызацыі».',
-               ch:[{id:'o1', l:'Пактаваная дэмакратызацыя', s:'Польшча-1989', c:'dem',
-                    analog:'Польшча · Круглы стол, 1989',
+               tip_en:'Democratic forces have a channel to domestic actors; the West offers a "democratization package."',
+               ch:[{id:'o1', l:'Пактаваная дэмакратызацыя', l_en:'Pacted democratization', s:'Польшча-1989', s_en:'Poland-1989', c:'dem',
+                    analog:'Польшча · Круглы стол, 1989', analog_en:'Poland · Round Table, 1989',
                     desc:'Перамовы паміж рэфарматарамі ў рэжыме і дэмакратычнай супольнасцю. Кампраміс: інстытуцыйная пераемнасць у абмен на рэформы.',
+                    desc_en:'Negotiations between regime reformers and the democratic community. Compromise: institutional continuity in exchange for reforms.',
                     risk:'Патрабуе арганізаванай апазіцыі ўнутры краіны і рэфарматараў у сістэме. Для Беларусі — найлепшы вынік, але самая патрабавальная канфігурацыя.',
-                    warn:'Сёння адсутнічае пасля разгрому грамадзянскай супольнасці ў 2020 г.'}]
+                    risk_en:'Requires an organized in-country opposition and reformers within the system. For Belarus this is the best outcome but also the most demanding configuration.',
+                    warn:'Сёння адсутнічае пасля разгрому грамадзянскай супольнасці ў 2020 г.',
+                    warn_en:'Currently absent after the suppression of civil society in 2020.'}]
               },
-              {id:'A1a1y', l:'Дэмсілы выключаны · Захад пасіўны', s:'ніхто не аспрэчвае', p:noext, c:'ext',
+              {id:'A1a1y', l:'Дэмсілы выключаны · Захад пасіўны', l_en:'Dem. forces excluded · West passive', s:'ніхто не аспрэчвае', s_en:'no one contests', p:noext, c:'ext',
                tip:'Дэмсілы адрэзаныя (45% экспертаў чакаюць менавіта гэтага), Захад зноў рэагуе запаздала.',
-               ch:[{id:'o2', l:'Аўтарытарная перадача', s:'Узбекістан-2016', c:'aut',
-                    analog:'Узбекістан · Мірзіёеў, 2016',
+               tip_en:'Democratic forces cut off (45% of experts expect exactly this); the West reacts too late again.',
+               ch:[{id:'o2', l:'Аўтарытарная перадача', l_en:'Authoritarian handover', s:'Узбекістан-2016', s_en:'Uzbekistan-2016', c:'aut',
+                    analog:'Узбекістан · Мірзіёеў, 2016', analog_en:'Uzbekistan · Mirziyoyev, 2016',
                     desc:'«Асветніцкая аўтакратыя»: новы лідар з сістэмы, касметычныя рэформы (адкрыццё эканомікі, змякчэнне рыторыкі) без дэмакратызацыі.',
-                    risk:'Самы верагодны вынік пры адсутнасці знешняга ціску. Можа выглядаць як лібералізацыя — але структурна сістэма застаецца аўтарытарнай.'}]
+                    desc_en:'"Enlightened autocracy": a new leader from within the system, cosmetic reforms (economic opening, softened rhetoric) without democratization.',
+                    risk:'Самы верагодны вынік пры адсутнасці знешняга ціску. Можа выглядаць як лібералізацыя — але структурна сістэма застаецца аўтарытарнай.',
+                    risk_en:'The most likely outcome absent external pressure. May look like liberalization, but structurally the system remains authoritarian.'}]
               }
             ]},
-            {id:'A1a2', l:'Сілавікі раскалоліся', s:'канкурэнцыя фракцый', p:sn, c:'sil',
+            {id:'A1a2', l:'Сілавікі раскалоліся', l_en:'Silaviki splinter', s:'канкурэнцыя фракцый', s_en:'faction competition', p:sn, c:'sil',
              tip:'КДБ, армія, АМАП канкуруюць за кантроль над пераемнасцю. Мяцеж Вагнера-2023 — прэцэдэнт неўмяшання.',
-             ch:[{id:'o3', l:'Элітная канкурэнцыя', s:'«Казахстан-2022»', c:'hyb',
-                  analog:'Казахстан · Студзень 2022',
+             tip_en:'KGB, army, OMON compete for control of the succession. Wagner mutiny 2023 — a precedent of non-intervention.',
+             ch:[{id:'o3', l:'Элітная канкурэнцыя', l_en:'Elite competition', s:'«Казахстан-2022»', s_en:'"Kazakhstan-2022"', c:'hyb',
+                  analog:'Казахстан · Студзень 2022', analog_en:'Kazakhstan · January 2022',
                   desc:'Фракцыі змагаюцца за ўладу. Такаеў выкарыстаў крызіс, каб вызваліцца ад клана Назарбаева. Вынік залежыць ад таго, хто першы кансалідуе сілу.',
-                  risk:'Кароткі перыяд канкурэнцыі можа адкрыць акно для дэмсіл — але таксама можа скончыцца рэстаўрацыяй аўтарытарызму.'}]
+                  desc_en:'Factions fight for power. Tokayev used the crisis to break free from the Nazarbayev clan. The outcome depends on who consolidates first.',
+                  risk:'Кароткі перыяд канкурэнцыі можа адкрыць акно для дэмсіл — але таксама можа скончыцца рэстаўрацыяй аўтарытарызму.',
+                  risk_en:'A brief competition period may open a window for democratic forces — but may also end in authoritarian restoration.'}]
             }
           ]},
-          {id:'A1b', l:'Калапс · хаос', s:'рэжым не ўтрымлівае', p:cl, c:'typ',
+          {id:'A1b', l:'Калапс · хаос', l_en:'Collapse · chaos', s:'рэжым не ўтрымлівае', s_en:'regime fails to hold', p:cl, c:'typ',
            tip:'Кіраваная перадача правальваецца. Эліты не кансалідаваныя. Аналагія: Румынія-1989.',
+           tip_en:'Managed handover fails. Elites not consolidated. Analog: Romania-1989.',
            ch:[
-            {id:'A1b1', l:'Сілавікі нейтральныя', s:'«чакаюць і глядзяць»', p:0.55, c:'sil',
+            {id:'A1b1', l:'Сілавікі нейтральныя', l_en:'Silaviki neutral', s:'«чакаюць і глядзяць»', s_en:'"wait and see"', p:0.55, c:'sil',
              tip:'Як падчас мяцяжу Вагнера — сілавікі не ўмешваюцца. Вакуум улады.',
-             ch:[{id:'o4', l:'Рэвалюцыйны транзіт', s:'Румынія-1989', c:'hyb',
-                  analog:'Румынія · Снежань 1989',
+             tip_en:'As during the Wagner mutiny — <em>silaviki</em> do not intervene. Power vacuum.',
+             ch:[{id:'o4', l:'Рэвалюцыйны транзіт', l_en:'Revolutionary transit', s:'Румынія-1989', s_en:'Romania-1989', c:'hyb',
+                  analog:'Румынія · Снежань 1989', analog_en:'Romania · December 1989',
                   desc:'Хто першы запоўніць палітычны вакуум — атрымае ўладу. Высокія рызыкі гвалту і непрадказальнасці.',
-                  risk:'V-Dem: большасць падобных транзітаў вядзе да новага аўтарытарызму, а не да дэмакратыі.'}]
+                  desc_en:'Whoever fills the political vacuum first takes power. High risks of violence and unpredictability.',
+                  risk:'V-Dem: большасць падобных транзітаў вядзе да новага аўтарытарызму, а не да дэмакратыі.',
+                  risk_en:'V-Dem: most such transits lead to a new authoritarianism, not to democracy.'}]
             },
-            {id:'A1b2', l:'Сілавікі рэпрэсуюць', s:'жорсткі адказ', p:0.45, c:'sil',
+            {id:'A1b2', l:'Сілавікі рэпрэсуюць', l_en:'Silaviki repress', s:'жорсткі адказ', s_en:'harsh response', p:0.45, c:'sil',
              tip:'Сілавы блок падаўляе хаос. Вяртанне да жорсткага аўтарытарызму.',
-             ch:[{id:'o5', l:'Рэстаўрацыя аўтарытарызму', s:'«новы гарант»', c:'aut',
-                  analog:'Егіпет · Сісі, 2013',
+             tip_en:'The <em>silaviki</em> bloc suppresses the chaos. Return to hard authoritarianism.',
+             ch:[{id:'o5', l:'Рэстаўрацыя аўтарытарызму', l_en:'Authoritarian restoration', s:'«новы гарант»', s_en:'"new guarantor"', c:'aut',
+                  analog:'Егіпет · Сісі, 2013', analog_en:'Egypt · Sisi, 2013',
                   desc:'Сілавік бярэ ўладу «дзеля стабільнасці». Масавыя рэпрэсіі для кансалідацыі.',
-                  risk:'Усталёўвае яшчэ больш закрыты рэжым на дзесяцігоддзі.'}]
+                  desc_en:'A <em>silavik</em> takes power "for stability." Mass repressions to consolidate.',
+                  risk:'Усталёўвае яшчэ больш закрыты рэжым на дзесяцігоддзі.',
+                  risk_en:'Establishes an even more closed regime for decades.'}]
             }
           ]}
         ]},
-        {id:'A2', l:'Іншы трыгер', s:'эканоміка · пратэсты', p:ot, c:'trg',
+        {id:'A2', l:'Іншы трыгер', l_en:'Other trigger', s:'эканоміка · пратэсты', s_en:'economy · protests', p:ot, c:'trg',
          tip:'Эканамічны крызіс, масавыя пратэсты, змова эліт. Сумарна эксперты далі гэтым трыгерам менш адказаў, чым аднаму толькі здароўю.',
-         ch:[{id:'o6', l:'Нявызначаны вынік', s:'залежыць ад кантэксту', c:'hyb',
-              analog:'Кыргызстан · 2005, 2010',
+         tip_en:'Economic crisis, mass protests, elite conspiracy. Combined, these triggers received fewer expert answers than health alone.',
+         ch:[{id:'o6', l:'Нявызначаны вынік', l_en:'Indeterminate outcome', s:'залежыць ад кантэксту', s_en:'depends on context', c:'hyb',
+              analog:'Кыргызстан · 2005, 2010', analog_en:'Kyrgyzstan · 2005, 2010',
               desc:'Розныя трыгеры — розная дынаміка. Вынік непрадказальны.',
-              risk:'Каляровыя рэвалюцыі часта даюць «ратацыю элітаў без дэмакратызацыі».'}]
+              desc_en:'Different triggers — different dynamics. The outcome is unpredictable.',
+              risk:'Каляровыя рэвалюцыі часта даюць «ратацыю элітаў без дэмакратызацыі».',
+              risk_en:'Color revolutions often produce "elite rotation without democratization."'}]
         }
       ]},
-      // B — Расія прагматычная
-      {id:'B', l:'Расія прагматычная', s:'падтрымае лаяльнага', p:rp, c:'ctx',
+      // B — Russia pragmatic
+      {id:'B', l:'Расія прагматычная', l_en:'Russia pragmatic', s:'падтрымае лаяльнага', s_en:'backs a loyal successor', p:rp, c:'ctx',
        tip:'Расія не кіруе напрамую, але падтрымае геапалітычна лаяльнага пераемніка. 66% экспертаў — самы папулярны адказ.',
+       tip_en:'Russia does not govern directly, but backs a geopolitically loyal successor. 66% of experts — the most popular answer.',
        ch:[
-        {id:'B1', l:'Здароўе + кантроль РФ', s:'той жа трыгер, арбітр', p:ht, c:'trg',
+        {id:'B1', l:'Здароўе + кантроль РФ', l_en:'Health + RF oversight', s:'той жа трыгер, арбітр', s_en:'same trigger, arbiter', p:ht, c:'trg',
          tip:'Той жа трыгер, але Крэмль уважліва сочыць за выбарам пераемніка.',
+         tip_en:'Same trigger, but the Kremlin closely monitors the choice of successor.',
          ch:[
-          {id:'B1a', l:'Кіраваная + РФ арбітр', s:'узгодненае рашэнне', p:mt, c:'typ',
+          {id:'B1a', l:'Кіраваная + РФ арбітр', l_en:'Managed + RF arbiter', s:'узгодненае рашэнне', s_en:'agreed decision', p:mt, c:'typ',
            tip:'Расія дамаўляецца з беларускімі элітамі пра прыймальнага кандыдата.',
+           tip_en:'Russia negotiates with Belarusian elites over an acceptable candidate.',
            ch:[
-            {id:'B1a1', l:'Сілавікі лаяльныя', s:'адзіны блок', p:sl, c:'sil',
+            {id:'B1a1', l:'Сілавікі лаяльныя', l_en:'Silaviki loyal', s:'адзіны блок', s_en:'single bloc', p:sl, c:'sil',
              tip:'Сілавікі падпарадкоўваюцца ўзгодненаму пераемніку.',
+             tip_en:'<em>Silaviki</em> submit to the agreed-upon successor.',
              ch:[
-              {id:'B1a1x', l:'Захад уключаецца', s:'канкурэнцыя ўплываў', p:wa, c:'ext',
+              {id:'B1a1x', l:'Захад уключаецца', l_en:'West engages', s:'канкурэнцыя ўплываў', s_en:'competition of influences', p:wa, c:'ext',
                tip:'ЕС/ЗША спрабуюць уплываць — канкурэнцыя з РФ за ўплыў.',
-               ch:[{id:'o7', l:'Гібрыд паміж РФ і ЕС', s:'Малдова-тып', c:'hyb',
-                    analog:'Малдова · 2009–2020',
+               tip_en:'EU/US try to exert influence — competition with Russia for influence.',
+               ch:[{id:'o7', l:'Гібрыд паміж РФ і ЕС', l_en:'Hybrid between RF and EU', s:'Малдова-тып', s_en:'Moldova type', c:'hyb',
+                    analog:'Малдова · 2009–2020', analog_en:'Moldova · 2009–2020',
                     desc:'Краіна паміж двума цэнтрамі сілы. Можа эвалюцыянаваць у любы бок — залежыць ад унутранай дынамікі і геапалітыкі.',
-                    risk:'Нестабільны: кожныя выбары могуць перавярнуць курс. Патрабуе працаздольных інстытутаў.'}]
+                    desc_en:'A country between two centers of power. May evolve in either direction — depending on internal dynamics and geopolitics.',
+                    risk:'Нестабільны: кожныя выбары могуць перавярнуць курс. Патрабуе працаздольных інстытутаў.',
+                    risk_en:'Unstable: each election may reverse the course. Requires working institutions.'}]
               },
-              {id:'B1a1y', l:'Захад пасіўны', s:'«мы занятыя»', p:1-wa, c:'ext',
+              {id:'B1a1y', l:'Захад пасіўны', l_en:'West passive', s:'«мы занятыя»', s_en:'"we are busy"', p:1-wa, c:'ext',
                tip:'Захад заняты сваімі справамі. Расія — адзіны знешні гулец.',
-               ch:[{id:'o8', l:'Прарасійскі гарант', s:'Туркменістан-2022', c:'aut',
-                    analog:'Туркменістан · Бярдымухамедаў, 2022',
+               tip_en:'The West is busy with its own affairs. Russia is the sole external player.',
+               ch:[{id:'o8', l:'Прарасійскі гарант', l_en:'Pro-Russian guarantor', s:'Туркменістан-2022', s_en:'Turkmenistan-2022', c:'aut',
+                    analog:'Туркменістан · Бярдымухамедаў, 2022', analog_en:'Turkmenistan · Berdimuhamedov, 2022',
                     desc:'Дынастычная або кланавая перадача. Пераемнік лаяльны Маскве. Стабільны аўтарытарызм з захаваннем фасаду.',
-                    risk:'Паглыбляе эканамічную і палітычную залежнасць ад РФ. Абмяжоўвае прастору для манеўру на дзесяцігоддзі.'}]
+                    desc_en:'Dynastic or clan handover. The successor is loyal to Moscow. Stable authoritarianism preserving the facade.',
+                    risk:'Паглыбляе эканамічную і палітычную залежнасць ад РФ. Абмяжоўвае прастору для манеўру на дзесяцігоддзі.',
+                    risk_en:'Deepens economic and political dependence on Russia. Limits the space for maneuver for decades.'}]
               }
             ]},
-            {id:'B1a2', l:'Сілавікі раскалоліся', s:'+ РФ уключаецца', p:sn, c:'sil',
+            {id:'B1a2', l:'Сілавікі раскалоліся', l_en:'Silaviki splinter', s:'+ РФ уключаецца', s_en:'+ RF steps in', p:sn, c:'sil',
              tip:'Фракцыі канкуруюць, РФ вымушана ўмешвацца напрамую.',
-             ch:[{id:'o9', l:'РФ навязвае парадак', s:'АДКБ-мадэль', c:'aut',
-                  analog:'Казахстан · АДКБ, студзень 2022',
+             tip_en:'Factions compete, Russia is forced to intervene directly.',
+             ch:[{id:'o9', l:'РФ навязвае парадак', l_en:'RF imposes order', s:'АДКБ-мадэль', s_en:'CSTO model', c:'aut',
+                  analog:'Казахстан · АДКБ, студзень 2022', analog_en:'Kazakhstan · CSTO, January 2022',
                   desc:'Расія ўводзіць войскі або дыпламатычны ціск і ўсталёўвае лаяльны рэжым. Хуткая стабілізацыя праз знешнюю сілу.',
-                  risk:'Прэцэдэнт: АДКБ у KZ за 24 гадзіны. Для Беларусі — максімальная страта суб\'ектнасці пры захаванні фармальнай незалежнасці.'}]
+                  desc_en:'Russia introduces troops or diplomatic pressure and installs a loyal regime. Rapid stabilization via external force.',
+                  risk:'Прэцэдэнт: АДКБ у KZ за 24 гадзіны. Для Беларусі — максімальная страта суб\'ектнасці пры захаванні фармальнай незалежнасці.',
+                  risk_en:'Precedent: CSTO in KZ within 24 hours. For Belarus — maximum loss of agency while formally retaining independence.'}]
             }
           ]},
-          {id:'B1b', l:'Элітны калапс', s:'РФ не ўтрымлівае', p:cl, c:'typ',
+          {id:'B1b', l:'Элітны калапс', l_en:'Elite collapse', s:'РФ не ўтрымлівае', s_en:'RF cannot hold it', p:cl, c:'typ',
            tip:'Кіраваная перадача правальваецца нават пры ўмяшанні РФ.',
-           ch:[{id:'o10', l:'Крызіс з інтэрвенцыяй РФ', s:'паглыбленне інтэграцыі', c:'aut',
-                analog:'Казахстан · Студзень 2022 (+АДКБ)',
+           tip_en:'Managed handover fails even with Russian intervention.',
+           ch:[{id:'o10', l:'Крызіс з інтэрвенцыяй РФ', l_en:'Crisis with RF intervention', s:'паглыбленне інтэграцыі', s_en:'deeper integration', c:'aut',
+                analog:'Казахстан · Студзень 2022 (+АДКБ)', analog_en:'Kazakhstan · January 2022 (+CSTO)',
                 desc:'РФ выкарыстоўвае хаос для паглыблення інтэграцыі. Ваенная або паліцэйская прысутнасць.',
-                risk:'Самы небяспечны сцэнар для беларускага суверэнітэту.'}]
+                desc_en:'Russia uses the chaos to deepen integration. Military or police presence.',
+                risk:'Самы небяспечны сцэнар для беларускага суверэнітэту.',
+                risk_en:'The most dangerous scenario for Belarusian sovereignty.'}]
           }
         ]},
-        {id:'B2', l:'Рашэнне Лукашэнкі + Крэмль', s:'запланаваны транзіт', p:ot, c:'trg',
+        {id:'B2', l:'Рашэнне Лукашэнкі + Крэмль', l_en:'Decision by Lukashenka + Kremlin', s:'запланаваны транзіт', s_en:'planned transit', p:ot, c:'trg',
          tip:'Лукашэнка і Крэмль дамаўляюцца пра «мяккі» пераход. 31% экспертаў — рашэнне самога Лукашэнкі як трыгер.',
-         ch:[{id:'o11', l:'«Мяккая лібералізацыя»', s:'чырвоная лінія!', c:'frz',
-              analog:'Беларусь · 2008–2010 (мікра-адлігі)',
+         tip_en:'Lukashenka and the Kremlin agree on a "soft" transition. 31% of experts cite a decision by Lukashenka himself as the trigger.',
+         ch:[{id:'o11', l:'«Мяккая лібералізацыя»', l_en:'"Soft liberalization"', s:'чырвоная лінія!', s_en:'red line!', c:'frz',
+              analog:'Беларусь · 2008–2010 (мікра-адлігі)', analog_en:'Belarus · 2008–2010 (micro-thaws)',
               desc:'Касметычныя рэформы без рэальных зменаў. Дэпалітызуе грамадства, паслабляе знешні ціск.',
-              risk:'ЧЫРВОНАЯ ЛІНІЯ экспертаў: выглядае як транзіт, але не з\'яўляецца ім. Найгорш — дэзактывуе міжнародны ціск на гады.'}]
+              desc_en:'Cosmetic reforms without real change. Depoliticizes society, weakens external pressure.',
+              risk:'ЧЫРВОНАЯ ЛІНІЯ экспертаў: выглядае як транзіт, але не з\'яўляецца ім. Найгорш — дэзактывуе міжнародны ціск на гады.',
+              risk_en:'EXPERT RED LINE: looks like a transit but is not one. Worst of all — deactivates international pressure for years.'}]
         }
       ]},
-      // C — Расія агрэсіўная
-      {id:'C', l:'Расія агрэсіўная', s:'інтэграцыя · анексія', p:ra, c:'ctx',
+      // C — Russia aggressive
+      {id:'C', l:'Расія агрэсіўная', l_en:'Russia aggressive', s:'інтэграцыя · анексія', s_en:'integration · annexation', p:ra, c:'ctx',
        tip:'Найгоршы знешні кантэкст. Інкарпарацыя, акупацыя, «перамога Расіі + Вялікая ўгода».',
+       tip_en:'The worst external context. Incorporation, occupation, "Russia\'s victory + Grand Bargain."',
        ch:[
-        {id:'C1', l:'Глыбокая інтэграцыя', s:'«саюзная дзяржава+»', p:0.55, c:'trg',
+        {id:'C1', l:'Глыбокая інтэграцыя', l_en:'Deep integration', s:'«саюзная дзяржава+»', s_en:'"Union State+"', p:0.55, c:'trg',
          tip:'Фармальна незалежная, але рэальна кантраляваная РФ.',
-         ch:[{id:'o12', l:'Замарожаны аўтарытарызм', s:'залежнасць ад РФ', c:'frz',
-              analog:'Прыднястроўе · 1992–цяпер',
+         tip_en:'Formally independent, but in reality controlled by Russia.',
+         ch:[{id:'o12', l:'Замарожаны аўтарытарызм', l_en:'Frozen authoritarianism', s:'залежнасць ад РФ', s_en:'dependence on RF', c:'frz',
+              analog:'Прыднястроўе · 1992–цяпер', analog_en:'Transnistria · 1992–present',
               desc:'Ніякіх структурных зменаў. Поўная эканамічная і палітычная залежнасць.',
-              risk:'Транзіт замарожаны на дзесяцігоддзі. Унутраная палітыка зведзена да кіравання фасадам.'}]
+              desc_en:'No structural changes. Complete economic and political dependence.',
+              risk:'Транзіт замарожаны на дзесяцігоддзі. Унутраная палітыка зведзена да кіравання фасадам.',
+              risk_en:'Transit frozen for decades. Domestic politics reduced to managing the facade.'}]
         },
-        {id:'C2', l:'Фактычная анексія', s:'ліквідацыя суверэнітэту', p:0.25, c:'trg',
+        {id:'C2', l:'Фактычная анексія', l_en:'De facto annexation', s:'ліквідацыя суверэнітэту', s_en:'elimination of sovereignty', p:0.25, c:'trg',
          tip:'Поўная страта дзяржаўнасці. Названа сярод найгоршых сцэнароў у адказах экспертаў (10 адказаў пра «поўную інтэграцыю/перамогу РФ»).',
-         ch:[{id:'o13', l:'Страта суверэнітэту', s:'транзіт немагчымы', c:'frz',
-              analog:'Крым · 2014',
+         tip_en:'Total loss of statehood. Cited among the worst scenarios in expert answers (10 responses about "full integration / Russian victory").',
+         ch:[{id:'o13', l:'Страта суверэнітэту', l_en:'Loss of sovereignty', s:'транзіт немагчымы', s_en:'transit impossible', c:'frz',
+              analog:'Крым · 2014', analog_en:'Crimea · 2014',
               desc:'Тэрыторыя паглынутая. Палітычны транзіт немагчымы ў прынцыпе.',
-              risk:'Самы цёмны сцэнар. Адрэзае ўсе іншыя варыянты на пакаленне.'}]
+              desc_en:'The territory is absorbed. Political transit becomes impossible in principle.',
+              risk:'Самы цёмны сцэнар. Адрэзае ўсе іншыя варыянты на пакаленне.',
+              risk_en:'The darkest scenario. Cuts off all other options for a generation.'}]
         },
-        {id:'C3', l:'Вайна на тэрыторыі', s:'НАТА–РФ', p:0.20, c:'trg',
+        {id:'C3', l:'Вайна на тэрыторыі', l_en:'War on the territory', s:'НАТА–РФ', s_en:'NATO–RF', p:0.20, c:'trg',
          tip:'Недаацэнены фактар (названы экспертамі сярод забытых). Мілітарны сцэнар.',
-         ch:[{id:'o14', l:'Радыкальная нявызначанасць', s:'усе варыянты адкрытыя', c:'hyb',
-              analog:'Украіна · 2022–цяпер',
+         tip_en:'Underestimated factor (named by experts as one of the forgotten ones). Military scenario.',
+         ch:[{id:'o14', l:'Радыкальная нявызначанасць', l_en:'Radical uncertainty', s:'усе варыянты адкрытыя', s_en:'all options open', c:'hyb',
+              analog:'Украіна · 2022–цяпер', analog_en:'Ukraine · 2022–present',
               desc:'Непрадказальны вынік. Вайна можа адкрыць акно для любога сцэнарыя — ад эміграцыі элітаў да знешне навязанага рэжыму.',
-              risk:'Самая высокая энтрапія. Усе іншыя сцэнарыі становяцца ўмоўнымі.'}]
+              desc_en:'Unpredictable outcome. War may open a window to any scenario — from elite emigration to an externally imposed regime.',
+              risk:'Самая высокая энтрапія. Усе іншыя сцэнарыі становяцца ўмоўнымі.',
+              risk_en:'Highest entropy. All other scenarios become conditional.'}]
         }
       ]}
     ]};
@@ -757,8 +951,8 @@ function render(){
   });
   ctx2.setLineDash([]);
 
-  // level labels on the left
-  const levelNames = ['§0 КОРАНЬ','§1 КАНТЭКСТ РФ','§2 ТРЫГЕР','§3 ТЫП ТРАНЗІТУ','§4 СІЛАВІКІ','§5 ЗНЕШНІЯ','→ ВЫНІК'];
+  // level labels on the left (localized)
+  const levelNames = UI[LANG].levels;
   ctx2.font = '500 9px "JetBrains Mono",monospace';
   ctx2.fillStyle = BP.textMute;
   ctx2.textAlign = 'left';
@@ -832,19 +1026,20 @@ function render(){
       ? '600 11.5px "Inter",sans-serif'
       : '600 11px "Inter",sans-serif';
 
-    const lines = wrapText(ctx2, n.l.replace(/\n/g,' '), maxW);
+    const lines = wrapText(ctx2, T(n,'l').replace(/\n/g,' '), maxW);
     lines.forEach((ln, i) => {
       ctx2.fillText(ln, n._x, ly + i*13 - (labelAbove ? (lines.length-1)*13 : 0));
     });
 
     // sub-label / analog
-    if(n.s){
+    const sub = T(n,'s');
+    if(sub){
       const subY = labelAbove
         ? ly - lines.length*13 + 1
         : ly + lines.length*13;
       ctx2.font = '400 9.5px "JetBrains Mono",monospace';
       ctx2.fillStyle = BP.textMute;
-      ctx2.fillText(n.s, n._x, subY);
+      ctx2.fillText(sub, n._x, subY);
     }
 
     // cumulative probability readout right next to the marker
@@ -861,7 +1056,7 @@ function render(){
     // leaf: cumulative probability badge under sub-label
     if(leaf){
       const cpct = (n._cum*100).toFixed(1);
-      const subY = ly + lines.length*13 + (n.s?13:0) + 6;
+      const subY = ly + lines.length*13 + (sub?13:0) + 6;
       // draw badge
       ctx2.font = '700 11px "JetBrains Mono",monospace';
       const txt = '[Σ ' + cpct + '%]';
@@ -874,12 +1069,13 @@ function render(){
       ctx2.textBaseline = 'alphabetic';
 
       // historical analog reference under the badge (italic, wrapped)
-      if(n.analog){
+      const ana = T(n,'analog');
+      if(ana){
         ctx2.font = 'italic 9.5px "Source Serif 4",Georgia,serif';
         ctx2.fillStyle = onPath ? BP.text : BP.textDim;
         ctx2.textAlign = 'center';
         const analogMaxW = Math.max(80, NW - 8);
-        const analogLines = wrapText(ctx2, '↪ ' + n.analog, analogMaxW);
+        const analogLines = wrapText(ctx2, '↪ ' + ana, analogMaxW);
         const analogY = subY + 16 + 11;
         analogLines.forEach((ln, i) => {
           ctx2.fillText(ln, n._x, analogY + i*11);
@@ -951,12 +1147,13 @@ cv.addEventListener('click', e => {
 const tip = document.getElementById('tip');
 function showTip(e, n){
   if(!n){ hideTip(); return; }
-  let html = `<b>${n.l.replace(/\n/g,' ')}</b>`;
-  if(n.tip) html += n.tip;
-  else if(n.desc) html += n.desc;
-  if(n.p != null) html += `<div class="t-p">Верагоднасць галіны: ${Math.round(n.p*100)}%</div>`;
-  if(n._cum != null && isLeaf(n)) html += `<div class="t-p">Кумулятыўна: ${(n._cum*100).toFixed(1)}%</div>`;
-  if(isLeaf(n)) html += `<div class="t-hint">Клік → падрабязнасці і аналаг</div>`;
+  const t = UI[LANG].tip;
+  let html = `<b>${T(n,'l').replace(/\n/g,' ')}</b>`;
+  const body = T(n,'tip') || T(n,'desc');
+  if(body) html += body;
+  if(n.p != null) html += `<div class="t-p">${t.branchP}: ${Math.round(n.p*100)}%</div>`;
+  if(n._cum != null && isLeaf(n)) html += `<div class="t-p">${t.cumP}: ${(n._cum*100).toFixed(1)}%</div>`;
+  if(isLeaf(n)) html += `<div class="t-hint">${t.hint}</div>`;
   tip.innerHTML = html;
   tip.style.opacity = '1';
 }
@@ -971,44 +1168,47 @@ function hideTip(){ tip.style.opacity = '0'; }
 function openCard(n){
   const ov = document.getElementById('overlay');
   const card = document.getElementById('ocard');
-  const kind = {dem:'Акно дэмакратызацыі', aut:'Аўтарытарная пераемнасць', hyb:'Геапалітычны гібрыд', frz:"Замарожванне / страта суб'ектнасці"}[n.c] || '';
+  const u = UI[LANG];
+  const kind = u.categories[n.c] || '';
   // build path
   const path = [];
   let cur = n;
   while(cur){ path.unshift(cur); cur = cur._parent; }
   const pathHtml = path.map((p,i) => i===path.length-1
-    ? `<span class="seg" style="color:var(--accent);font-weight:600">${p.l.replace(/\n/g,' ')}</span>`
-    : `<span class="seg">${p.l.replace(/\n/g,' ')}</span>`
+    ? `<span class="seg" style="color:var(--accent);font-weight:600">${T(p,'l').replace(/\n/g,' ')}</span>`
+    : `<span class="seg">${T(p,'l').replace(/\n/g,' ')}</span>`
   ).join('<span class="arr">→</span>');
+
+  const desc = T(n,'desc'), risk = T(n,'risk'), warn = T(n,'warn'), analog = T(n,'analog'), sub = T(n,'s');
 
   card.innerHTML = `
     <button class="ocard-close" onclick="closeCard()">✕</button>
     <div class="ocard-head">
       <div class="ocard-kind k-${n.c}">${kind}</div>
-      <div class="ocard-title">${n.l.replace(/\n/g,' ')}</div>
-      <div class="ocard-sub">${n.s || ''}</div>
+      <div class="ocard-title">${T(n,'l').replace(/\n/g,' ')}</div>
+      <div class="ocard-sub">${sub || ''}</div>
     </div>
     <div class="ocard-path">${pathHtml}</div>
     <div class="ocard-body">
       <div class="ocard-row cum">
-        <div class="rl">Кумул. верагоднасць</div>
+        <div class="rl">${u.card.cumP}</div>
         <div class="rv">${(n._cum*100).toFixed(1)}%</div>
       </div>
-      ${n.desc ? `<div class="ocard-row">
-        <div class="rl">Дынаміка</div>
-        <div class="rv">${n.desc}</div>
+      ${desc ? `<div class="ocard-row">
+        <div class="rl">${u.card.dyn}</div>
+        <div class="rv">${desc}</div>
       </div>` : ''}
-      ${n.risk ? `<div class="ocard-row">
-        <div class="rl">Ацэнка</div>
-        <div class="rv">${n.risk}</div>
+      ${risk ? `<div class="ocard-row">
+        <div class="rl">${u.card.assess}</div>
+        <div class="rv">${risk}</div>
       </div>` : ''}
-      ${n.warn ? `<div class="ocard-row">
-        <div class="rl" style="color:var(--accent)">Пасцярога</div>
-        <div class="rv" style="color:var(--accent-ink);font-style:italic">${n.warn}</div>
+      ${warn ? `<div class="ocard-row">
+        <div class="rl" style="color:var(--accent)">${u.card.warn}</div>
+        <div class="rv" style="color:var(--accent-ink);font-style:italic">${warn}</div>
       </div>` : ''}
-      ${n.analog ? `<div class="ocard-analog">
-        <div class="al">Гістарычны аналаг</div>
-        <div class="at">${n.analog}</div>
+      ${analog ? `<div class="ocard-analog">
+        <div class="al">${u.card.analog}</div>
+        <div class="at">${analog}</div>
       </div>` : ''}
     </div>
   `;
@@ -1035,12 +1235,7 @@ function updateSummary(){
   const agg = {dem:0, aut:0, hyb:0, frz:0};
   lv.forEach(n => { if(agg.hasOwnProperty(n.c)) agg[n.c] += n._cum; });
   const tot = Object.values(agg).reduce((s,v)=>s+v, 0) || 1;
-  const labels = {
-    dem:{strong:'Акно дэмакратызацыі', sub:'пактаваны пераход, круглы стол'},
-    aut:{strong:'Аўтарытарная пераемнасць', sub:'новы кіраўнік з сістэмы'},
-    hyb:{strong:'Геапалітычны гібрыд', sub:'канкурэнцыя, хаос, малдавізацыя'},
-    frz:{strong:"Замарожванне / страта суб'ектнасці", sub:'інтэграцыя, залежнасць ад РФ'}
-  };
+  const labels = UI[LANG].summary;
   let html = '';
   ['dem','aut','hyb','frz'].forEach(k => {
     const v = agg[k];
@@ -1061,6 +1256,7 @@ render = function(){ _origRender(); updateSummary(); };
 buildPresets();
 buildSliders();
 render();
+applyLang('be');  // ensures static UI text matches the dictionary (and toggle button gets correct label)
 
 </script>
 </body>
